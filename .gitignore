@@ -1,6 +1,8 @@
 #FILTROS DE ECLIPSE, AGREGADOS POR EL CACO
 .project
 .classpath
+_project.xml
+_classpath.xml
 .settings/
 lib/
 
