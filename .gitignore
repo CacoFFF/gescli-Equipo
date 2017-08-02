@@ -1,10 +1,7 @@
 #FILTROS DE ECLIPSE, AGREGADOS POR EL CACO
-.project
-.classpath
-_project.xml
-_classpath.xml
 .settings/
 lib/
+bin/
 
 # Compiled class file
 *.class
@@ -29,3 +26,4 @@ lib/
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
 /bin/
+/bin1/
