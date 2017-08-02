@@ -1,3 +1,9 @@
+#FILTROS DE ECLIPSE, AGREGADOS POR EL CACO
+.project
+.classpath
+.settings/
+lib/
+
 # Compiled class file
 *.class
 
@@ -17,9 +23,6 @@
 *.zip
 *.tar.gz
 *.rar
-
-#Eclipse project file
-.project
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
