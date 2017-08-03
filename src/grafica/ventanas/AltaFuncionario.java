@@ -1,5 +1,7 @@
 package grafica.ventanas;
 
+import Main.Main;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 
@@ -12,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JSpinner;
 import javax.swing.JTable;
 import javax.swing.JComboBox;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class AltaFuncionario extends JFrame {
 
@@ -22,14 +26,14 @@ public class AltaFuncionario extends JFrame {
 	private JLabel txtTelefono;
 	private JLabel txtFechanac;
 	private JLabel txtCel;
-	private JTextField textField;
+	private JTextField textoNombre;
 	private JLabel txtHorasdia;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
+	private JTextField textoApellido;
+	private JTextField textoCI;
+	private JTextField textoTelefono;
+	private JTextField textoFechaNac;
+	private JTextField textoCel;
+	private JTextField textoHorasDia;
 
 	/**
 	 * Launch the application.
@@ -57,10 +61,6 @@ public class AltaFuncionario extends JFrame {
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
-		
-		JButton btnNewButton = new JButton("New button");
-		btnNewButton.setBounds(320, 227, 89, 23);
-		contentPane.add(btnNewButton);
 		
 		txtNombre = new JLabel();
 		txtNombre.setText("Nombre :");
@@ -92,44 +92,60 @@ public class AltaFuncionario extends JFrame {
 		txtCel.setBounds(27, 170, 86, 20);
 		contentPane.add(txtCel);
 		
-		textField = new JTextField();
-		textField.setBounds(140, 11, 149, 20);
-		contentPane.add(textField);
-		textField.setColumns(10);
+		textoNombre = new JTextField();
+		textoNombre.setBounds(140, 11, 149, 20);
+		contentPane.add(textoNombre);
+		textoNombre.setColumns(10);
 		
 		txtHorasdia = new JLabel();
 		txtHorasdia.setText("HorasDia :");
 		txtHorasdia.setBounds(27, 201, 86, 20);
 		contentPane.add(txtHorasdia);
 		
-		textField_1 = new JTextField();
-		textField_1.setBounds(140, 45, 149, 20);
-		contentPane.add(textField_1);
-		textField_1.setColumns(10);
+		textoApellido = new JTextField();
+		textoApellido.setBounds(140, 45, 149, 20);
+		contentPane.add(textoApellido);
+		textoApellido.setColumns(10);
 		
-		textField_2 = new JTextField();
-		textField_2.setBounds(140, 76, 149, 20);
-		contentPane.add(textField_2);
-		textField_2.setColumns(10);
+		textoCI = new JTextField();
+		textoCI.setBounds(140, 76, 149, 20);
+		contentPane.add(textoCI);
+		textoCI.setColumns(10);
 		
-		textField_3 = new JTextField();
-		textField_3.setBounds(140, 109, 149, 20);
-		contentPane.add(textField_3);
-		textField_3.setColumns(10);
+		textoTelefono = new JTextField();
+		textoTelefono.setBounds(140, 109, 149, 20);
+		contentPane.add(textoTelefono);
+		textoTelefono.setColumns(10);
 		
-		textField_4 = new JTextField();
-		textField_4.setBounds(140, 139, 147, 20);
-		contentPane.add(textField_4);
-		textField_4.setColumns(10);
+		textoFechaNac = new JTextField();
+		textoFechaNac.setBounds(140, 139, 147, 20);
+		contentPane.add(textoFechaNac);
+		textoFechaNac.setColumns(10);
 		
-		textField_5 = new JTextField();
-		textField_5.setBounds(140, 170, 149, 20);
-		contentPane.add(textField_5);
-		textField_5.setColumns(10);
+		textoCel = new JTextField();
+		textoCel.setBounds(140, 170, 149, 20);
+		contentPane.add(textoCel);
+		textoCel.setColumns(10);
 		
-		textField_6 = new JTextField();
-		textField_6.setBounds(140, 201, 149, 20);
-		contentPane.add(textField_6);
-		textField_6.setColumns(10);
+		textoHorasDia = new JTextField();
+		textoHorasDia.setBounds(140, 201, 149, 20);
+		contentPane.add(textoHorasDia);
+		textoHorasDia.setColumns(10);
+		
+		JButton btnNewButton = new JButton("New button");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Main.Con_AltaEmpleado.AltaEmpleado
+				( textoNombre.getText()
+				, textoApellido.getText()
+				, textoCI.getText()
+				, textoTelefono.getText()
+				, textoFechaNac.getText()
+				, textoCel.getText()
+				, textoHorasDia.getText()); //Fin de funcion
+			}
+		});
+		btnNewButton.setBounds(320, 227, 89, 23);
+		contentPane.add(btnNewButton);
 	}
 }
