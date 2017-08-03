@@ -108,6 +108,7 @@ public class AltaFuncionario extends JFrame {
 		textoApellido.setColumns(10);
 		
 		textoCI = new JTextField();
+		textoCI.setToolTipText("Agregar con puntos y guiones");
 		textoCI.setBounds(140, 76, 149, 20);
 		contentPane.add(textoCI);
 		textoCI.setColumns(10);
@@ -118,6 +119,7 @@ public class AltaFuncionario extends JFrame {
 		textoTelefono.setColumns(10);
 		
 		textoFechaNac = new JTextField();
+		textoFechaNac.setToolTipText("Ingresar en formato 'aaaa-mm-dd'");
 		textoFechaNac.setBounds(140, 139, 147, 20);
 		contentPane.add(textoFechaNac);
 		textoFechaNac.setColumns(10);
