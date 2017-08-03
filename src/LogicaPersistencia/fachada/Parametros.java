@@ -8,9 +8,8 @@ import java.io.IOException;
 import java.util.Properties;
 
 //
-// Separado este codigo de AccesoBD para facilitar su comprensión y lectura
+// Separado este codigo de Fachada para facilitar su comprensión y lectura
 //
-
 public class Parametros
 {
 	//Paramatros necesarios para conectar a la base de datos
@@ -23,11 +22,11 @@ public class Parametros
 	//Nombre de archivo de configuracion
 	private static String nombreArchivo = "parametros.properties";
 
-	
+	//Este metodo solo existe para probar la creacion/carga
+	//del archivo de parametros
 	public static void main( String[] args)
 	{
 		new Parametros();
-		
 	}
 	
 	//Crear modulo de configuracion

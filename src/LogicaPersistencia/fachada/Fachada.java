@@ -8,8 +8,10 @@ public class Fachada
 {
 	private Parametros Parametros;
 	
+	//Tarea: buscar por CI antes de agregar
+	//Tarea: crear automaticamente base de datos si no es detectada (Fernando)
 	
-	public void AltaEmpleado()
+	public void AltaEmpleado( /*aca iria un value object*/)
 	{
 		Parametros = new Parametros();
 		
