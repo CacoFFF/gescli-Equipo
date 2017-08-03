@@ -7,6 +7,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.Properties;
 
+//
+// Separado este codigo de AccesoBD para facilitar su comprensión y lectura
+//
 
 public class Parametros
 {
