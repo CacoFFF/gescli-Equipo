@@ -13,11 +13,9 @@ Especificaciones
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 
 
--- Volcando estructura de base de datos para gescli
 CREATE DATABASE IF NOT EXISTS `gescli` /*!40100 DEFAULT CHARACTER SET utf8 */;
 USE `gescli`;
 
--- Volcando estructura para tabla gescli.clientes
 CREATE TABLE IF NOT EXISTS `clientes` (
   `idCli` int(11) NOT NULL AUTO_INCREMENT,
   `contacto` varchar(45) DEFAULT NULL,
@@ -42,8 +40,6 @@ CREATE TABLE IF NOT EXISTS `departamentos` (
   PRIMARY KEY (`idDepto`)
 ) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8;
 
--- La exportación de datos fue deseleccionada.
--- Volcando estructura para tabla gescli.funcionarios
 CREATE TABLE IF NOT EXISTS `funcionarios` (
   `idFun` int(11) NOT NULL AUTO_INCREMENT,
   `nomFun` varchar(45) DEFAULT NULL,
@@ -58,8 +54,6 @@ CREATE TABLE IF NOT EXISTS `funcionarios` (
   PRIMARY KEY (`idFun`,`ciFun`)
 ) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8;
 
--- La exportación de datos fue deseleccionada.
--- Volcando estructura para tabla gescli.horasfunc
 CREATE TABLE IF NOT EXISTS `horasfunc` (
   `idFun` int(11) DEFAULT NULL,
   `idCli` int(11) DEFAULT NULL,
@@ -74,16 +68,8 @@ CREATE TABLE IF NOT EXISTS `horasfunc` (
   CONSTRAINT `horasfunc_ibfk_3` FOREIGN KEY (`idServ`) REFERENCES `servicios` (`idServ`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
--- La exportación de datos fue deseleccionada.
--- Volcando estructura para tabla gescli.servicios
 CREATE TABLE IF NOT EXISTS `servicios` (
   `idServ` int(11) NOT NULL AUTO_INCREMENT,
   `nombre` varchar(45) NOT NULL DEFAULT '',
   PRIMARY KEY (`idServ`,`nombre`)
 ) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8;
-
--- La exportación de datos fue deseleccionada.
-/*!40101 SET SQL_MODE=IFNULL(@OLD_SQL_MODE, '') */;
-/*!40014 SET FOREIGN_KEY_CHECKS=IF(@OLD_FOREIGN_KEY_CHECKS IS NULL, 1, @OLD_FOREIGN_KEY_CHECKS) */;
-/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
-cuentascuentascuentascuentassaldosciudadsucursalessucursalessaldosciudadcuentasbanco

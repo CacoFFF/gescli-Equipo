@@ -7,14 +7,14 @@ import java.sql.SQLException;
 
 public class AccesoBD
 {
-
+	private final Consultas consultas = new Consultas();
+	
 	public AccesoBD()
 	{	
 	}
 
 	public boolean AgregarEmpleado(Connection conn, String nombre, String apellido, String ci, String telefono, String fechaNac, String cel, String horasDia){
-		Consultas con=new Consultas();
-		String sqlAgregar=con.AgregarEmpleado();
+		String sqlAgregar=consultas.AgregarEmpleado();
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(sqlAgregar);
 			//luego verificar orden de los set con Consultas.AgregarEmpleado()
@@ -33,8 +33,7 @@ public class AccesoBD
 	}//agregar
 	
 	public boolean VerificarEmpleado(Connection conn, String ci){
-		Consultas con=new Consultas();
-		String sqlBuscar=con.BuscarEmpleadoPorCI();
+		String sqlBuscar=consultas.BuscarEmpleadoPorCI();
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(sqlBuscar);
 			pstmt.setString(1, ci);

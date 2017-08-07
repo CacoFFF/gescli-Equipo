@@ -47,4 +47,47 @@ public class ControladorMaestro
 		}
 		return true;
 	}
+	
+	
+	public static boolean CIValida( String CI)
+	{
+		//return CI.matches("\\d.\\d(3).\\d(3)/\\d"); //<-- con regex, ver si funciona
+		try
+		{
+			//Buscar el guion
+			int dashPos = CI.indexOf('-');
+			if ( dashPos < 0 )
+				return false;
+			
+			//Dividir el string en partes separadas por puntos (parar antes del guion)
+			StringTokenizer st = new StringTokenizer( CI.substring(0, dashPos) , ".");
+			//Primer conjunto de numeros (verifica que no sean mas de 3 digitos)
+			String nCI = st.nextToken();
+			if ( nCI.length() == 0 || nCI.length() > 3 )
+				return false;
+			while ( st.hasMoreTokens() )
+			{
+				String test = st.nextToken();
+				//Verificar que no haya errores de formato (3 digitos entre puntos)
+				if ( test.length() != 3 )
+					return false;
+				nCI = nCI + test;
+			}
+			
+			//Eliminados los puntos y verificado el formato, obtener el numero
+			//Este paso es necesario? 10m es buen limite?
+			int iCI = Integer.parseInt( nCI);
+			if ( iCI <= 0 || iCI > 10000000 )
+				return false;
+			nCI = CI.substring( dashPos+1);
+			if ( (nCI.length() != 1) || nCI.charAt(0) < '0' || nCI.charAt(0) > '9' )
+				return false;
+		}
+		catch ( Exception e )
+		{
+			return false;
+		}
+		return true;
+	}
+	
 }
