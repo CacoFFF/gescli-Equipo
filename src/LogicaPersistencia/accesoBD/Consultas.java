@@ -11,7 +11,7 @@ public class Consultas {
 				+ "celFun,"
 				+ "baja,"
 				+ "horasDia)"
-				+ " values (?,?,?,?,?,0,?)";
+				+ " values (?,?,?,?,?,1,?)";
 	}
 
 	public String ActualizarEmpleado(){
@@ -28,11 +28,11 @@ public class Consultas {
 		return "select * from Funcionarios where ciFun = ? ";
 	}
 
-	public String BajaEmpleado(){
-//		return "delete from Funcionarios where ciFun = ? ";
-		//Idea: activar/desactivar el empleado?
-		//Baja=0 activo o no?
-		return "";
+	public String BajaEmpleadoCI(){
+		//Baja = 0 >>>> desactivado
+		return "update funcionarios"
+				+ " set baja=? "
+				+ " where ciFun=? ";
 	}
 	
 	

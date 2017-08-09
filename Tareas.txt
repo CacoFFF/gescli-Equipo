@@ -1,0 +1,3 @@
+Comunicación entre Controladores y Fachada.
+Terminar controladores de alta y baja.
+Rellenar datos (controlador, fachada).
