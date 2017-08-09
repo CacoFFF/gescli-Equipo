@@ -16,15 +16,16 @@ public class Fachada
 	
 	//Tarea: buscar por CI antes de agregar
 	
-	public Fachada(){
+	public Fachada()
+	{
 		//Crear dependientes
 		Parametros = new Parametros();
 		AccesoBD = new AccesoBD();
 		//se conecta cada vez que entra a fachada (mejorar esto)
-		ConeccionBD();
-		}
+		ConexionBD();
+	}
 	
-	private void ConeccionBD(){
+	private void ConexionBD(){
 		//No conecter si ya esta conectado
 		try
 		{
@@ -63,7 +64,7 @@ public class Fachada
 			{
 				Connection test = DriverManager.getConnection(Parametros.getUrl(),Parametros.getUser(),Parametros.getPassword());
 				AccesoBD.CrearBDatos(test,Parametros.getBDatos());
-				ConeccionBD(); //Recursion
+				ConexionBD(); //Recursion
 			}
 			catch (SQLException sqle2)
 			{
@@ -75,23 +76,30 @@ public class Fachada
 	
 	public void AltaEmpleado(VOEmpleado voEmp)
 	{
-		AccesoBD=new AccesoBD();
-		String 	sNombre=voEmp.getNombre(),
-				sApellido=voEmp.getApellido(),
-				sCI=voEmp.getCi(),
-				sTelefono=voEmp.getTelefono(),
-				sFechaNac=voEmp.getFechaNac(),
-				sCel=voEmp.getCel(),
-				sHorasDia=voEmp.getHorasDia();
-		
-		//verificar si CI existe
-		if(!AccesoBD.VerificarEmpleado(con, sCI)){
-			//si se agrega correctamente
-		 if(AccesoBD.AgregarEmpleado(con, sNombre, sApellido, sCI, sTelefono, sFechaNac, sCel, sHorasDia)){
+		ConexionBD();
+		if( !AccesoBD.VerificarEmpleado(con, voEmp.getCi()) )
+		{
+			if(AccesoBD.AgregarEmpleado(con, voEmp))
+			{
 				//mensaje: se agrego correctamente...  o algo asi
-			 return;}//if donde agrega empleado		
-		//mensaje: CI ya existe
-		 return;
-		}//if donde verifica CI
+			}
+			else
+			{}	//mensaje: CI ya existe
+		}
+		else
+		{}	//mensaje: CI no existe
 	}//altaEmpleado
+	
+	public VOEmpleado ObtenerEmpleado( String sCI)
+	{
+		//Inicializar un Value Object vacio y crear la peticion
+		VOEmpleado Peticion = new VOEmpleado( sCI);
+		String[] elementos = { "nomFun", "apeFun", "fechaNacFun", "celFun", "baja", "horasDia" };
+		Peticion.setElementos( elementos);
+		Peticion.setCondicionSQL( "ciFun="+sCI);
+		
+//		if ()
+//		return ...;
+		return null;
+	}
 }

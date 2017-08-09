@@ -11,7 +11,7 @@ public class Consultas {
 				+ "celFun,"
 				+ "baja,"
 				+ "horasDia)"
-				+ " values (?,?,?,?,?,1,?)";
+				+ " values (?,?,?,?,?,?,?)";
 	}
 
 	public String ActualizarEmpleado(){

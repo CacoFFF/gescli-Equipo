@@ -16,6 +16,7 @@ import javax.swing.JTable;
 import javax.swing.JComboBox;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.JCheckBox;
 
 public class AltaFuncionario extends JFrame {
 
@@ -23,14 +24,12 @@ public class AltaFuncionario extends JFrame {
 	private JLabel txtNombre;
 	private JLabel txtApellido;
 	private JLabel txtCi;
-	private JLabel txtTelefono;
 	private JLabel txtFechanac;
 	private JLabel txtCel;
 	private JTextField textoNombre;
 	private JLabel txtHorasdia;
 	private JTextField textoApellido;
 	private JTextField textoCI;
-	private JTextField textoTelefono;
 	private JTextField textoFechaNac;
 	private JTextField textoCel;
 	private JTextField textoHorasDia;
@@ -77,11 +76,6 @@ public class AltaFuncionario extends JFrame {
 		txtCi.setBounds(27, 70, 86, 20);
 		contentPane.add(txtCi);
 		
-		txtTelefono = new JLabel();
-		txtTelefono.setText("Telefono :");
-		txtTelefono.setBounds(27, 100, 86, 20);
-		contentPane.add(txtTelefono);
-		
 		txtFechanac = new JLabel();
 		txtFechanac.setText("FechaNac :");
 		txtFechanac.setBounds(27, 130, 86, 20);
@@ -89,7 +83,7 @@ public class AltaFuncionario extends JFrame {
 		
 		txtCel = new JLabel();
 		txtCel.setText("Cel :");
-		txtCel.setBounds(27, 160, 86, 20);
+		txtCel.setBounds(27, 100, 86, 20);
 		contentPane.add(txtCel);
 		
 		textoNombre = new JTextField();
@@ -99,8 +93,12 @@ public class AltaFuncionario extends JFrame {
 		
 		txtHorasdia = new JLabel();
 		txtHorasdia.setText("HorasDia :");
-		txtHorasdia.setBounds(27, 190, 86, 20);
+		txtHorasdia.setBounds(27, 160, 86, 20);
 		contentPane.add(txtHorasdia);
+		
+		JLabel txtActivo = new JLabel("Activo:");
+		txtActivo.setBounds(27, 190, 86, 20);
+		contentPane.add(txtActivo);
 		
 		textoApellido = new JTextField();
 		textoApellido.setBounds(140, 40, 149, 20);
@@ -113,11 +111,6 @@ public class AltaFuncionario extends JFrame {
 		contentPane.add(textoCI);
 		textoCI.setColumns(10);
 		
-		textoTelefono = new JTextField();
-		textoTelefono.setBounds(140, 100, 149, 20);
-		contentPane.add(textoTelefono);
-		textoTelefono.setColumns(10);
-		
 		textoFechaNac = new JTextField();
 		textoFechaNac.setToolTipText("Ingresar en formato 'aaaa-mm-dd'");
 		textoFechaNac.setBounds(140, 130, 149, 20);
@@ -125,41 +118,45 @@ public class AltaFuncionario extends JFrame {
 		textoFechaNac.setColumns(10);
 		
 		textoCel = new JTextField();
-		textoCel.setBounds(140, 160, 149, 20);
+		textoCel.setBounds(140, 100, 149, 20);
 		contentPane.add(textoCel);
 		textoCel.setColumns(10);
 		
 		textoHorasDia = new JTextField();
-		textoHorasDia.setBounds(140, 190, 149, 20);
+		textoHorasDia.setBounds(140, 160, 149, 20);
 		contentPane.add(textoHorasDia);
 		textoHorasDia.setColumns(10);
+	
+		JCheckBox chkActivo = new JCheckBox("");
+		chkActivo.setBounds(140, 190, 97, 23);
+		contentPane.add(chkActivo);
 		
-		JButton btnAlta = new JButton("Alta");
-		btnAlta.setToolTipText("Da de alta un empleado, si la CI ya existe en la base de datos, los datos del empleado son actualizados. El empleado pasa a estar activo.");
-		btnAlta.addActionListener(new ActionListener() {
+		JButton btnAgregar = new JButton("Agregar");
+		btnAgregar.setToolTipText("Da de alta un empleado, si la CI ya existe en la base de datos, los datos del empleado son actualizados. El empleado pasa a estar activo.");
+		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Main.gCon_AltaEmpleado.AltaEmpleado
 				( textoNombre.getText()
 				, textoApellido.getText()
 				, textoCI.getText()
-				, textoTelefono.getText()
 				, textoFechaNac.getText()
 				, textoCel.getText()
-				, textoHorasDia.getText()); //Fin de funcion
+				, textoHorasDia.getText()
+				, chkActivo.isSelected() ); //Fin de funcion
 			}
 		});
-		btnAlta.setBounds(327, 10, 97, 23);
-		contentPane.add(btnAlta);
+		btnAgregar.setBounds(327, 10, 97, 23);
+		contentPane.add(btnAgregar);
 		
-		JButton btnBaja = new JButton("Baja");
-		btnBaja.addActionListener(new ActionListener() {
+		JButton btnActualizar = new JButton("Actualizar");
+		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				Main.gCon_BajaEmpleado.BajaEmpleado( textoCI.getText());
 			}
 		});
-		btnBaja.setToolTipText("El empleado con la CI especificada pasa a estar inactivo.");
-		btnBaja.setBounds(327, 45, 97, 23);
-		contentPane.add(btnBaja);
+		btnActualizar.setToolTipText("El empleado con la CI especificada pasa a estar inactivo.");
+		btnActualizar.setBounds(327, 45, 97, 23);
+		contentPane.add(btnActualizar);
 		
 		JButton btnRellenar = new JButton("Rellenar");
 		btnRellenar.setToolTipText("Rellena los campos del empleado que tenga la CI especificada");

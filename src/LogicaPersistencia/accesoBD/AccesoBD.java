@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import LogicaPersistencia.accesoBD.*;
+import LogicaPersistencia.valueObject.*;
+
 public class AccesoBD
 {
 	private final Consultas consultas = new Consultas();
@@ -13,24 +16,27 @@ public class AccesoBD
 	public AccesoBD(){}
 
 	//cambiar Agregar y Verificar segun Consultas
-	public boolean AgregarEmpleado(Connection conn, String sNombre, String sApellido, String sCI, String sTelefono, String sFechaNac, String sCel, String sHorasDia){
+	public boolean AgregarEmpleado(Connection conn, VOEmpleado oVO)
+	{
 		String sqlAgregar=consultas.AgregarEmpleado();
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(sqlAgregar);
 			//luego verificar orden de los set con Consultas.AgregarEmpleado()
-			pstmt.setString(1, sNombre);
-			pstmt.setString(2, sApellido);
-			pstmt.setString(3, sCI);
-			pstmt.setString(4, sTelefono);
-			pstmt.setString(5, sFechaNac);
-			pstmt.setString(6, sCel);
-			pstmt.setString(7, sHorasDia);
+			pstmt.setString(1, oVO.getNombre() );
+			pstmt.setString(2, oVO.getApellido() );
+			pstmt.setString(3, oVO.getCi() );
+			pstmt.setString(4, oVO.getFechaNac() );
+			pstmt.setString(5, oVO.getCel() );
+			pstmt.setBoolean(6, oVO.getBaja() );
+			pstmt.setString(7, oVO.getHorasDia() );
 			pstmt.executeUpdate();
 			pstmt.close();
 			return true;
 		} catch (SQLException e) {
 			return false;}//tryCatch
 	}//agregar
+	
+	
 	
 	public boolean VerificarEmpleado(Connection conn, String sCI){
 		//true si CI existe, false si CI no existe

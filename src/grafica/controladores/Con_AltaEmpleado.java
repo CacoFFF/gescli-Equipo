@@ -6,7 +6,7 @@ import LogicaPersistencia.valueObject.VOEmpleado;
 
 public class Con_AltaEmpleado extends ControladorMaestro {
 
-	public void AltaEmpleado( String sNombre, String sApellido, String sCI, String sTelefono, String sFechaNac, String sCelular, String sHorasDia) {
+	public void AltaEmpleado( String sNombre, String sApellido, String sCI, String sFechaNac, String sCelular, String sHorasDia, boolean bActivo) {
 		//Verificar que horas y telefonos no esten vacios
 		//Verificar formato de CI (\\d.\\d(3).\\d(3)-\\d)
 		
@@ -18,7 +18,7 @@ public class Con_AltaEmpleado extends ControladorMaestro {
 				
 		//Para la fachada: Si CI ya existe en la BD, actualizar empleado (no agregar)
 
-		VOEmpleado oVO = new VOEmpleado( sNombre, sApellido, sCI, sTelefono, sFechaNac, sCelular, sHorasDia);
+		VOEmpleado oVO = new VOEmpleado( sNombre, sApellido, sCI, sFechaNac, sCelular, sHorasDia, bActivo);
 		
 		//Para la ventana: agregar boton de baja y funcion de baja aqui y en la fachada
 	}
