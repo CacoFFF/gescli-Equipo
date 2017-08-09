@@ -12,20 +12,19 @@ public class Fachada
 	private Parametros Parametros;
 	private AccesoBD AccesoBD;
 	private Connection con;
+	private boolean bCreandoBD = false;
 	
 	//Tarea: buscar por CI antes de agregar
-	//Tarea: crear automaticamente base de datos si no es detectada (Fernando)
 	
 	public Fachada(){
+		//Crear dependientes
+		Parametros = new Parametros();
+		AccesoBD = new AccesoBD();
 		//se conecta cada vez que entra a fachada (mejorar esto)
 		ConeccionBD();
 		}
 	
 	private void ConeccionBD(){
-		AccesoBD=new AccesoBD();
-		Parametros = new Parametros();
-		Connection test=null;
-
 		try
 		{
 			Class.forName( Parametros.getDriver() );
@@ -40,16 +39,32 @@ public class Fachada
 		}
 		catch ( SQLException sqle )
 		{
-			//llega aca si la BD no existe (ver getConnection throws)
-			try {
-				test=DriverManager.getConnection(Parametros.getUrl(),Parametros.getUser(),Parametros.getPassword());
-				AccesoBD.CrearBDatos(test,Parametros.getBDatos());
-			} catch (SQLException sqle2) {sqle2.printStackTrace();}
-			//sqle.printStackTrace();
+			if ( sqle.getErrorCode() == 1049 ) //Base de datos no existente
+				CrearBD();
+			else
+				sqle.printStackTrace();
 		}
-		if(test != null) con=test;//por nullPointException (ver)
 			
 	}//coneccion BD
+	
+	private void CrearBD()
+	{
+		if ( !bCreandoBD )
+		{
+			bCreandoBD = true;
+			try
+			{
+				Connection test = DriverManager.getConnection(Parametros.getUrl(),Parametros.getUser(),Parametros.getPassword());
+				AccesoBD.CrearBDatos(test,Parametros.getBDatos());
+				ConeccionBD(); //Recursion
+			}
+			catch (SQLException sqle2)
+			{
+				sqle2.printStackTrace();
+			}
+			bCreandoBD = false;
+		}
+	}
 	
 	public void AltaEmpleado(VOEmpleado voEmp)
 	{
