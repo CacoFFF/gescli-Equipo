@@ -1,6 +1,7 @@
 package grafica.controladores;
 
 import javax.swing.JTextField;
+import javax.swing.JCheckBox;
 import Main.Main;
 import LogicaPersistencia.valueObject.VOEmpleado;
 
@@ -12,8 +13,8 @@ public class Con_RellenarEmpleado extends ControladorMaestro {
 			JTextField oTelefono,
 			JTextField oFechaNac, 
 			JTextField oCel,
-			JTextField oHorasDia)
-	//oBaja!!!!
+			JTextField oHorasDia,
+			JCheckBox oBaja)
 	{
 		
 		if ( !ControladorMaestro.CIValida(sCI) )
@@ -27,7 +28,7 @@ public class Con_RellenarEmpleado extends ControladorMaestro {
 			oFechaNac.setText( VO.getFechaNac() );
 			oCel.setText     ( VO.getCel() );
 			oHorasDia.setText( VO.getHorasDia() );
-			//oBaja!!!!
+			oBaja.setSelected( VO.getBaja() );
 		}
 		//Comunicar con fachada:
 		// Fachada decide si empleado existe (basado en CI)
