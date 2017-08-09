@@ -29,7 +29,10 @@ public class Consultas {
 	}
 
 	public String BajaEmpleado(){
-		return "delete from Funcionarios where ciFun = ? ";
+//		return "delete from Funcionarios where ciFun = ? ";
+		//Idea: activar/desactivar el empleado?
+		//Baja=0 activo o no?
+		return "";
 	}
 	
 	
