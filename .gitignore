@@ -2,6 +2,7 @@
 .settings/
 lib/
 bin/
+config/
 .classpath
 .project
 

@@ -11,7 +11,7 @@ public class Fachada
 {
 	private Parametros Parametros;
 	private AccesoBD AccesoBD;
-	private Connection con;
+	private Connection con = null;
 	private boolean bCreandoBD = false;
 	
 	//Tarea: buscar por CI antes de agregar
@@ -25,6 +25,16 @@ public class Fachada
 		}
 	
 	private void ConeccionBD(){
+		//No conecter si ya esta conectado
+		try
+		{
+			if ( con != null && !con.isClosed() )
+				return;
+		}
+		catch ( SQLException sqle )
+		{	System.out.println( sqle.getMessage() );	}
+		
+		
 		try
 		{
 			Class.forName( Parametros.getDriver() );
@@ -33,10 +43,7 @@ public class Fachada
 					, Parametros.getUser()
 					, Parametros.getPassword() );
 		}
-		catch ( ClassNotFoundException ce)
-		{
-			ce.printStackTrace();
-		}
+		catch ( ClassNotFoundException ce)	{ce.printStackTrace();}
 		catch ( SQLException sqle )
 		{
 			if ( sqle.getErrorCode() == 1049 ) //Base de datos no existente
@@ -46,7 +53,7 @@ public class Fachada
 		}
 			
 	}//coneccion BD
-	
+
 	private void CrearBD()
 	{
 		if ( !bCreandoBD )

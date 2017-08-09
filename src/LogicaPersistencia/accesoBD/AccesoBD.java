@@ -58,20 +58,30 @@ public class AccesoBD
 				sqlTablaFuncionarios=consultas.CrearTablaFuncionarios(),
 				sqlTablaHorasFun=consultas.CrearTablaHorasFunc(),
 				sqltablaServicios=consultas.CrearTablaServicios();
-		try {
+		try
+		{
 			Statement stmt=conn.createStatement();
-			try {
-				stmt.execute(sqlDB);
-				stmt.execute(sqlUsarDB);
-				stmt.execute(sqlTablaCliente);
-				stmt.execute(sqlTablaDepartamento);
-				stmt.execute(sqlTablaFuncionarios);
-				stmt.execute(sqlTablaHorasFun);
-				stmt.execute(sqltablaServicios);
+			try
+			{
+				stmt.executeUpdate(sqlDB);
+				stmt.executeUpdate(sqlUsarDB);
+				stmt.executeUpdate(sqlTablaCliente);
+				stmt.executeUpdate(sqlTablaDepartamento);
+				stmt.executeUpdate(sqlTablaFuncionarios);
+				stmt.executeUpdate(sqltablaServicios);
+				stmt.executeUpdate(sqlTablaHorasFun);
 				stmt.close();
-				
-			}catch (SQLException e) {stmt.close(); e.getStackTrace();}
-			}catch (SQLException e) {e.getStackTrace();}
+			}
+			catch (SQLException e)
+			{
+//				System.out.println( "EXCEPTION " + e.getErrorCode() + " " + e.getMessage() );
+				stmt.close(); e.getStackTrace();
+			}
+		}
+		catch (SQLException e)
+		{
+			e.getStackTrace();
+		}
 	
 	}//crearBD
 

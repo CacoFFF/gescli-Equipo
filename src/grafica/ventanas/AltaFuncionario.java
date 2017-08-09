@@ -138,7 +138,7 @@ public class AltaFuncionario extends JFrame {
 		btnAlta.setToolTipText("Da de alta un empleado, si la CI ya existe en la base de datos, los datos del empleado son actualizados. El empleado pasa a estar activo.");
 		btnAlta.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.Con_AltaEmpleado.AltaEmpleado
+				Main.gCon_AltaEmpleado.AltaEmpleado
 				( textoNombre.getText()
 				, textoApellido.getText()
 				, textoCI.getText()
@@ -154,7 +154,7 @@ public class AltaFuncionario extends JFrame {
 		JButton btnBaja = new JButton("Baja");
 		btnBaja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.Con_BajaEmpleado.BajaEmpleado( textoCI.getText());
+				Main.gCon_BajaEmpleado.BajaEmpleado( textoCI.getText());
 			}
 		});
 		btnBaja.setToolTipText("El empleado con la CI especificada pasa a estar inactivo.");

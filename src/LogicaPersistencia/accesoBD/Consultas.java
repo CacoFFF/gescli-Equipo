@@ -36,10 +36,10 @@ public class Consultas {
 	//Tarea: cargar todo desde las especificaciones
 	//Tarea: limpiar las especificaciones un poco
 	public String CrearBDatos(String sNombreBDatos){
-		return "create database "+sNombreBDatos+";";
+		return "create database "+sNombreBDatos;
 	}
 	public String UsarBDatos(String sNombreBDatos){
-		return "use "+sNombreBDatos+";";
+		return "use "+sNombreBDatos;
 	}//es necesario??
 	
 	//ver si anda desde aca
@@ -58,44 +58,41 @@ public class Consultas {
 				+ " honorarios int(10) DEFAULT NULL,"
 				+ " moneda int(10) DEFAULT NULL,"
 				+ " tipoPersona int(11) DEFAULT NULL,"
-				+ " PRIMARY KEY ('idCli','nroCli')"
-				+ ");";}
+				+ " PRIMARY KEY(idCli,nroCli)"
+				+ ")";}
 	public String CrearTablaDepartamentos(){
 		return "CREATE TABLE IF NOT EXISTS departamentos("
 				+ "idDepto int(11) NOT NULL AUTO_INCREMENT,"
 				+ "nombre varchar(45) DEFAULT NULL,"
-				+ "PRIMARY KEY ('idDepto');";}
+				+ "PRIMARY KEY(idDepto))";}
 	public String CrearTablaFuncionarios(){
 		return "CREATE TABLE IF NOT EXISTS funcionarios("
 				+ "idFun int(11) NOT NULL AUTO_INCREMENT, "
 				+ "nomFun varchar(45) DEFAULT NULL,"
 				+ "apeFun varchar(45) DEFAULT NULL,"
-				+ "ciFun varchar(20) NOT NULL DEFAULT '',"
+				+ "ciFun varchar(20) NOT NULL,"
 				+ "fechNacFun varchar(45) DEFAULT NULL,"
 				+ "celFun varchar(100) DEFAULT NULL,"
 				+ "baja tinyint(4) DEFAULT NULL,"
 				+ "pass varchar(50) DEFAULT NULL,"
 				+ "idGrupo varchar(50) DEFAULT NULL,"
 				+ "horasDia int(11) DEFAULT NULL,"
-				+ " PRIMARY KEY (`idFun`,`ciFun`));";}
+				+ "PRIMARY KEY (idFun,ciFun))";}
 	public String CrearTablaHorasFunc(){
 		return "CREATE TABLE IF NOT EXISTS horasfunc ("
-				+ "  `idFun` int(11) DEFAULT NULL,"
-				+ "  `idCli` int(11) DEFAULT NULL,"
-				+ "  `idServ` int(11) DEFAULT NULL,"
-				+ "  `horas` int(11) DEFAULT NULL,"
-				+ "  `fecha` varchar(45) DEFAULT NULL,"
-				+ "  KEY `idFun` (`idFun`),"
-				+ "  KEY `idCli` (`idCli`),"
-				+ "  KEY `idServ` (`idServ`),"
-				+ "  CONSTRAINT `horasfunc_ibfk_1` FOREIGN KEY (`idFun`) REFERENCES `funcionarios` (`idFun`),"
-				+ "  CONSTRAINT `horasfunc_ibfk_2` FOREIGN KEY (`idCli`) REFERENCES `clientes` (`idCli`),"
-				+ "  CONSTRAINT `horasfunc_ibfk_3` FOREIGN KEY (`idServ`) REFERENCES `servicios` (`idServ`)"
-				+ ");";}
+				+ "  idFun int(11) DEFAULT NULL,"
+				+ "  idCli int(11) DEFAULT NULL,"
+				+ "  idServ int(11) DEFAULT NULL,"
+				+ "  horas int(11) DEFAULT NULL,"
+				+ "  fecha varchar(45) DEFAULT NULL,"
+				+ "  FOREIGN KEY(idFun) REFERENCES funcionarios(idFun),"
+				+ "  FOREIGN KEY(idCli) REFERENCES clientes(idCli),"
+				+ "  FOREIGN KEY(idServ) REFERENCES servicios(idServ)"
+				+ ")";}
 	public String CrearTablaServicios(){
-		return "CREATE TABLE IF NOT EXISTS `servicios` ("
-				+ "`idServ` int(11) NOT NULL AUTO_INCREMENT,"
-				+ "  `nombre` varchar(45) NOT NULL DEFAULT '',"
-				+ "  PRIMARY KEY (`idServ`,`nombre`));";}
+		return "CREATE TABLE IF NOT EXISTS servicios ("
+				+ "idServ int(11) NOT NULL AUTO_INCREMENT,"
+				+ " nombre varchar(45) NOT NULL,"
+				+ " PRIMARY KEY (idServ,nombre))";}
 
 }
