@@ -2,15 +2,39 @@ package LogicaPersistencia.accesoBD;
 
 public class Consultas {
 	
-	//TAREA: Agregar las consultas
-	public String AgregarEmpleado(){return "";}
+	public String AgregarEmpleado(){
+		return "insert into Funcionarios("
+				+ "nomFun,"
+				+ "apeFun,"
+				+ "ciFun,"
+				+ "fechaNacFun,"
+				+ "celFun,"
+				+ "baja,"
+				+ "horasDia)"
+				+ " values (?,?,?,?,?,0,?)";
+	}
 
-	public String ActualizarEmpleado(){	return "";}
+	public String ActualizarEmpleado(){
+		return "update Funcionarios values "
+				+ " nomFun = ? "
+				+ " apeFun = ? "
+				+ " fechNacFun = ? "
+				+ " celFun = ? "
+				+ " horasDia = ? "
+				+ " where ciFun = ? ";
+	}
 	
-	public String BuscarEmpleadoPorCI(){return "";}
+	public String BuscarEmpleadoPorCI(){
+		return "select * from Funcionarios where ciFun = ? ";
+	}
 
-	public String BajaEmpleado(){return "";}
+	public String BajaEmpleado(){
+		return "delete from Funcionarios where ciFun = ? ";
+	}
 	
+	
+	//Tarea: cargar todo desde las especificaciones
+	//Tarea: limpiar las especificaciones un poco
 	public String CrearBDatos(String sNombreBDatos){
 		return "create database "+sNombreBDatos+";";
 	}
