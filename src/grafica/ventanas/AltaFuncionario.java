@@ -1,22 +1,19 @@
 package grafica.ventanas;
 
-import Main.Main;
-
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
-import javax.swing.JButton;
-import javax.swing.JTextField;
-import javax.swing.JLabel;
-import javax.swing.JSpinner;
-import javax.swing.JTable;
-import javax.swing.JComboBox;
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+import javax.swing.JButton;
 import javax.swing.JCheckBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.border.EmptyBorder;
+
+import Main.Main;
+import grafica.controladores.Con_AltaEmpleado;
 
 public class AltaFuncionario extends JFrame {
 
@@ -129,19 +126,22 @@ public class AltaFuncionario extends JFrame {
 	
 		JCheckBox chkActivo = new JCheckBox("");
 		chkActivo.setBounds(140, 190, 97, 23);
+//		chkActivo.setEnabled(false);//ver NotaDeIvan.txt
 		contentPane.add(chkActivo);
 		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.setToolTipText("Da de alta un empleado, si la CI ya existe en la base de datos, los datos del empleado son actualizados. El empleado pasa a estar activo.");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.gCon_AltaEmpleado.AltaEmpleado
-				( textoNombre.getText()
-				, textoApellido.getText()
-				, textoCI.getText()
-				, textoFechaNac.getText()
-				, textoCel.getText()
-				, textoHorasDia.getText()
+				//Main.gCon_AltaEmpleado.AltaEmpleado //error NullPointer
+				Con_AltaEmpleado ctrlAlta=new Con_AltaEmpleado();
+				ctrlAlta.AltaEmpleado
+				( textoNombre.getText().trim()
+				, textoApellido.getText().trim()
+				, textoCI.getText().trim()
+				, textoFechaNac.getText().trim()
+				, textoCel.getText().trim()
+				, textoHorasDia.getText().trim()
 				, chkActivo.isSelected() ); //Fin de funcion
 			}
 		});

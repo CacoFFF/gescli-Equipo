@@ -3,11 +3,11 @@ package LogicaPersistencia.accesoBD;
 public class Consultas {
 	
 	public String AgregarEmpleado(){
-		return "insert into Funcionarios("
+		return "insert into funcionarios("
 				+ "nomFun,"
 				+ "apeFun,"
 				+ "ciFun,"
-				+ "fechaNacFun,"
+				+ "fechNacFun,"
 				+ "celFun,"
 				+ "baja,"
 				+ "horasDia)"
@@ -25,7 +25,7 @@ public class Consultas {
 	}
 	
 	public String BuscarEmpleadoPorCI(){
-		return "select * from Funcionarios where ciFun = ? ";
+		return "select * from funcionarios where ciFun = ? ";
 	}
 
 	public String BajaEmpleadoCI(){

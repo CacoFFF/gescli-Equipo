@@ -1,6 +1,9 @@
 package grafica.controladores;
 
 import java.util.StringTokenizer;
+import javax.swing.JOptionPane;
+
+import LogicaPersistencia.fachada.Fachada;
 
 //
 // Controlador generico
@@ -9,6 +12,8 @@ import java.util.StringTokenizer;
 //
 public class ControladorMaestro
 {
+	Fachada gFachada =new Fachada();
+	
 	//Tabla de dias por meses (entrada cero no corresponde a un mes)
 	public static int dmeses[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
@@ -47,7 +52,6 @@ public class ControladorMaestro
 		}
 		return true;
 	}
-	
 	
 	public static boolean CIValida( String CI)
 	{
@@ -89,5 +93,24 @@ public class ControladorMaestro
 		}
 		return true;
 	}
+	public static boolean EsNumerico(String str){
+		/* regex -> '\d+'
+		 * \ necesita otro \ delante(?) para que el señor java lo reconozca
+		 * d = digit
+		 * + = mas de un digit
+		*/
+		return str.matches("\\d+");}
+
+	//ventanitas de info y confirmacion
+	public void MensajeWin(String sTxt, String sTitle, int iIcon){
+		//Icon -> 0=error, 1=info, 2=warning 3=question
+		JOptionPane.showMessageDialog(null, sTxt, sTitle, iIcon );
+	}//mensaje de errores, etc
 	
+	public boolean ConfirmWin(String sTxt, String sTitle, int iIcon){
+		// 0 = YES_OPTION;
+		if(JOptionPane.showConfirmDialog(null, sTxt, sTitle, JOptionPane.YES_NO_OPTION, iIcon ) == 0)
+			return true; return false;}
+	
+
 }

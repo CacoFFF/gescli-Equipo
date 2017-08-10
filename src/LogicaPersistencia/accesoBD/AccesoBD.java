@@ -6,8 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import LogicaPersistencia.accesoBD.*;
-import LogicaPersistencia.valueObject.*;
+import LogicaPersistencia.valueObject.VOEmpleado;
 
 public class AccesoBD
 {
@@ -16,12 +15,11 @@ public class AccesoBD
 	public AccesoBD(){}
 
 	//cambiar Agregar y Verificar segun Consultas
-	public boolean AgregarEmpleado(Connection conn, VOEmpleado oVO)
+	public String AgregarEmpleado(Connection conn, VOEmpleado oVO)
 	{
 		String sqlAgregar=consultas.AgregarEmpleado();
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(sqlAgregar);
-			//luego verificar orden de los set con Consultas.AgregarEmpleado()
 			pstmt.setString(1, oVO.getNombre() );
 			pstmt.setString(2, oVO.getApellido() );
 			pstmt.setString(3, oVO.getCi() );
@@ -31,9 +29,10 @@ public class AccesoBD
 			pstmt.setString(7, oVO.getHorasDia() );
 			pstmt.executeUpdate();
 			pstmt.close();
-			return true;
+			return "[Agregado]\n"+oVO.getCi()+": "+oVO.getNombre()+" "+oVO.getApellido();
 		} catch (SQLException e) {
-			return false;}//tryCatch
+//			System.out.println(e.getErrorCode());
+			return "";}//tryCatch
 	}//agregar
 	
 	

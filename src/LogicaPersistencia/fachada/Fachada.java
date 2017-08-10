@@ -21,12 +21,11 @@ public class Fachada
 		//Crear dependientes
 		Parametros = new Parametros();
 		AccesoBD = new AccesoBD();
-		//se conecta cada vez que entra a fachada (mejorar esto)
 		ConexionBD();
 	}
 	
 	private void ConexionBD(){
-		//No conecter si ya esta conectado
+		//No conectar si ya esta conectado
 		try
 		{
 			if ( con != null && !con.isClosed() )
@@ -74,20 +73,13 @@ public class Fachada
 		}
 	}
 	
-	public void AltaEmpleado(VOEmpleado voEmp)
+	public String AltaEmpleado(VOEmpleado voEmp)
 	{
 		ConexionBD();
-		if( !AccesoBD.VerificarEmpleado(con, voEmp.getCi()) )
-		{
-			if(AccesoBD.AgregarEmpleado(con, voEmp))
-			{
-				//mensaje: se agrego correctamente...  o algo asi
-			}
-			else
-			{}	//mensaje: CI ya existe
-		}
-		else
-		{}	//mensaje: CI no existe
+		if(!AccesoBD.VerificarEmpleado(con, voEmp.getCi())) return AccesoBD.AgregarEmpleado(con, voEmp);
+		
+		return "Cedula ya agregada"; //agregar algun dato del fun existente?
+
 	}//altaEmpleado
 	
 	public VOEmpleado ObtenerEmpleado( String sCI)
