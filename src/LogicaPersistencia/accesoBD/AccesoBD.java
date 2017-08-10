@@ -57,7 +57,7 @@ public class AccesoBD
 
 	//CI es pasada en el VO
 	public boolean ObtenerEmpleadoCI( Connection conn, VOEmpleado VO) {
-		//1=nomFun,2=apeFun,3=fechNacFun,4=celFun,5=horasDia
+		//1=nomFun,2=apeFun,3=fechNacFun,4=celFun,5=horasDia, 6=baja
 		String sqlBuscar=consultas.BuscarEmpleadoPorCI();
 		try 
 		{
@@ -74,6 +74,7 @@ public class AccesoBD
 				VO.setFechaNac( rs.getString(3));
 				VO.setCel( rs.getString(4));
 				VO.setHorasDia( rs.getString(5));
+				VO.setBaja(rs.getBoolean(6));
 			}
 			else
 				VO.setError( "No existe funcionario con dicha cedula.");
@@ -86,6 +87,21 @@ public class AccesoBD
 			return false;
 		}//tryCatch
 	}
+
+	public void AltaBaja(Connection conn, VOEmpleado VO){
+		String sqlAltaBaja=consultas.BajaEmpleadoCI();
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(sqlAltaBaja);
+			pstmt.setBoolean(1, VO.getBaja());
+			pstmt.setString(2, VO.getCi());
+			pstmt.executeUpdate();
+			
+		} catch (SQLException e) {
+			// TODO: handle exception
+		}
+		
+	}
+	
 	
 	public void CrearBDatos(Connection conn, String sNombreBDatos) {
 				

@@ -25,17 +25,14 @@ public class Consultas {
 	}
 	
 	public String BuscarEmpleadoPorCI(){
-		return "select nomFun,apeFun,fechNacFun,celFun,horasDia from funcionarios where ciFun = ? ";
+		return "select nomFun,apeFun,fechNacFun,celFun,horasDia,baja from funcionarios where ciFun = ? ";
 	}
 
 	public String BajaEmpleadoCI(){
 		//Baja = 0 >>>> desactivado
-		return "update funcionarios"
-				+ " set baja=? "
-				+ " where ciFun=? ";
+		return "update funcionarios set baja = ? where ciFun = ?";
 	}
 
-	
 	
 	//Tarea: cargar todo desde las especificaciones
 	//Tarea: limpiar las especificaciones un poco

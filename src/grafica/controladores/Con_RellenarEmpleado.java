@@ -34,6 +34,7 @@ public class Con_RellenarEmpleado extends ControladorMaestro {
 				oFechaNac.setText( VO.getFechaNac() );
 				oCel.setText     ( VO.getCel() );
 				oHorasDia.setText( VO.getHorasDia() );
+				System.out.println(VO.getBaja());
 				oBaja.setSelected( VO.getBaja() );
 				if ( VO.getResultado().length() != 0 )
 					MensajeWin(VO.getResultado(), "RellenarEmpleado", 1);
