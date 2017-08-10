@@ -7,20 +7,25 @@ import LogicaPersistencia.valueObject.VOEmpleado;
 public class Con_AltaEmpleado extends ControladorMaestro {
 
 	public void AltaEmpleado( String sNombre, String sApellido, String sCI, String sFechaNac, String sCelular, String sHorasDia, boolean bActivo) {
-		//Verificar que horas y telefonos no esten vacios
-		//Verificar formato de CI (\\d.\\d(3).\\d(3)-\\d)
 
-		if ( sNombre.length() == 0 
-			|| sApellido.length() == 0
-			|| !ControladorMaestro.CIValida( sCI)
-			|| !ControladorMaestro.FechaValida( sFechaNac, "-")
-			|| !EsNumerico(sCelular)
-			|| !EsNumerico(sHorasDia)){
-			MensajeWin("Error al ingresar datos", "Alta Emplado", 2);
-			return;
-		}
+		boolean bNombre=true, bApellido=true, bCI=true, bFecha=true, bCel=true, bHoras=true;
+		String sErrMensage="Error en:";
+		if (sNombre.length() == 0 ){sErrMensage+="\n-Nombre"; bNombre=false;}
+		if (sApellido.length() == 0){sErrMensage+="\n-Apellido"; bApellido=false;}
+		if (!ControladorMaestro.CIValida( sCI)){sErrMensage+="\n-Cedula"; bCI=false;}
+		if (!ControladorMaestro.FechaValida( sFechaNac, "-")){sErrMensage+="\n-Fecha"; bFecha=false;}
+		if (!EsNumerico(sCelular)){sErrMensage+="\n-Celular"; bCel=false;}
+		if (!EsNumerico(sHorasDia)){sErrMensage+="\n-Horas"; bHoras=false;}
+		
+		if(		!bNombre || 
+				!bApellido ||
+				!bCI ||
+				!bFecha ||
+				!bCel ||
+				!bHoras){
+			MensajeWin(sErrMensage, "Error al ingresar datos", 2);
+			return;}
 			
-				
 		//Para la fachada: Si CI ya existe en la BD, actualizar empleado (no agregar)
 	
 		VOEmpleado oVO = new VOEmpleado( sNombre, sApellido, sCI, sFechaNac, sCelular, sHorasDia, bActivo);

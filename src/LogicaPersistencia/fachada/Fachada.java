@@ -76,7 +76,11 @@ public class Fachada
 	public String AltaEmpleado(VOEmpleado voEmp)
 	{
 		ConexionBD();
-		if(!AccesoBD.VerificarEmpleado(con, voEmp.getCi())) return AccesoBD.AgregarEmpleado(con, voEmp);
+		if(!AccesoBD.VerificarEmpleado(con, voEmp.getCi())) 
+			if(AccesoBD.AgregarEmpleado(con, voEmp)) {
+				return voEmp.getResultado();
+				
+			}
 		
 		return "Cedula ya agregada"; //agregar algun dato del fun existente?
 

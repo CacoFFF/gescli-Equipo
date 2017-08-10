@@ -15,7 +15,7 @@ public class AccesoBD
 	public AccesoBD(){}
 
 	//cambiar Agregar y Verificar segun Consultas
-	public String AgregarEmpleado(Connection conn, VOEmpleado oVO)
+	public boolean AgregarEmpleado(Connection conn, VOEmpleado oVO)
 	{
 		String sqlAgregar=consultas.AgregarEmpleado();
 		try {
@@ -29,10 +29,11 @@ public class AccesoBD
 			pstmt.setString(7, oVO.getHorasDia() );
 			pstmt.executeUpdate();
 			pstmt.close();
-			return "[Agregado]\n"+oVO.getCi()+": "+oVO.getNombre()+" "+oVO.getApellido();
+			oVO.setResultado("[Agregado]\n"+oVO.getCi()+": "+oVO.getNombre()+" "+oVO.getApellido());
+			return true;
 		} catch (SQLException e) {
 //			System.out.println(e.getErrorCode());
-			return "";}//tryCatch
+			return false;}//tryCatch
 	}//agregar
 	
 	

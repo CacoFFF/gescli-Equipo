@@ -102,6 +102,7 @@ public class ControladorMaestro
 		return str.matches("\\d+");}
 
 	//ventanitas de info y confirmacion
+
 	public void MensajeWin(String sTxt, String sTitle, int iIcon){
 		//Icon -> 0=error, 1=info, 2=warning 3=question
 		JOptionPane.showMessageDialog(null, sTxt, sTitle, iIcon );
