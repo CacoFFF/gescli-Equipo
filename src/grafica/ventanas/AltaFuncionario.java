@@ -14,6 +14,12 @@ import javax.swing.border.EmptyBorder;
 
 import Main.Main;
 import grafica.controladores.Con_AltaEmpleado;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class AltaFuncionario extends JFrame {
 
@@ -103,6 +109,24 @@ public class AltaFuncionario extends JFrame {
 		textoApellido.setColumns(10);
 		
 		textoCI = new JTextField();
+		textoCI.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				Main.gCon_CampoCI.ModificarCampo(textoCI);
+			}
+		});
+		textoCI.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent arg0) {
+				Main.gCon_CampoCI.ModificarCampo(textoCI);
+			}
+		});
+		textoCI.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent arg0) {
+				Main.gCon_CampoCI.ModificarCampo(textoCI);
+			}
+			public void focusLost(FocusEvent e) {
+				Main.gCon_CampoCI.ModificarCampo(textoCI);
+			}
+		});
 		textoCI.setToolTipText("Agregar con puntos y guiones");
 		textoCI.setBounds(140, 70, 149, 20);
 		contentPane.add(textoCI);
