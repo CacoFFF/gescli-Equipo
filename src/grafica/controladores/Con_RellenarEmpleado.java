@@ -17,16 +17,16 @@ public class Con_RellenarEmpleado extends ControladorMaestro {
 	{
 		
 		if ( !ControladorMaestro.CIValida(sCI) )
+		{
+			MensajeWin( "Formato de CI erróneo" + "\r\n" + "Usar: x.xxx.xxx-x", "Error RellenarEmpleado", 0);
 			return; //Mostrar mensaje de error?
+		}
 		
 		VOEmpleado VO = gFachada.ObtenerEmpleado(sCI);
 		if ( VO != null )
 		{
 			if ( VO.getError().length() != 0 )
-			{
-				System.out.println("Error RellenarEmpleado: " + VO.getError());
-				//Mostrar mensaje de error
-			}
+				MensajeWin(VO.getError(), "Error RellenarEmpleado", 0);
 			else
 			{
 				oNombre.setText  ( VO.getNombre() );
@@ -36,7 +36,7 @@ public class Con_RellenarEmpleado extends ControladorMaestro {
 				oHorasDia.setText( VO.getHorasDia() );
 				oBaja.setSelected( VO.getBaja() );
 				if ( VO.getResultado().length() != 0 )
-				{} //Mostrar mensaje de resultado (?, si es que es necesario)
+					MensajeWin(VO.getResultado(), "RellenarEmpleado", 1);
 			}
 		}
 	}

@@ -80,6 +80,7 @@ public class AccesoBD
 			pstmt.close();
 			return i > 0;
 		} catch (SQLException e) {
+			System.out.println("test");
 			//no tendria que llegar aca, por el if de arriba
 			return false;
 		}//tryCatch

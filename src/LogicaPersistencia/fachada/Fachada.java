@@ -86,8 +86,7 @@ public class Fachada
 	{
 		//Inicializar un Value Object vacio y crear la peticion
 		VOEmpleado VO = new VOEmpleado( sCI);
-		if ( AccesoBD.ObtenerEmpleadoCI( con, VO) )
-			return VO;
-		return null;
+		AccesoBD.ObtenerEmpleadoCI( con, VO);
+		return VO;
 	}
 }
