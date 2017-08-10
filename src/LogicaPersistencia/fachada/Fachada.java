@@ -85,13 +85,9 @@ public class Fachada
 	public VOEmpleado ObtenerEmpleado( String sCI)
 	{
 		//Inicializar un Value Object vacio y crear la peticion
-		VOEmpleado Peticion = new VOEmpleado( sCI);
-		String[] elementos = { "nomFun", "apeFun", "fechaNacFun", "celFun", "baja", "horasDia" };
-		Peticion.setElementos( elementos);
-		Peticion.setCondicionSQL( "ciFun="+sCI);
-		
-//		if ()
-//		return ...;
+		VOEmpleado VO = new VOEmpleado( sCI);
+		if ( AccesoBD.ObtenerEmpleadoCI( con, VO) )
+			return VO;
 		return null;
 	}
 }

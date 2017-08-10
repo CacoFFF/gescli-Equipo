@@ -12,7 +12,7 @@ import LogicaPersistencia.fachada.Fachada;
 //
 public class ControladorMaestro
 {
-	Fachada gFachada =new Fachada();
+	public static Fachada gFachada = new Fachada();
 	
 	//Tabla de dias por meses (entrada cero no corresponde a un mes)
 	public static int dmeses[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };

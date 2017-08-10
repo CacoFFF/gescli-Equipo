@@ -133,9 +133,9 @@ public class AltaFuncionario extends JFrame {
 		btnAgregar.setToolTipText("Da de alta un empleado, si la CI ya existe en la base de datos, los datos del empleado son actualizados. El empleado pasa a estar activo.");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//Main.gCon_AltaEmpleado.AltaEmpleado //error NullPointer
-				Con_AltaEmpleado ctrlAlta=new Con_AltaEmpleado();
-				ctrlAlta.AltaEmpleado
+				Main.gCon_AltaEmpleado.AltaEmpleado //error NullPointer
+//				Con_AltaEmpleado ctrlAlta=new Con_AltaEmpleado();
+//				ctrlAlta.AltaEmpleado
 				( textoNombre.getText().trim()
 				, textoApellido.getText().trim()
 				, textoCI.getText().trim()
@@ -162,6 +162,14 @@ public class AltaFuncionario extends JFrame {
 		btnRellenar.setToolTipText("Rellena los campos del empleado que tenga la CI especificada");
 		btnRellenar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				Main.gCon_RellenarEmpleado.RellenarEmpleado
+				( textoCI.getText().trim()
+				, textoNombre
+				, textoApellido
+				, textoFechaNac
+				, textoCel
+				, textoHorasDia
+				, chkActivo );
 			}
 		});
 		btnRellenar.setBounds(327, 80, 97, 23);
