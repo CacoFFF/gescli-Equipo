@@ -86,6 +86,16 @@ public class Fachada
 
 	}//altaEmpleado
 	
+	public String BajaEmpleado(VOEmpleado voEmp){
+		ConexionBD();
+		if(AccesoBD.VerificarEmpleado(con, voEmp.getCi())){
+			if(AccesoBD.BajaEmpleado(con, voEmp)) return voEmp.getResultado();
+			else return voEmp.getError();
+		}
+		
+		return "Cedula no existe";
+	}
+	
 	public VOEmpleado ObtenerEmpleado( String sCI)
 	{
 		//Inicializar un Value Object vacio y crear la peticion

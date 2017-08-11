@@ -17,19 +17,13 @@ public class Con_AltaEmpleado extends ControladorMaestro {
 		if (!EsNumerico(sCelular)){sErrMensage+="\n-Celular"; bCel=false;}
 		if (!EsNumerico(sHorasDia)){sErrMensage+="\n-Horas"; bHoras=false;}
 		
-		if(		!bNombre || 
-				!bApellido ||
-				!bCI ||
-				!bFecha ||
-				!bCel ||
-				!bHoras){
-			MensajeWin(sErrMensage, "Error al ingresar datos", 2);
-			return;}
+		if(!bNombre || !bApellido || !bCI || !bFecha || !bCel || !bHoras){
+			MensajeWin(sErrMensage, "Error al ingresar datos", 2); return;}
 			
 		//Para la fachada: Si CI ya existe en la BD, actualizar empleado (no agregar)
 	
 		VOEmpleado oVO = new VOEmpleado( sNombre, sApellido, sCI, sFechaNac, sCelular, sHorasDia, bActivo);
-//		Main.Main.gFachada.AltaEmpleado(oVO); // mas nullPointerException
+//		Main.Main.gFachada.AltaEmpleado(oVO); //
 		String sResultado=gFachada.AltaEmpleado(oVO);
 		
 		MensajeWin(sResultado, "Resultado Ingreso", 1);

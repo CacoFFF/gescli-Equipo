@@ -150,16 +150,14 @@ public class AltaFuncionario extends JFrame {
 	
 		JCheckBox chkActivo = new JCheckBox("");
 		chkActivo.setBounds(140, 190, 97, 23);
-//		chkActivo.setEnabled(false);//ver NotaDeIvan.txt
+//		chkActivo.setEnabled(false);
 		contentPane.add(chkActivo);
 		
 		JButton btnAgregar = new JButton("Agregar");
 		btnAgregar.setToolTipText("Da de alta un empleado, si la CI ya existe en la base de datos, los datos del empleado son actualizados. El empleado pasa a estar activo.");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.gCon_AltaEmpleado.AltaEmpleado //error NullPointer
-//				Con_AltaEmpleado ctrlAlta=new Con_AltaEmpleado();
-//				ctrlAlta.AltaEmpleado
+				Main.gCon_AltaEmpleado.AltaEmpleado
 				( textoNombre.getText().trim()
 				, textoApellido.getText().trim()
 				, textoCI.getText().trim()
@@ -175,7 +173,7 @@ public class AltaFuncionario extends JFrame {
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.gCon_BajaEmpleado.BajaEmpleado( textoCI.getText());
+				Main.gCon_BajaEmpleado.BajaEmpleado(textoCI.getText(), chkActivo.isSelected());
 			}
 		});
 		btnActualizar.setToolTipText("El empleado con la CI especificada pasa a estar inactivo.");

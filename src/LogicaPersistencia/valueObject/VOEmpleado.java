@@ -27,6 +27,12 @@ public class VOEmpleado extends VOGenerico {
 		this.ci = ci;
 	}
 	
+	//Para BajaEmpleado
+	public VOEmpleado(String sCI, boolean bBaja){
+		super();
+		ci=sCI;
+		baja=bBaja;}
+	
 	//Este constructor es utilizado cuando queremos agregar una entrada
 	public VOEmpleado(String nombre, String apellido, String ci, String fechaNac, String cel, String horasDia, boolean baja) {
 		super();

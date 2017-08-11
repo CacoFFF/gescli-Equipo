@@ -82,22 +82,26 @@ public class AccesoBD
 			pstmt.close();
 			return i > 0;
 		} catch (SQLException e) {
-			System.out.println("test");
 			//no tendria que llegar aca, por el if de arriba
 			return false;
 		}//tryCatch
 	}
 
-	public void AltaBaja(Connection conn, VOEmpleado VO){
-		String sqlAltaBaja=consultas.BajaEmpleadoCI();
+	public boolean BajaEmpleado(Connection conn, VOEmpleado VO){
+		String sqlBajaEmp=consultas.BajaEmpleadoCI();
 		try {
-			PreparedStatement pstmt=conn.prepareStatement(sqlAltaBaja);
+			PreparedStatement pstmt=conn.prepareStatement(sqlBajaEmp);
 			pstmt.setBoolean(1, VO.getBaja());
 			pstmt.setString(2, VO.getCi());
 			pstmt.executeUpdate();
-			
+			pstmt.close();
+			VO.setResultado("Estado de empleado cambiado");
+			return true;
 		} catch (SQLException e) {
-			// TODO: handle exception
+			//ver si daria algun error
+			System.out.println(e.getErrorCode());
+			VO.setError("Algun error?");
+			return false;
 		}
 		
 	}
