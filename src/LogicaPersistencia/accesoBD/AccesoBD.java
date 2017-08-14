@@ -37,6 +37,27 @@ public class AccesoBD
 	}//agregar
 	
 	
+	public boolean ActualizarEmpleado(Connection conn, VOEmpleado oVO)
+	{
+		String sqlActualizar=consultas.ActualizarEmpleado();
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(sqlActualizar);
+			pstmt.setString(1, oVO.getNombre() );
+			pstmt.setString(2, oVO.getApellido() );
+			pstmt.setString(3, oVO.getFechaNac() );
+			pstmt.setString(4, oVO.getCel() );
+			pstmt.setBoolean(5, oVO.getBaja() );
+			pstmt.setString(6, oVO.getHorasDia() );
+			pstmt.setString(7, oVO.getCi() );
+			pstmt.executeUpdate();
+			pstmt.close();
+			oVO.setResultado("[Actualizado]\n"+oVO.getCi()+": "+oVO.getNombre()+" "+oVO.getApellido());
+			return true;
+		} catch (SQLException e) {
+			oVO.setError("SQL Error: "+e.getMessage());
+			return false;}//tryCatch
+	}//agregar
+	
 	
 	public boolean VerificarEmpleado(Connection conn, String sCI){
 		//true si CI existe, false si CI no existe
@@ -87,26 +108,7 @@ public class AccesoBD
 		}//tryCatch
 	}
 
-	public boolean BajaEmpleado(Connection conn, VOEmpleado VO){
-		String sqlBajaEmp=consultas.BajaEmpleadoCI();
-		try {
-			PreparedStatement pstmt=conn.prepareStatement(sqlBajaEmp);
-			pstmt.setBoolean(1, VO.getBaja());
-			pstmt.setString(2, VO.getCi());
-			pstmt.executeUpdate();
-			pstmt.close();
-			VO.setResultado("Estado de empleado cambiado");
-			return true;
-		} catch (SQLException e) {
-			//ver si daria algun error
-			System.out.println(e.getErrorCode());
-			VO.setError("Algun error?");
-			return false;
-		}
-		
-	}
-	
-	
+
 	public void CrearBDatos(Connection conn, String sNombreBDatos) {
 				
 		String 	sqlDB=consultas.CrearBDatos(sNombreBDatos),

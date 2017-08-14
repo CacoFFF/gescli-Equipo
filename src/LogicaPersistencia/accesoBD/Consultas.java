@@ -15,12 +15,13 @@ public class Consultas {
 	}
 
 	public String ActualizarEmpleado(){
-		return "update Funcionarios values "
-				+ " nomFun = ? "
-				+ " apeFun = ? "
-				+ " fechNacFun = ? "
-				+ " celFun = ? "
-				+ " horasDia = ? "
+		return "UPDATE Funcionarios SET"
+				+ " nomFun = ?,"
+				+ " apeFun = ?,"
+				+ " fechNacFun = ?,"
+				+ " celFun = ?,"
+				+ " baja = ?,"
+				+ " horasDia = ?"
 				+ " where ciFun = ? ";
 	}
 	

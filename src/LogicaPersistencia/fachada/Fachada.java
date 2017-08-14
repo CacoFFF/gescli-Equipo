@@ -86,15 +86,15 @@ public class Fachada
 
 	}//altaEmpleado
 	
-	public String BajaEmpleado(VOEmpleado voEmp){
+	public String ActualizarEmpleado(VOEmpleado voEmp)
+	{
 		ConexionBD();
-		if(AccesoBD.VerificarEmpleado(con, voEmp.getCi())){
-			if(AccesoBD.BajaEmpleado(con, voEmp)) return voEmp.getResultado();
-			else return voEmp.getError();
-		}
-		
-		return "Cedula no existe";
-	}
+		if( AccesoBD.VerificarEmpleado(con, voEmp.getCi()) && AccesoBD.ActualizarEmpleado(con, voEmp))
+			return voEmp.getResultado();
+		else
+			return (voEmp.getError().length() > 0) ? voEmp.getError() : "Cedula no existe";
+	}//altaEmpleado
+	
 	
 	public VOEmpleado ObtenerEmpleado( String sCI)
 	{

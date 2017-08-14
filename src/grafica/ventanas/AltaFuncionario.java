@@ -13,7 +13,7 @@ import javax.swing.JTextField;
 import javax.swing.border.EmptyBorder;
 
 import Main.Main;
-import grafica.controladores.Con_AltaEmpleado;
+import grafica.controladores.*;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
 import java.beans.PropertyChangeListener;
@@ -173,7 +173,14 @@ public class AltaFuncionario extends JFrame {
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.gCon_BajaEmpleado.BajaEmpleado(textoCI.getText(), chkActivo.isSelected());
+				Main.gCon_ActualizarEmpleado.ActualizarEmpleado
+				( textoNombre.getText().trim()
+				, textoApellido.getText().trim()
+				, textoCI.getText().trim()
+				, textoFechaNac.getText().trim()
+				, textoCel.getText().trim()
+				, textoHorasDia.getText().trim()
+				, chkActivo.isSelected() ); //Fin de funcion
 			}
 		});
 		btnActualizar.setToolTipText("El empleado con la CI especificada pasa a estar inactivo.");
