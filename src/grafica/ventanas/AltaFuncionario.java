@@ -157,14 +157,14 @@ public class AltaFuncionario extends JFrame {
 		btnAgregar.setToolTipText("Da de alta un empleado, si la CI ya existe en la base de datos, los datos del empleado son actualizados. El empleado pasa a estar activo.");
 		btnAgregar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.gCon_AltaEmpleado.AltaEmpleado
-				( textoNombre.getText().trim()
-				, textoApellido.getText().trim()
-				, textoCI.getText().trim()
-				, textoFechaNac.getText().trim()
-				, textoCel.getText().trim()
-				, textoHorasDia.getText().trim()
-				, chkActivo.isSelected() ); //Fin de funcion
+//				Main.gCon_AltaEmpleado.AltaEmpleado
+//				( textoNombre.getText().trim()
+//				, textoApellido.getText().trim()
+//				, textoCI.getText().trim()
+//				, textoFechaNac.getText().trim()
+//				, textoCel.getText().trim()
+//				, textoHorasDia.getText().trim()
+//				, chkActivo.isSelected() ); //Fin de funcion
 			}
 		});
 		btnAgregar.setBounds(327, 10, 97, 23);
@@ -173,14 +173,14 @@ public class AltaFuncionario extends JFrame {
 		JButton btnActualizar = new JButton("Actualizar");
 		btnActualizar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Main.gCon_ActualizarEmpleado.ActualizarEmpleado
-				( textoNombre.getText().trim()
-				, textoApellido.getText().trim()
-				, textoCI.getText().trim()
-				, textoFechaNac.getText().trim()
-				, textoCel.getText().trim()
-				, textoHorasDia.getText().trim()
-				, chkActivo.isSelected() ); //Fin de funcion
+//				Main.gCon_ActualizarEmpleado.ActualizarEmpleado
+//				( textoNombre.getText().trim()
+//				, textoApellido.getText().trim()
+//				, textoCI.getText().trim()
+//				, textoFechaNac.getText().trim()
+//				, textoCel.getText().trim()
+//				, textoHorasDia.getText().trim()
+//				, chkActivo.isSelected() ); //Fin de funcion
 			}
 		});
 		btnActualizar.setToolTipText("El empleado con la CI especificada pasa a estar inactivo.");

@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 import LogicaPersistencia.valueObject.VOEmpleado;
 
@@ -15,7 +16,7 @@ public class AccesoBD
 	public AccesoBD(){}
 
 	//cambiar Agregar y Verificar segun Consultas
-	public boolean AgregarEmpleado(Connection conn, VOEmpleado oVO)
+	public boolean AgregarFuncionario(Connection conn, VOEmpleado oVO)
 	{
 		String sqlAgregar=consultas.AgregarEmpleado();
 		try {
@@ -36,8 +37,7 @@ public class AccesoBD
 			return false;}//tryCatch
 	}//agregar
 	
-	
-	public boolean ActualizarEmpleado(Connection conn, VOEmpleado oVO)
+	public boolean ActualizarFuncionario(Connection conn, VOEmpleado oVO)
 	{
 		String sqlActualizar=consultas.ActualizarEmpleado();
 		try {
@@ -58,8 +58,7 @@ public class AccesoBD
 			return false;}//tryCatch
 	}//agregar
 	
-	
-	public boolean VerificarEmpleado(Connection conn, String sCI){
+	public boolean VerificarFuncionario(Connection conn, String sCI){
 		//true si CI existe, false si CI no existe
 		String sqlBuscar=consultas.BuscarEmpleadoPorCI();
 		try {
@@ -71,11 +70,9 @@ public class AccesoBD
 			pstmt.close();
 			return true;
 		} catch (SQLException e) {
-			//no tendria que llegar aca, por el if de arriba
 			return false;
 		}//tryCatch
 	}//verificarEmpleado
-
 	//CI es pasada en el VO
 	public boolean ObtenerEmpleadoCI( Connection conn, VOEmpleado VO) {
 		//1=nomFun,2=apeFun,3=fechNacFun,4=celFun,5=horasDia, 6=baja
@@ -103,14 +100,48 @@ public class AccesoBD
 			pstmt.close();
 			return i > 0;
 		} catch (SQLException e) {
-			//no tendria que llegar aca, por el if de arriba
 			return false;
 		}//tryCatch
 	}
 
+	public boolean BajaFuncionario(Connection conn, VOEmpleado VO){
+		String sqlBajaFuncionario=consultas.BajaEmpleadoCI();
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(sqlBajaFuncionario);
+			pstmt.setBoolean(1, VO.getBaja());
+			pstmt.setString(2, VO.getCi());
+			pstmt.executeUpdate();
+			pstmt.close();
+			VO.setResultado("Cambio guardado!");
+			return true;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			return false;
+		}
+	}
+	
+	public ArrayList<String> ListarFuncionario(Connection conn){
+		//seguir aca
+		ArrayList<String> alListaFun = new ArrayList<String>();;
+		String sqlListarFun=consultas.ListarFuncionarios();
+		String stmp="";
+		try {
+			Statement stmt=conn.createStatement();
+			ResultSet rs=stmt.executeQuery(sqlListarFun);
+			while(rs.next()){
+				stmp="["+rs.getString("ciFun")+"] - "+rs.getString("nombre");
+				alListaFun.add(stmp);
+			}
+			rs.close();
+			return alListaFun;
+		} catch (SQLException e) {
+			System.out.println(e.getErrorCode());
+		}
+		return alListaFun;
+		
+	}
 
 	public void CrearBDatos(Connection conn, String sNombreBDatos) {
-				
 		String 	sqlDB=consultas.CrearBDatos(sNombreBDatos),
 				sqlUsarDB=consultas.UsarBDatos(sNombreBDatos),
 				sqlTablaCliente=consultas.CrearTablaCliente(),
@@ -126,23 +157,43 @@ public class AccesoBD
 				stmt.executeUpdate(sqlDB);
 				stmt.executeUpdate(sqlUsarDB);
 				stmt.executeUpdate(sqlTablaCliente);
-				stmt.executeUpdate(sqlTablaDepartamento);
+				stmt.executeUpdate(sqlTablaDepartamento);				
 				stmt.executeUpdate(sqlTablaFuncionarios);
 				stmt.executeUpdate(sqltablaServicios);
 				stmt.executeUpdate(sqlTablaHorasFun);
 				stmt.close();
-			}
-			catch (SQLException e)
-			{
-//				System.out.println( "EXCEPTION " + e.getErrorCode() + " " + e.getMessage() );
-				stmt.close(); e.getStackTrace();
-			}
-		}
-		catch (SQLException e)
-		{
-			e.getStackTrace();
-		}
+			
+			}catch (SQLException e){stmt.close(); e.getStackTrace();}
+		}catch (SQLException e){	e.getStackTrace();}
+		AgregarDepartamentos(conn);
+		
+		
 	
 	}//crearBD
+	
+	public void AgregarDepartamentos(Connection conn){
+		String[] asDeptos={"Artigas", "Canelones", "Cerro Largo", "Colonia", "Durazno", "Flores", "Florida", 
+				"Lavalleja", "Maldonado", "Montevideo", "Paysandu", "Rio Negro", "Rivera", "Rocha", "Salto", 
+				"San Jose" ,"Soriano" ,"Tacuarembo" ,"Treinta y Tres"};
+		String sqlAgregarDepto=consultas.AgregarDepartamentos();
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(sqlAgregarDepto);
+			for(String sDepto:asDeptos){
+				pstmt.setString(1, sDepto);
+				pstmt.setString(2, sDepto);
+				pstmt.executeUpdate();
+			}
+			pstmt.close();
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+		
+		
+		
+		
+		
+		
+	}
 
 }

@@ -3,6 +3,7 @@ package LogicaPersistencia.fachada;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 import LogicaPersistencia.accesoBD.AccesoBD;
 import LogicaPersistencia.valueObject.VOEmpleado;
@@ -73,28 +74,34 @@ public class Fachada
 		}
 	}
 	
-	public String AltaEmpleado(VOEmpleado voEmp)
+	public boolean VerificarFuncionario(String sCI){
+		return AccesoBD.VerificarFuncionario(con, sCI);
+	}
+	
+	public String AltaFuncionario(VOEmpleado voEmp)
 	{
 		ConexionBD();
-		if(!AccesoBD.VerificarEmpleado(con, voEmp.getCi())) 
-			if(AccesoBD.AgregarEmpleado(con, voEmp)) {
-				return voEmp.getResultado();
-				
-			}
+		if(!VerificarFuncionario(voEmp.getCi()) && AccesoBD.AgregarFuncionario(con, voEmp))
+			return voEmp.getResultado();
 		
-		return "Cedula ya agregada"; //agregar algun dato del fun existente?
-
+		return "Cedula ya agregada";
 	}//altaEmpleado
 	
-	public String ActualizarEmpleado(VOEmpleado voEmp)
+	public String ActualizarFuncionario(VOEmpleado voEmp)
 	{
 		ConexionBD();
-		if( AccesoBD.VerificarEmpleado(con, voEmp.getCi()) && AccesoBD.ActualizarEmpleado(con, voEmp))
+		if( VerificarFuncionario(voEmp.getCi()) && AccesoBD.ActualizarFuncionario(con, voEmp))
 			return voEmp.getResultado();
 		else
 			return (voEmp.getError().length() > 0) ? voEmp.getError() : "Cedula no existe";
 	}//altaEmpleado
 	
+	public boolean EstadoFuncionario(VOEmpleado voEmp){
+		
+		if(AccesoBD.VerificarFuncionario(con, voEmp.getCi()) && AccesoBD.BajaFuncionario(con, voEmp)) return true;
+		voEmp.setError("Funcionario no encontrado");
+		return false;
+	}
 	
 	public VOEmpleado ObtenerEmpleado( String sCI)
 	{
@@ -102,5 +109,10 @@ public class Fachada
 		VOEmpleado VO = new VOEmpleado( sCI);
 		AccesoBD.ObtenerEmpleadoCI( con, VO);
 		return VO;
+	}
+	
+	public ArrayList<String> ListaFun(){
+		ArrayList<String> alFun = AccesoBD.ListarFuncionario(con);
+		return alFun;
 	}
 }

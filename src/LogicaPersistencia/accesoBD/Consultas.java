@@ -31,12 +31,15 @@ public class Consultas {
 
 	public String BajaEmpleadoCI(){
 		//Baja = 0 >>>> desactivado
-		return "update funcionarios set baja = ? where ciFun = ?";
+		return "UPDATE funcionarios SET baja = ? WHERE  ciFun = ?";
+				
+	}
+	public String ListarFuncionarios(){
+		return "select ciFun, CONCAT(nomFun,' ' ,apeFun) as nombre from funcionarios";
 	}
 
 	
 	//Tarea: cargar todo desde las especificaciones
-	//Tarea: limpiar las especificaciones un poco
 	public String CrearBDatos(String sNombreBDatos){
 		return "create database "+sNombreBDatos;
 	}
@@ -44,8 +47,6 @@ public class Consultas {
 		return "use "+sNombreBDatos;
 	}//es necesario??
 	
-	//ver si anda desde aca
-	//cambiar a leer desde especificaciones
 	public String CrearTablaCliente(){
 		return "create table if not exists clientes("
 				+ "idCli int(11) NOT NULL AUTO_INCREMENT,"
@@ -62,11 +63,21 @@ public class Consultas {
 				+ " tipoPersona int(11) DEFAULT NULL,"
 				+ " PRIMARY KEY(idCli,nroCli)"
 				+ ")";}
+	
 	public String CrearTablaDepartamentos(){
 		return "CREATE TABLE IF NOT EXISTS departamentos("
 				+ "idDepto int(11) NOT NULL AUTO_INCREMENT,"
 				+ "nombre varchar(45) DEFAULT NULL,"
 				+ "PRIMARY KEY(idDepto))";}
+	
+	public String AgregarDepartamentos(){
+		//ver mejor esto
+		return "INSERT INTO departamentos (nombre)"
+				+ "SELECT * FROM (SELECT ?) AS tmp "
+				+ "WHERE NOT EXISTS ("
+				+ "SELECT nombre FROM departamentos WHERE nombre = ?);";}
+	
+	
 	public String CrearTablaFuncionarios(){
 		return "CREATE TABLE IF NOT EXISTS funcionarios("
 				+ "idFun int(11) NOT NULL AUTO_INCREMENT, "

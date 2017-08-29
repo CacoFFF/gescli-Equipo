@@ -5,7 +5,7 @@ import javax.swing.JCheckBox;
 import Main.Main;
 import LogicaPersistencia.valueObject.VOEmpleado;
 
-public class Con_RellenarEmpleado extends ControladorMaestro {
+public class Con_RellenarEmpleado extends c_Maestro {
 
 	public void RellenarEmpleado( String sCI,
 			JTextField oNombre, 
@@ -15,10 +15,10 @@ public class Con_RellenarEmpleado extends ControladorMaestro {
 			JTextField oHorasDia,
 			JCheckBox oBaja)
 	{
-		
-		if ( !ControladorMaestro.CIValida(sCI) )
+		if ( !CIValida(sCI) )
 		{
-			MensajeWin( "Formato de CI erróneo" + "\r\n" + "Usar: x.xxx.xxx-x", "Error RellenarEmpleado", 0);
+
+			MensajeWin( "Formato de CI erróneo" + "\r\n" + "Usar: x.xxx.xxx-x");
 			return; //Mostrar mensaje de error?
 		}
 		
@@ -26,7 +26,7 @@ public class Con_RellenarEmpleado extends ControladorMaestro {
 		if ( VO != null )
 		{
 			if ( VO.getError().length() != 0 )
-				MensajeWin(VO.getError(), "Error RellenarEmpleado", 0);
+				MensajeWin(VO.getError());
 			else
 			{
 				oNombre.setText  ( VO.getNombre() );
@@ -36,7 +36,7 @@ public class Con_RellenarEmpleado extends ControladorMaestro {
 				oHorasDia.setText( VO.getHorasDia() );
 				oBaja.setSelected( VO.getBaja() );
 				if ( VO.getResultado().length() != 0 )
-					MensajeWin(VO.getResultado(), "RellenarEmpleado", 1);
+					MensajeWin(VO.getResultado());
 			}
 		}
 	}

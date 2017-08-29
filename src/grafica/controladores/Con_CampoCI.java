@@ -5,7 +5,7 @@ import java.awt.Color;
 
 //Este controlador se encarga de proveer informacion en tiempo
 //real al usuario con respecto a los campos de C.I
-public class Con_CampoCI
+public class Con_CampoCI extends c_Maestro
 {
 	private Color colorVacioS;
 	private Color colorValidoS;
@@ -30,7 +30,7 @@ public class Con_CampoCI
 		{
 			if ( campo.getText().length() == 0 )
 				campo.setBackground( colorVacioS);
-			else if ( ControladorMaestro.CIValida(campo.getText()))
+			else if ( CIValida(campo.getText()))
 				campo.setBackground( colorValidoS);
 			else
 				campo.setBackground( colorInvalidoS);
@@ -39,7 +39,7 @@ public class Con_CampoCI
 		{
 			if ( campo.getText().length() == 0 )
 				campo.setBackground( colorVacio);
-			else if ( ControladorMaestro.CIValida(campo.getText()))
+			else if ( CIValida(campo.getText()))
 				campo.setBackground( colorValido);
 			else
 				campo.setBackground( colorInvalido);
