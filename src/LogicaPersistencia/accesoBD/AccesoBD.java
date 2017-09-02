@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import LogicaPersistencia.valueObject.VOCliente;
 import LogicaPersistencia.valueObject.VOEmpleado;
@@ -267,7 +266,33 @@ public class AccesoBD
 		
 		
 	}
-	
+	public void ObtenerCliente(Connection conn, VOCliente voCli){
+		//idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli
+		String sqlBuscarCli=consultas.BuscarCliente();
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(sqlBuscarCli);
+			pstmt.setString(1, voCli.getsNroCli());
+			ResultSet rs=pstmt.executeQuery();
+			
+			if(rs.next()){
+				voCli.setiIdDepto(rs.getInt("idDepto"));
+				voCli.setiHrCargables(rs.getInt("hsCargables"));
+				voCli.setiHonorarios(rs.getInt("honorarios"));
+				voCli.setiMoneda(rs.getInt("moneda"));
+				voCli.setsRut(rs.getString("rut"));
+				voCli.setsNroCli(rs.getString("nroCli"));
+				voCli.setsTel(rs.getString("tel"));
+				voCli.setsDireccion(rs.getString("direccion"));
+				voCli.setsNomCli(rs.getString("nomCli"));
+			}
+			rs.close(); pstmt.close();
+			
+			
+			
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+		}
+	}
 	
 	
 	

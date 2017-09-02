@@ -4,7 +4,6 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
 import LogicaPersistencia.accesoBD.AccesoBD;
 import LogicaPersistencia.valueObject.VOCliente;
@@ -130,7 +129,11 @@ public class Fachada
 		if(AccesoBD.AgregarCliente(con, voCli)) return voCli.getResultado();
 		return voCli.getError();
 	}
-	
+	public VOCliente ObtenerCliente(String sNumCli){
+		VOCliente voCli=new VOCliente(sNumCli);
+		AccesoBD.ObtenerCliente(con, voCli);
+		return voCli;
+	}
 	
 	
 	

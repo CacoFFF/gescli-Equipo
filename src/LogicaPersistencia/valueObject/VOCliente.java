@@ -37,9 +37,6 @@ public class VOCliente extends VOGenerico{
 	public String getsNomDepto() {return sNomDepto;}
 	public void setsNomDepto(String sNomDepto) {this.sNomDepto = sNomDepto;}
 
-	//Obtener ID Departamento
-	public VOCliente(String sNomDepto){
-		this.sNomDepto=sNomDepto;}
 	public VOCliente(int iIdDepto, int iHrCargables, int iHonorarios, int iMoneda,
 			String sRut, String sNroCli, String sTel, String sDireccion, String sNomCli) {
 		this.iIdDepto = iIdDepto;
@@ -52,8 +49,10 @@ public class VOCliente extends VOGenerico{
 		this.sDireccion = sDireccion;
 		this.sNomCli = sNomCli;
 	}
+	//Obtener ID Departamento
+	public VOCliente(String sNomDepto, boolean bNULL){this.sNomDepto=sNomDepto;}
 	
-
+	public VOCliente(String sNumCli){this.sNroCli=sNumCli;}
 	
 	
 	

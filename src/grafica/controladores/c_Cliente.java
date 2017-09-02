@@ -21,11 +21,39 @@ public class c_Cliente extends c_Maestro{
 		for(String sFun : alCli) cb.addItem(sFun);
 	}
 	
-	public void LlenarCampos(String sBuscar){
+	public void BuscarCliente(JTextField tfRut, JTextField tfNumCli, JTextField tfTelefono,
+			JTextField tfDireccion, JTextField tfNomCli, JTextField tfHoras, JTextField tfHonorarios,
+			JComboBox<String> cbDepartamentos, JComboBox<String> cbMoneda, String... sNumCli){
 		
-		MensajeWin(sBuscar);
+		String sBuscarNumCli="";
+		sBuscarNumCli = sNumCli.length > 0 ? sNumCli[0] : null;
 		
-	}//llena campos con lo que saca del cbLista
+		voCli=gFachada.ObtenerCliente(sBuscarNumCli);
+		
+		if ( voCli != null ){
+			if ( voCli.getError().length() != 0 ) MensajeWin("Rellenar Cliente ERROR:\n"+voCli.getError());
+			else{
+				LlenarCampos(voCli, tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios,
+						 cbDepartamentos, cbMoneda); 
+			}}}
+			
+	public void LlenarCampos(VOCliente voCli, JTextField tfRut, JTextField tfNumCli, JTextField tfTelefono,
+			JTextField tfDireccion, JTextField tfNomCli, JTextField tfHoras, JTextField tfHonorarios,
+			JComboBox<String> cbDepartamentos, JComboBox<String> cbMoneda) {
+		
+		tfRut.setText  ( voCli.getsRut() );
+		tfNumCli.setText( voCli.getsNroCli() );
+		tfTelefono.setText(voCli.getsTel());
+		tfDireccion.setText ( voCli.getsDireccion());
+		tfNomCli.setText( voCli.getsNomCli() );
+		tfHoras.setText(""+voCli.getiHrCargables());//jejeje
+		tfHonorarios.setText(""+voCli.getiHonorarios());
+		cbDepartamentos.setSelectedIndex(voCli.getiIdDepto());
+		cbMoneda.setSelectedIndex(voCli.getiMoneda());
+		
+		
+		if ( voCli.getResultado().length() != 0 ) MensajeWin(voCli.getResultado());
+		}
 	
 	public void ListaDepto(JComboBox<String> cb){
 		ArrayList<String> llDeptos=new ArrayList<String>();
@@ -51,7 +79,7 @@ public class c_Cliente extends c_Maestro{
 	}
 	
 	private int IDDepartamento(String sDepartamento){
-		VOCliente voCli=new VOCliente(sDepartamento);
+		VOCliente voCli=new VOCliente(sDepartamento, false);
 		gFachada.getIDDepartamento(voCli);
 		return voCli.getiIdDepto();
 	}

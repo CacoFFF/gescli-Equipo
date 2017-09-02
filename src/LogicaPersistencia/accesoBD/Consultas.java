@@ -56,6 +56,10 @@ public class Consultas {
 		return "insert into clientes "
 				+ "(idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli) "
 				+ "values(?,?,?,?,?,?,?,?,?)";}
+	public String BuscarCliente(){
+		return "select idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli from clientes where nroCli = ? ";
+	}
+
 	
 	//Creacion de BD
 	//Tarea: cargar todo desde las especificaciones

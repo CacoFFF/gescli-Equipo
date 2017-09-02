@@ -10,7 +10,6 @@ import javax.swing.JComboBox;
 import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTextField;
 
 import grafica.controladores.c_Cliente;
@@ -57,7 +56,10 @@ public class PaneCliente extends JComponent {
 		btnVer.setEnabled(false);
 		btnVer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ctrl.LlenarCampos(cbLista.getSelectedItem().toString());
+				String tmp=cbLista.getSelectedItem().toString();
+				int iInicio=tmp.indexOf("["), iFin=tmp.indexOf("]");
+				String sNumCli=tmp.substring(iInicio+1,iFin);
+				ctrl.BuscarCliente(tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios, cbDepartamentos, cbMoneda, sNumCli);
 				btnBorrar.setEnabled(true);
 			}
 		});
