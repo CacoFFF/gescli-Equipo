@@ -8,15 +8,19 @@ import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 
 import LogicaPersistencia.fachada.Fachada;
+import LogicaPersistencia.valueObject.VOCliente;
 import LogicaPersistencia.valueObject.VOEmpleado;
 
 public class c_Maestro {
 	public VOEmpleado oVOF;
+	public VOCliente voCli;
 	public Fachada gFachada=new Fachada();
 	
 	protected boolean IsNumeric(String str) {return str.matches("\\d+");}
 	protected boolean StringValido(String str) {return str != null || !str.isEmpty();}
-
+	protected int IntConvertidor(String str){return Integer.parseInt(str);}
+	
+	
 	// Tabla de dias por meses (entrada cero no corresponde a un mes)
 	public static int dmeses[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 

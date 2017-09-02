@@ -2,6 +2,7 @@ package LogicaPersistencia.accesoBD;
 
 public class Consultas {
 	
+	//Consultas de Funcionario
 	public String AgregarEmpleado(){
 		return "insert into funcionarios("
 				+ "nomFun,"
@@ -13,7 +14,6 @@ public class Consultas {
 				+ "horasDia)"
 				+ " values (?,?,?,?,?,?,?)";
 	}
-
 	public String ActualizarEmpleado(){
 		return "UPDATE Funcionarios SET"
 				+ " nomFun = ?,"
@@ -24,11 +24,9 @@ public class Consultas {
 				+ " horasDia = ?"
 				+ " where ciFun = ? ";
 	}
-	
 	public String BuscarEmpleadoPorCI(){
 		return "select nomFun,apeFun,fechNacFun,celFun,horasDia,baja from funcionarios where ciFun = ? ";
 	}
-
 	public String BajaEmpleadoCI(){
 		//Baja = 0 >>>> desactivado
 		return "UPDATE funcionarios SET baja = ? WHERE  ciFun = ?";
@@ -39,6 +37,27 @@ public class Consultas {
 	}
 
 	
+	//Consultas de Clientes
+	public String AgregarDepartamentos(){
+		//ver mejor esto
+		return "INSERT INTO departamentos (nombre)"
+				+ "SELECT * FROM (SELECT ?) AS tmp "
+				+ "WHERE NOT EXISTS ("
+				+ "SELECT nombre FROM departamentos WHERE nombre = ?);";}
+	public String ListarDepartamentos(){
+		return "select nombre from departamentos;";
+	}
+	public String BuscarIDDepartamento(){
+		return "select idDepto from departamentos where nombre like ?";}
+	public String ListarClientes(){
+		return "select nroCli, nomCli from clientes";
+	}
+	public String AgregarCliente(){
+		return "insert into clientes "
+				+ "(idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli) "
+				+ "values(?,?,?,?,?,?,?,?,?)";}
+	
+	//Creacion de BD
 	//Tarea: cargar todo desde las especificaciones
 	public String CrearBDatos(String sNombreBDatos){
 		return "create database "+sNombreBDatos;
@@ -70,14 +89,6 @@ public class Consultas {
 				+ "nombre varchar(45) DEFAULT NULL,"
 				+ "PRIMARY KEY(idDepto))";}
 	
-	public String AgregarDepartamentos(){
-		//ver mejor esto
-		return "INSERT INTO departamentos (nombre)"
-				+ "SELECT * FROM (SELECT ?) AS tmp "
-				+ "WHERE NOT EXISTS ("
-				+ "SELECT nombre FROM departamentos WHERE nombre = ?);";}
-	
-	
 	public String CrearTablaFuncionarios(){
 		return "CREATE TABLE IF NOT EXISTS funcionarios("
 				+ "idFun int(11) NOT NULL AUTO_INCREMENT, "
@@ -107,5 +118,7 @@ public class Consultas {
 				+ "idServ int(11) NOT NULL AUTO_INCREMENT,"
 				+ " nombre varchar(45) NOT NULL,"
 				+ " PRIMARY KEY (idServ,nombre))";}
+
+
 
 }

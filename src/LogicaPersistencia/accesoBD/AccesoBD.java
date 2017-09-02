@@ -6,7 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
+import LogicaPersistencia.valueObject.VOCliente;
 import LogicaPersistencia.valueObject.VOEmpleado;
 
 public class AccesoBD
@@ -121,7 +123,6 @@ public class AccesoBD
 	}
 	
 	public ArrayList<String> ListarFuncionario(Connection conn){
-		//seguir aca
 		ArrayList<String> alListaFun = new ArrayList<String>();;
 		String sqlListarFun=consultas.ListarFuncionarios();
 		String stmp="";
@@ -188,12 +189,87 @@ public class AccesoBD
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
 		}
+	
+	}
+
+	//Parte de Clientes
+	public ArrayList<String> ListarDepartamentos(Connection conn){
+		String sqlListDeptos=consultas.ListarDepartamentos();
+		ArrayList<String> arDeptos=new ArrayList<String>();
+		try {
+			Statement stmt=conn.createStatement();
+			ResultSet rs=stmt.executeQuery(sqlListDeptos);
+			while(rs.next()){
+				arDeptos.add(rs.getString("nombre"));
+			}
+			rs.close();	stmt.close();
+			return arDeptos;
+		} catch (Exception e) {System.out.println("Err.ListaDeptsAccesoBD"+e.getStackTrace()); return null;}
+	}//ListarDepartamentos()
+	
+	public void getIdDepartamento(Connection conn, VOCliente voCli){
+		String sqlIdDepto=consultas.BuscarIDDepartamento();
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(sqlIdDepto);
+			pstmt.setString(1, voCli.getsNomDepto());
+			ResultSet rs=pstmt.executeQuery();
+			if(rs.next()){voCli.setiIdDepto(rs.getInt("idDepto"));}
+			rs.close();
+			pstmt.close();
+		} catch (SQLException e) {
+			System.out.println("err1");
+			voCli.setError("Error al conseguir ID de departamento");
+		}
+	}	
+	public ArrayList<String> ListarClientes(Connection conn){
+		ArrayList<String> alListaCli = new ArrayList<String>();;
+		String sqlListarCli=consultas.ListarClientes();
+		String stmp="";
+		try {
+			Statement stmt=conn.createStatement();
+			ResultSet rs=stmt.executeQuery(sqlListarCli);
+			while(rs.next()){
+				stmp="["+rs.getString("nroCli")+"] - "+rs.getString("nomCli");
+				alListaCli.add(stmp);
+			}
+			rs.close();
+			return alListaCli;
+		} catch (SQLException e) {
+			System.out.println("error listacli"+e.getMessage());
+		}
+		return alListaCli;
 		
-		
-		
-		
+	} 
+	public boolean AgregarCliente(Connection conn, VOCliente voCli){
+		//(idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli) "
+		String sqlAgregarCli=consultas.AgregarCliente();
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(sqlAgregarCli);
+			pstmt.setInt(1, voCli.getiIdDepto());
+			pstmt.setInt(2, voCli.getiHrCargables());
+			pstmt.setInt(3, voCli.getiHonorarios());
+			pstmt.setInt(4, voCli.getiMoneda());
+			pstmt.setString(5, voCli.getsRut());
+			pstmt.setString(6, voCli.getsNroCli());
+			pstmt.setString(7, voCli.getsTel());
+			pstmt.setString(8, voCli.getsDireccion());
+			pstmt.setString(9, voCli.getsNomCli());
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+			voCli.setResultado("Guardado:\n["+voCli.getsNroCli()+"] "+voCli.getsNomCli());
+			return true;
+		} catch (SQLException e) {
+			System.out.println(e.getMessage());
+			voCli.setError("Error al intentar guardar cliente");
+			return false;
+		}
 		
 		
 	}
-
+	
+	
+	
+	
+	
 }

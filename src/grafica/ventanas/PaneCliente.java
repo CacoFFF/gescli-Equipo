@@ -25,9 +25,9 @@ public class PaneCliente extends JComponent {
 	private JLabel /*txtContacto,*/ txtRut, txtNumCli, txtTelefono, txtDireccion, txtDepartamento, txtNomCli, txtHoras,
 			txtHonorarios/*, txtTipoPersona*/;
 	private JTextField /*tfContacto,*/ tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios;
-	private JScrollPane sp;
 	
-	private String sDepto, sMoneda;
+	private String sDepto;
+	private int iMoneda;
 	private boolean bDepto, bMoneda;
 
 	PaneCliente() {
@@ -38,16 +38,14 @@ public class PaneCliente extends JComponent {
 		pLista.setLayout(null);
 		add(pLista);
 		
-		//mostrar: "NumCli: NomCli"
 		cbLista = new JComboBox<String>();
 		cbLista.setBounds(10, 10,260, 25);
-		ctrl.ListaClientes(cbLista); // Agrega elementos a la lista
+		ctrl.ListaClientes(cbLista);
 		cbLista.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 						if (e.getStateChange() == ItemEvent.SELECTED) {
 							String sSeleccion = e.getItem().toString();
 							btnVer.setEnabled(sSeleccion.isEmpty() ? false : true);
-//							btnVer.setEnabled(sSeleccion.startsWith("---") ? false : true);
 						}
 		
 					}
@@ -152,8 +150,8 @@ public class PaneCliente extends JComponent {
 		cbMoneda.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange()==ItemEvent.SELECTED){
-					sMoneda=e.getItem().toString();
-					bMoneda=!sMoneda.isEmpty() ? true : false;
+					iMoneda=cbMoneda.getSelectedIndex();
+					bMoneda= iMoneda!=0 ? true : false;
 					btnGuardar.setEnabled(bMoneda && bDepto);
 				}}});
 		
@@ -164,7 +162,12 @@ public class PaneCliente extends JComponent {
 		btnGuardar.setEnabled(false);
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ctrl.Guardar(tfRut.getText().trim(), tfNumCli.getText().trim(), tfTelefono.getText().trim(), tfDireccion.getText().trim(), tfNomCli.getText().trim(), tfHoras.getText().trim(), tfHonorarios.getText().trim(), sDepto, sMoneda);
+				ctrl.Guardar(tfRut.getText().trim(), tfNumCli.getText().trim(), 
+						tfTelefono.getText().trim(), tfDireccion.getText().trim(), 
+						tfNomCli.getText().trim(), tfHoras.getText().trim(), 
+						tfHonorarios.getText().trim(), sDepto, iMoneda);
+				ctrl.VaciarCampos(cbDepartamentos, cbMoneda,tfRut,tfNumCli,tfTelefono,tfDireccion,tfNomCli,tfHoras,tfHonorarios);
+				ctrl.ListaClientes(cbLista);
 			}
 		});
 		pCampos.add(btnGuardar);
@@ -178,15 +181,7 @@ public class PaneCliente extends JComponent {
 		btnVaciar.setBounds(105, 265, 90, 25);
 		btnVaciar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				tfRut.setText("");
-				tfNumCli.setText("");
-				tfTelefono.setText("");
-				tfDireccion.setText("");
-				tfNomCli.setText("");
-				tfHoras.setText("");
-				tfHonorarios.setText("");
-				cbDepartamentos.setSelectedIndex(0);
-				cbMoneda.setSelectedIndex(0);
+				ctrl.VaciarCampos(cbDepartamentos, cbMoneda,tfRut,tfNumCli,tfTelefono,tfDireccion,tfNomCli,tfHoras,tfHonorarios);
 				
 				
 			}

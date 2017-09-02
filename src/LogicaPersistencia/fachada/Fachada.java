@@ -4,8 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import LogicaPersistencia.accesoBD.AccesoBD;
+import LogicaPersistencia.valueObject.VOCliente;
 import LogicaPersistencia.valueObject.VOEmpleado;
 
 public class Fachada
@@ -74,10 +76,10 @@ public class Fachada
 		}
 	}
 	
+	/*Parte del Funcionario*/
 	public boolean VerificarFuncionario(String sCI){
 		return AccesoBD.VerificarFuncionario(con, sCI);
 	}
-	
 	public String AltaFuncionario(VOEmpleado voEmp)
 	{
 		ConexionBD();
@@ -86,7 +88,6 @@ public class Fachada
 		
 		return "Cedula ya agregada";
 	}//altaEmpleado
-	
 	public String ActualizarFuncionario(VOEmpleado voEmp)
 	{
 		ConexionBD();
@@ -94,15 +95,13 @@ public class Fachada
 			return voEmp.getResultado();
 		else
 			return (voEmp.getError().length() > 0) ? voEmp.getError() : "Cedula no existe";
-	}//altaEmpleado
-	
+	}//altaEmpleado	
 	public boolean EstadoFuncionario(VOEmpleado voEmp){
 		
 		if(AccesoBD.VerificarFuncionario(con, voEmp.getCi()) && AccesoBD.BajaFuncionario(con, voEmp)) return true;
 		voEmp.setError("Funcionario no encontrado");
 		return false;
 	}
-	
 	public VOEmpleado ObtenerEmpleado( String sCI)
 	{
 		//Inicializar un Value Object vacio y crear la peticion
@@ -110,9 +109,41 @@ public class Fachada
 		AccesoBD.ObtenerEmpleadoCI( con, VO);
 		return VO;
 	}
-	
 	public ArrayList<String> ListaFun(){
 		ArrayList<String> alFun = AccesoBD.ListarFuncionario(con);
 		return alFun;
 	}
+	
+	/*Parte del Cliente*/
+	public ArrayList<String> ListaDeptos(){
+		ArrayList<String> alDep = AccesoBD.ListarDepartamentos(con);
+		return alDep;}
+	public ArrayList<String> ListaCli(){
+		ArrayList<String> alCli = AccesoBD.ListarClientes(con);
+		return alCli;
+	}
+	public void getIDDepartamento(VOCliente ovCli){
+		AccesoBD.getIdDepartamento(con, ovCli);			
+		
+	}
+	public String AgregarCliente(VOCliente voCli){
+		if(AccesoBD.AgregarCliente(con, voCli)) return voCli.getResultado();
+		return voCli.getError();
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+
 }

@@ -1,36 +1,60 @@
 package grafica.controladores;
 
-import javax.swing.*;
+import java.util.ArrayList;
+
+import javax.swing.JComboBox;
+import javax.swing.JTextField;
+
+import LogicaPersistencia.valueObject.VOCliente;
+
 
 public class c_Cliente extends c_Maestro{
 	
 	
 	public void ListaClientes(JComboBox<String> cb){
-		//Recibe lista de todos los clientes y muestra... el nombre? en el ComboBox
-//		cb.addItem("---Clientes---");
+		cb.removeAllItems();
 		cb.addItem("");
-		cb.addItem("Prueba");
-		//agregar commu con fachada
-		//select nombre from clientes;
-		//cb.add(nombres);
+		ArrayList<String> alCli=new ArrayList<String>();
+		alCli=gFachada.ListaCli();
+		if(alCli.isEmpty()) return;
+
+		for(String sFun : alCli) cb.addItem(sFun);
 	}
+	
 	public void LlenarCampos(String sBuscar){
+		
 		MensajeWin(sBuscar);
 		
 	}//llena campos con lo que saca del cbLista
 	
 	public void ListaDepto(JComboBox<String> cb){
-		/*Leer esto desde Base de datos*/
-		String[] asDeptos={"","Artigas", "Canelones", "Cerro Largo", "Colonia", "Durazno", "Flores", "Florida", "Lavalleja", "Maldonado", "Montevideo", "Paysandú", "Río Negro", "Rivera", "Rocha", "Salto", "San José" ,"Soriano" ,"Tacuarembó" ,"Treinta y Tres"};
-		for(String sDepto: asDeptos){
+		ArrayList<String> llDeptos=new ArrayList<String>();
+		cb.addItem(""); //deshabilita btnGuardar, evita algun error
+		llDeptos=gFachada.ListaDeptos();
+		for(String sDepto: llDeptos){
 			cb.addItem(sDepto);
 		}
 	}
 	public void ListaMonedas(JComboBox<String> cb){
+		//agregar tipos de moneda? o JTextField?
+		String[] asMonedas={"Pesos uy", "dolares", "otros"};
 		cb.addItem("");
-		cb.addItem("Prueba");
+		for(String str : asMonedas) cb.addItem(str);
 	}
 
+	
+	public void VaciarCampos(JComboBox<String> cbDeps, JComboBox<String> cbMon, JTextField...textField){
+		cbDeps.setSelectedIndex(0);
+		cbMon.setSelectedIndex(0);
+		for(JTextField tf : textField) tf.setText("");
+		
+	}
+	
+	private int IDDepartamento(String sDepartamento){
+		VOCliente voCli=new VOCliente(sDepartamento);
+		gFachada.getIDDepartamento(voCli);
+		return voCli.getiIdDepto();
+	}
 	
 	private boolean Verificar(String sRut, String sNumCli, String sTelefono, String sDireccion, String sNomCli, String sHoras, String sHonorarios){
 		boolean bRut=true, bNumCli=true, bTelefono=true, bDireccion=true, bNomCli=true, bHoras=true, bHonorarios=true, bDepto=true, bMoneda=true;
@@ -54,9 +78,12 @@ public class c_Cliente extends c_Maestro{
 		
 		return false;
 	}
-	public void Guardar(String sRut, String sNumCli, String sTelefono, String sDireccion, String sNomCli, String sHoras, String sHonorarios, String sDepto, String sMoneda){
+	public void Guardar(String sRut, String sNumCli, String sTelefono, String sDireccion, String sNomCli, String sHoras, String sHonorarios, String sDepto, int iMoneda){
 		if(Verificar(sRut, sNumCli, sTelefono, sDireccion, sNomCli, sHoras, sHonorarios)){
-			//crear ValueObject y mandar a fachada
+			int iDepto=IDDepartamento(sDepto);
+			voCli=new VOCliente(iDepto, IntConvertidor(sHoras), IntConvertidor(sHonorarios), iMoneda, sRut, sNumCli, sTelefono, sDireccion, sNomCli);
+			MensajeWin(gFachada.AgregarCliente(voCli));
+			
 		}
 		
 		
