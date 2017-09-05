@@ -1,48 +1,29 @@
-package grafica.controladores;
+package grafica.controladores.color;
 
 import javax.swing.JTextField;
+
+import grafica.controladores.c_Maestro;
+
 import java.awt.Color;
 
 //Este controlador se encarga de proveer informacion en tiempo
 //real al usuario con respecto a los campos de C.I
-public class Con_CampoCI extends c_Maestro
+public class c_CampoCI extends c_Color
 {
-	private Color colorVacioS;
-	private Color colorValidoS;
-	private Color colorInvalidoS;
-	private Color colorVacio;
-	private Color colorValido;
-	private Color colorInvalido;
-	
-	public Con_CampoCI()
+	public c_CampoCI()
 	{
-		colorVacioS = new Color( 200, 255, 255);
-		colorValidoS = new Color( 100, 255, 100);
-		colorInvalidoS = new Color( 255, 100, 100);
-		colorVacio = new Color( 255, 255, 255);
-		colorValido = new Color( 255, 255, 255);
-		colorInvalido = new Color( 255, 0, 0);
+		super();
 	}
 	
 	public void ModificarCampo( JTextField campo)
 	{
-		if ( campo.hasFocus() )
-		{
-			if ( campo.getText().length() == 0 )
-				campo.setBackground( colorVacioS);
-			else if ( CIValida(campo.getText()))
-				campo.setBackground( colorValidoS);
-			else
-				campo.setBackground( colorInvalidoS);
-		}
+		int i = campo.hasFocus() ? 1 : 0;
+
+		if ( campo.getText().length() == 0 )
+			campo.setBackground( colorVacio[i]);
+		else if ( CIValida(campo.getText()))
+			campo.setBackground( colorValido[i]);
 		else
-		{
-			if ( campo.getText().length() == 0 )
-				campo.setBackground( colorVacio);
-			else if ( CIValida(campo.getText()))
-				campo.setBackground( colorValido);
-			else
-				campo.setBackground( colorInvalido);
-		}
+			campo.setBackground( colorInvalido[i]);
 	}
 }

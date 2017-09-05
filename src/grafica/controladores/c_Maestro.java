@@ -18,7 +18,13 @@ public class c_Maestro {
 	
 	protected boolean IsNumeric(String str) {return str.matches("\\d+");}
 	protected boolean StringValido(String str) {return str != null || !str.isEmpty();}
-	protected int IntConvertidor(String str){return Integer.parseInt(str);}
+	protected int IntConvertidor(String str)
+	{
+		int a = 0;
+		try { a = Integer.parseInt(str); }
+		catch (Exception e) {}
+		return a;
+	}
 	
 	
 	// Tabla de dias por meses (entrada cero no corresponde a un mes)

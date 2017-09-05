@@ -5,7 +5,7 @@ import javax.swing.JCheckBox;
 import Main.Main;
 import LogicaPersistencia.valueObject.VOEmpleado;
 
-public class Con_RellenarEmpleado extends c_Maestro {
+public class c_RellenarEmpleado extends c_Maestro {
 
 	public void RellenarEmpleado( String sCI,
 			JTextField oNombre, 

@@ -2,8 +2,14 @@ package grafica.ventanas;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -14,6 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import Main.Main;
 import grafica.controladores.c_Funcionario;
 
 public class PaneFuncionario extends JComponent {
@@ -24,6 +31,7 @@ public class PaneFuncionario extends JComponent {
 	private JButton btnVer, btnVaciar, btnGuardar, btnBaja,btnBuscar;
 	private JLabel lblNomFun, lblCI, lblFecNac, lblCel, lblHorasDia;
 	private JTextField tfNomFun, tfApefun, tfCI, tfFecNac1, tfFecNac2, tfFecNac3, tfCel, tfHoras;
+	private JTextField camposFN[];
 	private JCheckBox chckActivo;
 	public static String sSeparadorFecha="-";
 
@@ -94,12 +102,30 @@ public class PaneFuncionario extends JComponent {
 		tfApefun.setToolTipText("Apellido");
 		tfApefun.setBounds(225, 5, 155, 20);
 		pCampos.add(tfApefun);
-
+		
 		lblCI = new JLabel("Cedula:");
 		lblCI.setBounds(10, 30, 100, 20);
 		pCampos.add(lblCI);
 
 		tfCI = new JTextField();
+		tfCI.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent e) {
+				Main.gCon_CampoCI.ModificarCampo(tfCI);
+			}
+		});
+		tfCI.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent arg0) {
+				Main.gCon_CampoCI.ModificarCampo(tfCI);
+			}
+		});
+		tfCI.addFocusListener(new FocusAdapter() {
+			public void focusGained(FocusEvent arg0) {
+				Main.gCon_CampoCI.ModificarCampo(tfCI);
+			}
+			public void focusLost(FocusEvent e) {
+				Main.gCon_CampoCI.ModificarCampo(tfCI);
+			}
+		});
 		tfCI.setToolTipText("Cedula (ej: 5.555.555-5)");
 		tfCI.setBounds(120, 30, 260, 20);
 		pCampos.add(tfCI);
@@ -125,6 +151,33 @@ public class PaneFuncionario extends JComponent {
 		tfFecNac3.setToolTipText("A\u00F1o");
 		tfFecNac3.setBounds(280, 55, 100, 20);
 		pCampos.add(tfFecNac3);
+		
+		camposFN = new JTextField[3];
+		camposFN[0] = tfFecNac1;
+		camposFN[1] = tfFecNac2;
+		camposFN[2] = tfFecNac3;
+		for ( int i=0 ; i<3 ; i++ )
+		{
+			camposFN[i].addKeyListener(new KeyAdapter() {
+				public void keyReleased(KeyEvent e) {
+					Main.gCon_Fecha.ModificarCampos(camposFN);
+				}
+			});
+			camposFN[i].addPropertyChangeListener(new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent arg0) {
+					Main.gCon_Fecha.ModificarCampos(camposFN);
+				}
+			});
+			camposFN[i].addFocusListener(new FocusAdapter() {
+				public void focusGained(FocusEvent arg0) {
+					Main.gCon_Fecha.ModificarCampos(camposFN);
+				}
+				public void focusLost(FocusEvent e) {
+					Main.gCon_Fecha.ModificarCampos(camposFN);
+				}
+			});
+		}
+	
 
 		lblCel = new JLabel("Celular: ");
 		lblCel.setBounds(10, 80, 100, 20);
