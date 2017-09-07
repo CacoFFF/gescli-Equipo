@@ -30,9 +30,9 @@ public class PaneFuncionario extends JComponent {
 	private JComboBox<String> cbLista;
 	private JButton btnVer, btnVaciar, btnGuardar, btnBaja,btnBuscar;
 	private JLabel lblNomFun, lblCI, lblFecNac, lblCel, lblHorasDia;
-	private JTextField tfNomFun, tfApefun, tfCI, tfFecNac1, tfFecNac2, tfFecNac3, tfCel, tfHoras;
-	private JTextField camposFN[];
+	private JTextField tfNomFun, tfApefun, tfCI, tfCel, tfHoras;
 	private JCheckBox chckActivo;
+	private cmpFecha cmpFecha;
 	public static String sSeparadorFecha="-";
 
 	PaneFuncionario() {
@@ -68,7 +68,8 @@ public class PaneFuncionario extends JComponent {
 				String tmp=cbLista.getSelectedItem().toString();
 				int iInicio=tmp.indexOf("["), iFin=tmp.indexOf("]");
 				String sCI=tmp.substring(iInicio+1,iFin);
-				ctrl.BuscarCI(btnBaja, tfNomFun, tfApefun, tfCI, tfFecNac1, tfFecNac2, tfFecNac3, tfCel, tfHoras, chckActivo, sCI);
+				JTextField FN[] = cmpFecha.getDDMMAA(); 
+				ctrl.BuscarCI(btnBaja, tfNomFun, tfApefun, tfCI, FN[0], FN[1], FN[2], tfCel, tfHoras, chckActivo, sCI);
 				ctrl.CtrlBtnBaja(btnBaja, chckActivo.isSelected());
 			}
 		});
@@ -77,7 +78,8 @@ public class PaneFuncionario extends JComponent {
 		btnBuscar = new JButton("Buscar CI");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				ctrl.BuscarCI(btnBaja, tfNomFun, tfApefun, tfCI, tfFecNac1, tfFecNac2, tfFecNac3, tfCel, tfHoras, chckActivo);
+				JTextField FN[] = cmpFecha.getDDMMAA(); 
+				ctrl.BuscarCI(btnBaja, tfNomFun, tfApefun, tfCI, FN[0], FN[1], FN[2], tfCel, tfHoras, chckActivo);
 				ctrl.CtrlBtnBaja(btnBaja, chckActivo.isSelected());
 			}
 		});
@@ -133,52 +135,7 @@ public class PaneFuncionario extends JComponent {
 		lblFecNac = new JLabel("Fecha de nac.:");
 		lblFecNac.setBounds(10, 55, 100, 20);
 		pCampos.add(lblFecNac);
-
-		tfFecNac1 = new JTextField();
-		tfFecNac1.setHorizontalAlignment(SwingConstants.CENTER);
-		tfFecNac1.setToolTipText("dia");
-		tfFecNac1.setBounds(120, 55, 70, 20);
-		pCampos.add(tfFecNac1);
-
-		tfFecNac2 = new JTextField();
-		tfFecNac2.setHorizontalAlignment(SwingConstants.CENTER);
-		tfFecNac2.setToolTipText("Mes");
-		tfFecNac2.setBounds(200, 55, 70, 20);
-		pCampos.add(tfFecNac2);
-
-		tfFecNac3 = new JTextField();
-		tfFecNac3.setHorizontalAlignment(SwingConstants.CENTER);
-		tfFecNac3.setToolTipText("A\u00F1o");
-		tfFecNac3.setBounds(280, 55, 100, 20);
-		pCampos.add(tfFecNac3);
-		
-		camposFN = new JTextField[3];
-		camposFN[0] = tfFecNac1;
-		camposFN[1] = tfFecNac2;
-		camposFN[2] = tfFecNac3;
-		for ( int i=0 ; i<3 ; i++ )
-		{
-			camposFN[i].addKeyListener(new KeyAdapter() {
-				public void keyReleased(KeyEvent e) {
-					Main.gCon_Fecha.ModificarCampos(camposFN);
-				}
-			});
-			camposFN[i].addPropertyChangeListener(new PropertyChangeListener() {
-				public void propertyChange(PropertyChangeEvent arg0) {
-					Main.gCon_Fecha.ModificarCampos(camposFN);
-				}
-			});
-			camposFN[i].addFocusListener(new FocusAdapter() {
-				public void focusGained(FocusEvent arg0) {
-					Main.gCon_Fecha.ModificarCampos(camposFN);
-				}
-				public void focusLost(FocusEvent e) {
-					Main.gCon_Fecha.ModificarCampos(camposFN);
-				}
-			});
-		}
 	
-
 		lblCel = new JLabel("Celular: ");
 		lblCel.setBounds(10, 80, 100, 20);
 		pCampos.add(lblCel);
@@ -224,7 +181,7 @@ public class PaneFuncionario extends JComponent {
 				String	sNomFun=tfNomFun.getText().trim(),
 						sApefun=tfApefun.getText().trim(),
 						sCI=tfCI.getText().trim(),
-						sFecha=tfFecNac3.getText().trim()+sSeparadorFecha+tfFecNac2.getText().trim()+sSeparadorFecha+tfFecNac1.getText().trim(),
+						sFecha=cmpFecha.getText().trim(),
 						sCel=tfCel.getText().trim(),
 						sHoras=tfHoras.getText().trim();
 				boolean bActivo=chckActivo.isSelected();
@@ -246,7 +203,8 @@ public class PaneFuncionario extends JComponent {
 		btnBaja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!ctrl.Baja(tfCI.getText().trim(), chckActivo)){
-					ctrl.VaciarCampos(cbLista, chckActivo, tfNomFun, tfApefun, tfCI, tfCel,tfFecNac1,tfFecNac2,tfFecNac3,tfHoras);
+					JTextField FN[] = cmpFecha.getDDMMAA();
+					ctrl.VaciarCampos(cbLista, chckActivo, tfNomFun, tfApefun, tfCI, tfCel,FN[0],FN[1],FN[2],tfHoras);
 					btnBaja.setEnabled(false);				
 				}else{
 				ctrl.ListaFun(cbLista);
@@ -261,9 +219,14 @@ public class PaneFuncionario extends JComponent {
 		btnVaciar.setBounds(105, 265, 90, 25);
 		btnVaciar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ctrl.VaciarCampos(cbLista, chckActivo, tfNomFun, tfApefun, tfCI, tfCel,tfFecNac1,tfFecNac2,tfFecNac3,tfHoras);
+				JTextField FN[] = cmpFecha.getDDMMAA();
+				ctrl.VaciarCampos(cbLista, chckActivo, tfNomFun, tfApefun, tfCI, tfCel,FN[0],FN[1],FN[2],tfHoras);
 			}});
 		pCampos.add(btnVaciar);
+		
+		cmpFecha = new cmpFecha();
+		cmpFecha.setBounds(120, 55, 260, 20);
+		pCampos.add(cmpFecha);
 
 	}
 }// class

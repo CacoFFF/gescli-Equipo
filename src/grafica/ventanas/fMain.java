@@ -10,6 +10,7 @@ public class fMain extends JFrame {
 	//PaneInicio paneInicio;
 	PaneCliente paneCli;
 	PaneFuncionario paneFun;
+	PaneHS paneHS;
 	JTabbedPane tabbedPane = new JTabbedPane();
 
 	public fMain() {
@@ -22,9 +23,11 @@ public class fMain extends JFrame {
 		paneCli = new PaneCliente();
 		tabbedPane.addTab("Clientes", paneCli);
 		
-		paneFun=new PaneFuncionario();
+		paneFun = new PaneFuncionario();
 		tabbedPane.addTab("Funcionarios", paneFun);		
 		
+		paneHS = new PaneHS();
+		tabbedPane.addTab("Horas y Servicios", paneHS);
 		
 		getContentPane().add(tabbedPane);
 
