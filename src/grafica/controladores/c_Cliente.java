@@ -12,13 +12,20 @@ public class c_Cliente extends c_Maestro{
 	
 	
 	public void ListaClientes(JComboBox<String> cb){
+		
+		int iViejo = cb.getSelectedIndex();
+		
 		cb.removeAllItems();
-		cb.addItem("");
+		cb.addItem("--Cliente--");
 		ArrayList<String> alCli=new ArrayList<String>();
 		alCli=gFachada.ListaCli();
 		if(alCli.isEmpty()) return;
 
-		for(String sFun : alCli) cb.addItem(sFun);
+		for(String sFun : alCli)
+			cb.addItem(sFun);
+		
+		if ( cb.getItemCount() > iViejo )
+			cb.setSelectedIndex( iViejo);
 	}
 	
 	public void BuscarCliente(JTextField tfRut, JTextField tfNumCli, JTextField tfTelefono,

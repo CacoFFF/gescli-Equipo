@@ -14,15 +14,25 @@ import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 
 public class PaneHS extends JPanel {
 	private JTextField textField;
 	private JTextField txtNombreDeServicio;
+	
+	private JComboBox cbCliente;
 
 	/**
 	 * Create the panel.
 	 */
 	public PaneHS() {
+		addComponentListener(new ComponentAdapter() {
+			public void componentShown(ComponentEvent arg0) {
+				if (Main.gCon_Cliente != null)
+					Main.gCon_Cliente.ListaClientes(cbCliente);
+			}
+		});
 		setLayout(null);
 		
 		JComboBox cbServicio = new JComboBox();
@@ -33,12 +43,16 @@ public class PaneHS extends JPanel {
 			}
 		});
 		cbServicio.setBounds(10, 11, 170, 20);
+		
 		if ( Main.gCon_NServicio != null ) //Windowbuilder mode
 			Main.gCon_NServicio.Listar(cbServicio);
+		
 		add(cbServicio);
 		
-		JComboBox cbCliente = new JComboBox();
+		cbCliente = new JComboBox();
 		cbCliente.setBounds(10, 42, 170, 20);
+//		if (Main.gCon_Cliente != null)
+//			Main.gCon_Cliente.ListaClientes(cbCliente);
 		add(cbCliente);
 		
 		JComboBox cbFuncionario = new JComboBox();
@@ -84,6 +98,7 @@ public class PaneHS extends JPanel {
 				{
 					Main.gCon_NServicio.Agregar( txtNombreDeServicio.getText() );
 					Main.gCon_NServicio.Listar(cbServicio);
+					cbServicio.setSelectedIndex(cbServicio.getItemCount()-1);
 				}
 			}
 		});

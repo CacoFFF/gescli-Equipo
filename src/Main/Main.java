@@ -11,6 +11,7 @@ public class Main {
 	public static c_CampoCI gCon_CampoCI;
 	public static c_Fecha gCon_Fecha;
 	public static c_NServicio gCon_NServicio; 
+	public static c_Cliente gCon_Cliente;
 	
 	public static void main(String[] args) {
 
@@ -18,7 +19,7 @@ public class Main {
 		gCon_CampoCI = new c_CampoCI();
 		gCon_Fecha = new c_Fecha();
 		gCon_NServicio = new c_NServicio();
-		
+		gCon_Cliente = new c_Cliente();
 		fMain.main(args);
 	}
 
