@@ -1,5 +1,7 @@
 package grafica.ventanas;
 
+import Main.Main;
+
 import javax.swing.JPanel;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
@@ -10,6 +12,8 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.SwingConstants;
 import javax.swing.JScrollPane;
+import java.awt.event.ItemListener;
+import java.awt.event.ItemEvent;
 
 public class PaneHS extends JPanel {
 	private JTextField textField;
@@ -22,7 +26,15 @@ public class PaneHS extends JPanel {
 		setLayout(null);
 		
 		JComboBox cbServicio = new JComboBox();
+		cbServicio.addItemListener(new ItemListener() {
+			public void itemStateChanged(ItemEvent arg0) {
+				if ( cbServicio.getSelectedIndex() > 0 && cbServicio.getSelectedItem() != null )
+					txtNombreDeServicio.setText( (String)cbServicio.getSelectedItem() );
+			}
+		});
 		cbServicio.setBounds(10, 11, 170, 20);
+		if ( Main.gCon_NServicio != null ) //Windowbuilder mode
+			Main.gCon_NServicio.Listar(cbServicio);
 		add(cbServicio);
 		
 		JComboBox cbCliente = new JComboBox();
@@ -68,6 +80,11 @@ public class PaneHS extends JPanel {
 		JButton btnAgregarS = new JButton("Agregar");
 		btnAgregarS.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				if ( Main.gCon_NServicio != null )
+				{
+					Main.gCon_NServicio.Agregar( txtNombreDeServicio.getText() );
+					Main.gCon_NServicio.Listar(cbServicio);
+				}
 			}
 		});
 		btnAgregarS.setBounds(10, 271, 80, 23);

@@ -43,9 +43,9 @@ public class Consultas {
 		return "INSERT INTO departamentos (nombre)"
 				+ "SELECT * FROM (SELECT ?) AS tmp "
 				+ "WHERE NOT EXISTS ("
-				+ "SELECT nombre FROM departamentos WHERE nombre = ?);";}
+				+ "SELECT nombre FROM departamentos WHERE nombre = ?)";}
 	public String ListarDepartamentos(){
-		return "select nombre from departamentos;";
+		return "select nombre from departamentos";
 	}
 	public String BuscarIDDepartamento(){
 		return "select idDepto from departamentos where nombre like ?";}
@@ -58,6 +58,12 @@ public class Consultas {
 				+ "values(?,?,?,?,?,?,?,?,?)";}
 	public String BuscarCliente(){
 		return "select idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli from clientes where nroCli = ? ";
+	}
+	public String AgregarNServicio(){
+		return "insert into servicios (nombre) value(?)";
+	}
+	public String ListarNServicio(){
+		return "select idServ, nombre from servicios";
 	}
 
 	

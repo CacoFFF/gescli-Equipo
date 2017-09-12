@@ -6,8 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import LogicaPersistencia.accesoBD.AccesoBD;
-import LogicaPersistencia.valueObject.VOCliente;
-import LogicaPersistencia.valueObject.VOEmpleado;
+import LogicaPersistencia.valueObject.*;
 
 public class Fachada
 {
@@ -137,6 +136,18 @@ public class Fachada
 	
 	
 	
+	/*Parte de Servicios (nombres)*/
+	public VONServicio AgregarNServicio( String ns)
+	{
+		VONServicio voNS = new VONServicio( ns);
+		AccesoBD.AgregarNServicio( con, voNS);
+		return voNS;
+	}
+	
+	public ArrayList<String> ListaNServicios()
+	{
+		return AccesoBD.ListarNServicios(con);
+	}
 	
 	
 	

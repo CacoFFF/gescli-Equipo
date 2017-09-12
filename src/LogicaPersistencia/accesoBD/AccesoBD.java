@@ -7,8 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 
-import LogicaPersistencia.valueObject.VOCliente;
-import LogicaPersistencia.valueObject.VOEmpleado;
+import LogicaPersistencia.valueObject.*;
 
 public class AccesoBD
 {
@@ -293,8 +292,46 @@ public class AccesoBD
 			System.out.println(e.getMessage());
 		}
 	}
+
+
+
+	public ArrayList<String> ListarNServicios(Connection conn)
+	{
+		ArrayList<String> res = new ArrayList<String>();;
+		String consulta=consultas.ListarNServicio();
+		try
+		{
+			Statement stmt = conn.createStatement();
+			ResultSet rs = stmt.executeQuery(consulta);
+			while(rs.next())
+				res.add( rs.getString("idServ")+"@"+rs.getString("nombre"));
+			rs.close();
+			return res;
+		}
+		catch (SQLException e)
+		{	System.out.println("error listanserv"+e.getMessage());	}
+		return res;
+	}
 	
-	
-	
-	
+	public boolean AgregarNServicio(Connection conn, VONServicio voNS)
+	{
+		//(idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli) "
+		String consulta=consultas.AgregarNServicio();
+		try
+		{
+			PreparedStatement pstmt=conn.prepareStatement(consulta);
+			pstmt.setString(1, voNS.getsNombre() );
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+			voNS.setResultado("Guardado:\n"+voNS.getsNombre());
+			return true;
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			voNS.setError("Error al intentar guardar nuevo servicio");
+			return false;
+		}
+	}
 }
