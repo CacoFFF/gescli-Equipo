@@ -20,14 +20,23 @@ import javax.swing.SwingConstants;
 
 import Main.Main;
 import grafica.controladores.c_Maestro;
+import grafica.controladores.c_PanelHS;
+
+import java.beans.PropertyChangeListener;
+import java.beans.PropertyChangeEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 public class PaneHS extends JPanel {
 	private JTextField tfHoras;
 	private JTextField txtNombreDeServicio;
+	private cmpFecha cmpFecha;
 	private JButton btnAgregarHS;
 	
+	private JComboBox<String> cbServicio;
 	private JComboBox<String> cbCliente;
 	private JComboBox<String> cbFuncionario;
+	private JComboBox<String> combos[];
 	
 	private c_Maestro ctrlMaestro;
 	
@@ -38,6 +47,7 @@ public class PaneHS extends JPanel {
 	/**
 	 * Create the panel.
 	 */
+	@SuppressWarnings("unchecked")
 	public PaneHS() {
 		addComponentListener(new ComponentAdapter() {
 			public void componentShown(ComponentEvent arg0) {
@@ -50,7 +60,15 @@ public class PaneHS extends JPanel {
 		});
 		setLayout(null);
 		
-		JComboBox<String> cbServicio = new JComboBox<String>();
+		cbServicio = new JComboBox<String>();
+		cbServicio.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				c_PanelHS.ActivarBoton( btnAgregarHS, combos, cmpFecha, tfHoras);
+				if(cbServicio.isFocusOwner()) System.out.println(cbServicio.getSelectedItem());
+
+
+			}
+		});
 		cbServicio.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if ( cbServicio.getSelectedIndex() > 0 && cbServicio.getSelectedItem() != null ){
@@ -72,18 +90,45 @@ public class PaneHS extends JPanel {
 		add(cbServicio);
 		
 		cbCliente = new JComboBox<String>();
+		cbCliente.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				c_PanelHS.ActivarBoton( btnAgregarHS, combos, cmpFecha, tfHoras);
+			}
+		});
 		cbCliente.setBounds(10, 40, 170, 20);
 //		if (Main.gCon_Cliente != null)
 //			Main.gCon_Cliente.ListaClientes(cbCliente);
 		add(cbCliente);
 		
 		cbFuncionario = new JComboBox<String>();
+		cbFuncionario.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				c_PanelHS.ActivarBoton( btnAgregarHS, combos, cmpFecha, tfHoras);
+
+			}
+		});
 		cbFuncionario.setBounds(10, 70, 170, 20);
 //		if (Main.gCon_Funcionario != null)
 //		Main.gCon_Funcionario.ListaFun(cbFuncionario);
 		add(cbFuncionario);
 		
+		//Conveniencia
+		combos = new JComboBox[3];
+		combos[0] = cbServicio;
+		combos[1] = cbCliente;
+		combos[2] = cbFuncionario;
+		
 		tfHoras = new JTextField();
+		tfHoras.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent arg0) {
+				c_PanelHS.ActivarBoton( btnAgregarHS, combos, cmpFecha, tfHoras);
+			}
+		});
+		tfHoras.addPropertyChangeListener(new PropertyChangeListener() {
+			public void propertyChange(PropertyChangeEvent evt) {
+				c_PanelHS.ActivarBoton( btnAgregarHS, combos, cmpFecha, tfHoras);
+			}
+		});
 		tfHoras.setBounds(95, 105, 85, 20);
 		add(tfHoras);
 		tfHoras.setColumns(10);
@@ -92,9 +137,23 @@ public class PaneHS extends JPanel {
 		lblHoras.setBounds(10, 105, 85, 20);
 		add(lblHoras);
 		
-		cmpFecha cmpFecha_ = new cmpFecha();
-		cmpFecha_.setBounds(10, 135, 170, 20);
-		add(cmpFecha_);
+		cmpFecha = new cmpFecha();
+		for ( int i=0 ; i<3 ; i++ )
+		{
+			JTextField tf = cmpFecha.getDDMMAA()[i];
+			tf.addKeyListener(new KeyAdapter() {
+				public void keyReleased(KeyEvent arg0) {
+					c_PanelHS.ActivarBoton( btnAgregarHS, combos, cmpFecha, tfHoras);
+				}
+			});
+			tf.addPropertyChangeListener(new PropertyChangeListener() {
+				public void propertyChange(PropertyChangeEvent evt) {
+					c_PanelHS.ActivarBoton( btnAgregarHS, combos, cmpFecha, tfHoras);
+				}
+			});
+		}
+		cmpFecha.setBounds(10, 135, 170, 20);
+		add(cmpFecha);
 		
 		btnAgregarHS = new JButton("Agregar");
 		btnAgregarHS.setBounds(10, 180, 80, 23);
@@ -118,7 +177,7 @@ public class PaneHS extends JPanel {
 						sNumCliente, 
 						sCIFuncionario,
 						tfHoras.getText().trim(), 
-						cmpFecha_.getText().trim());
+						cmpFecha.getText().trim());
 			}
 		});
 		add(btnAgregarHS);

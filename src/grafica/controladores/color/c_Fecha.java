@@ -17,6 +17,31 @@ public class c_Fecha extends c_Color
 		bLock = false;
 	}
 	
+	public static boolean Validar( JTextField ddmmaa[])
+	{
+		int valores[] = new int[3];
+		String sT[] = { ddmmaa[0].getText(), ddmmaa[1].getText(), ddmmaa[2].getText()};
+
+		//Validador generico
+		for ( int i=0 ; i<3 ; i++ )
+		{
+			if ( sT[i] == null || sT[i].length() == 0 )
+				return false;
+			if ( !IsNumeric(sT[i]) || (IntConvertidor(sT[i]) <= 0) )
+				return false;
+			valores[i] = IntConvertidor(sT[i]);
+		}
+		
+		//Meses
+		if ( IntConvertidor( sT[1]) > 12 )
+			return false;
+		
+		//Dias
+		if ( valores[0] > getDaysOfMonth(valores[2], valores[1]) )
+			return false;
+		return true;
+	}
+	
 	public void ModificarCampos( JTextField ddmmaa[])
 	{
 		if ( bLock )	return;

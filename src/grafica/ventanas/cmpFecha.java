@@ -30,6 +30,11 @@ public class cmpFecha extends JPanel
 		return ddmmaa[2].getText().trim()+"-"+ddmmaa[1].getText().trim()+"-"+ddmmaa[0].getText().trim();
 	}
 	
+	public boolean fechaValida()
+	{
+		return c_Fecha.Validar( ddmmaa);
+	}
+	
 	public cmpFecha()
 	{
 		setLayout(null);

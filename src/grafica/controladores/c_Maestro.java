@@ -16,16 +16,16 @@ public class c_Maestro {
 	public VOCliente voCli;
 	public Fachada gFachada=new Fachada();
 	
-	protected boolean IsNumeric(String str) {return str.matches("\\d+");}
-	protected boolean StringValido(String str) {return str != null || !str.isEmpty();}
-	protected int IntConvertidor(String str)
+	protected static boolean IsNumeric(String str) {return str.matches("\\d+");}
+	protected static boolean StringValido(String str) {return str != null || !str.isEmpty();}
+	protected static int IntConvertidor(String str)
 	{
 		int a = 0;
 		try { a = Integer.parseInt(str); }
 		catch (Exception e) {}
 		return a;
 	}
-	public String Substring (String str, String inicio, String fin){
+	public static String Substring (String str, String inicio, String fin){
 		String sResultado="";	
 		int iInicio=str.indexOf(inicio), iFin=str.indexOf(fin);
 		try {
