@@ -14,8 +14,9 @@ import grafica.ventanas.PaneFuncionario;
 public class c_Funcionario extends c_Maestro {
 	
 	public void ListaFun(JComboBox<String> cb) {
+		
 		cb.removeAllItems();
-		cb.addItem("");
+		cb.addItem("--Funcionarios--");
 		ArrayList<String> alFun=new ArrayList<String>();
 		alFun=gFachada.ListaFun();//ver este graan pase de arraylist desde accesoBD
 		if(alFun.isEmpty()) return;

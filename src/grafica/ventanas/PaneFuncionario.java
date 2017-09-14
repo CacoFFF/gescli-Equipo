@@ -18,7 +18,6 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.SwingConstants;
 
 import Main.Main;
 import grafica.controladores.c_Funcionario;
@@ -50,8 +49,8 @@ public class PaneFuncionario extends JComponent {
 			public void itemStateChanged(ItemEvent e) {
 				if (e.getStateChange() == ItemEvent.SELECTED) {
 					String sSeleccion = e.getItem().toString();
-					if(sSeleccion.isEmpty())btnBaja.setEnabled(false);
-					btnVer.setEnabled(sSeleccion.isEmpty() ? false : true);
+					if(sSeleccion.startsWith("--")) btnBaja.setEnabled(false);
+					btnVer.setEnabled(sSeleccion.startsWith("--") ? false : true);
 					
 				}
 

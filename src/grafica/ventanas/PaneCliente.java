@@ -13,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import grafica.controladores.c_Cliente;
+import grafica.controladores.c_Maestro;
 
 public class PaneCliente extends JComponent {
 	private c_Cliente ctrl;
@@ -44,7 +45,7 @@ public class PaneCliente extends JComponent {
 			public void itemStateChanged(ItemEvent e) {
 						if (e.getStateChange() == ItemEvent.SELECTED) {
 							String sSeleccion = e.getItem().toString();
-							btnVer.setEnabled(sSeleccion.isEmpty() ? false : true);
+							btnVer.setEnabled(sSeleccion.startsWith("--") ? false : true);
 						}
 		
 					}
@@ -56,9 +57,8 @@ public class PaneCliente extends JComponent {
 		btnVer.setEnabled(false);
 		btnVer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String tmp=cbLista.getSelectedItem().toString();
-				int iInicio=tmp.indexOf("["), iFin=tmp.indexOf("]");
-				String sNumCli=tmp.substring(iInicio+1,iFin);
+				c_Maestro ctrlMaestro=new c_Maestro();
+				String sNumCli=ctrlMaestro.Substring(cbLista.getSelectedItem().toString(), "[", "]");
 				ctrl.BuscarCliente(tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios, cbDepartamentos, cbMoneda, sNumCli);
 				btnBorrar.setEnabled(true);
 			}

@@ -11,19 +11,23 @@ public class c_NServicio extends c_Maestro
 	private int[] iIDs;
 	private String[] sNombres;
 	
-	public void Agregar(String sNombre)
+	public boolean Agregar(String sNombre)
 	{
 		for ( int i=0 ; i<sNombres.length ; i++ ) 
 			if ( sNombres[i].equals(sNombre) )
 			{
 				MensajeWin( "Entrada ya existente");
-				return;
+				return false;
 			}
 		VONServicio voNS = gFachada.AgregarNServicio( sNombre);
-		if ( voNS.getError().length() > 0 )
-			MensajeWin(voNS.getError() );
-		else
-			MensajeWin(voNS.getResultado() );
+		if ( voNS.getError().length() > 0 ){
+			MensajeWin(voNS.getError() ); return false;
+		}
+			
+		else{
+			MensajeWin(voNS.getResultado() ); return true;
+		}
+			
 	}
 	
 	public void Listar(JComboBox<String> cb)

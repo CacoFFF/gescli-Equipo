@@ -6,7 +6,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 import LogicaPersistencia.accesoBD.AccesoBD;
-import LogicaPersistencia.valueObject.*;
+import LogicaPersistencia.valueObject.VOCliente;
+import LogicaPersistencia.valueObject.VOEmpleado;
+import LogicaPersistencia.valueObject.VOHorario;
+import LogicaPersistencia.valueObject.VONServicio;
 
 public class Fachada
 {
@@ -142,13 +145,17 @@ public class Fachada
 		VONServicio voNS = new VONServicio( ns);
 		AccesoBD.AgregarNServicio( con, voNS);
 		return voNS;
-	}
-	
+	}	
 	public ArrayList<String> ListaNServicios()
 	{
 		return AccesoBD.ListarNServicios(con);
 	}
 	
+	/*Parte Horarios*/
+	public String AgregarHorario(VOHorario voHora){
+		if(AccesoBD.AgregarHorario(con, voHora)) {return voHora.getResultado();}
+		return voHora.getError();
+	}
 	
 	
 	

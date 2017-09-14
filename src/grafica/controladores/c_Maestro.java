@@ -25,7 +25,21 @@ public class c_Maestro {
 		catch (Exception e) {}
 		return a;
 	}
-	
+	public String Substring (String str, String inicio, String fin){
+		String sResultado="";	
+		int iInicio=str.indexOf(inicio), iFin=str.indexOf(fin);
+		try {
+			sResultado=str.substring(iInicio+1,iFin);
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		}
+		
+		
+		
+		
+		return sResultado;
+		
+	}
 	
 	// Tabla de dias por meses (entrada cero no corresponde a un mes)
 	public static int dmeses[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };

@@ -294,7 +294,7 @@ public class AccesoBD
 	}
 
 
-
+	//Parte Servicios
 	public ArrayList<String> ListarNServicios(Connection conn)
 	{
 		ArrayList<String> res = new ArrayList<String>();;
@@ -311,8 +311,7 @@ public class AccesoBD
 		catch (SQLException e)
 		{	System.out.println("error listanserv"+e.getMessage());	}
 		return res;
-	}
-	
+	}	
 	public boolean AgregarNServicio(Connection conn, VONServicio voNS)
 	{
 		//(idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli) "
@@ -333,5 +332,29 @@ public class AccesoBD
 			voNS.setError("Error al intentar guardar nuevo servicio");
 			return false;
 		}
+	}
+
+	//Parte Horarios
+	public boolean AgregarHorario(Connection conn, VOHorario voHora){
+		//idFun, idCli, idServ, horas, fecha
+		String consulta = consultas.AgregarHorario();
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(consulta);
+			pstmt.setString(1, voHora.getsCIFuncionario());
+			pstmt.setString(2, voHora.getsNumCliente());
+			pstmt.setString(3, voHora.getsNomServicio());
+			pstmt.setInt(4, voHora.getiHoras());
+			pstmt.setString(5, voHora.getsFecha());
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+			voHora.setResultado("Horario guardado");
+			
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				voHora.setError("Error al intentar guardar horario");
+				return false;
+			}
+		return false;
 	}
 }

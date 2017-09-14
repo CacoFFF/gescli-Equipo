@@ -36,8 +36,7 @@ public class Consultas {
 		return "select ciFun, CONCAT(nomFun,' ' ,apeFun) as nombre from funcionarios";
 	}
 
-	
-	//Consultas de Clientes
+	//Consulta Departamentos
 	public String AgregarDepartamentos(){
 		//ver mejor esto
 		return "INSERT INTO departamentos (nombre)"
@@ -49,6 +48,8 @@ public class Consultas {
 	}
 	public String BuscarIDDepartamento(){
 		return "select idDepto from departamentos where nombre like ?";}
+
+	//Consultas de Clientes
 	public String ListarClientes(){
 		return "select nroCli, nomCli from clientes";
 	}
@@ -59,6 +60,8 @@ public class Consultas {
 	public String BuscarCliente(){
 		return "select idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli from clientes where nroCli = ? ";
 	}
+
+	//Consulta Servicios
 	public String AgregarNServicio(){
 		return "insert into servicios (nombre) value(?)";
 	}
@@ -66,6 +69,14 @@ public class Consultas {
 		return "select idServ, nombre from servicios";
 	}
 
+	//Consulta Horarios
+	public String AgregarHorario(){
+		return "insert into horasfunc (idFun, idCli, idServ, horas, fecha) value("
+				+ "(select fun.idFun from funcionarios fun where fun.ciFun = ?),"
+				+ "(select cli.idCli from clientes cli where cli.nroCli = ?)," /*ver como obtener la ID de un cliente, el nroCli no deberia ser unico?*/
+				+ "(select serv.idServ from servicios serv where serv.nombre = ?),"
+				+ "?,?);";
+	}
 	
 	//Creacion de BD
 	//Tarea: cargar todo desde las especificaciones
@@ -75,7 +86,6 @@ public class Consultas {
 	public String UsarBDatos(String sNombreBDatos){
 		return "use "+sNombreBDatos;
 	}//es necesario??
-	
 	public String CrearTablaCliente(){
 		return "create table if not exists clientes("
 				+ "idCli int(11) NOT NULL AUTO_INCREMENT,"
@@ -92,13 +102,11 @@ public class Consultas {
 				+ " tipoPersona int(11) DEFAULT NULL,"
 				+ " PRIMARY KEY(idCli,nroCli)"
 				+ ")";}
-	
 	public String CrearTablaDepartamentos(){
 		return "CREATE TABLE IF NOT EXISTS departamentos("
 				+ "idDepto int(11) NOT NULL AUTO_INCREMENT,"
 				+ "nombre varchar(45) DEFAULT NULL,"
 				+ "PRIMARY KEY(idDepto))";}
-	
 	public String CrearTablaFuncionarios(){
 		return "CREATE TABLE IF NOT EXISTS funcionarios("
 				+ "idFun int(11) NOT NULL AUTO_INCREMENT, "
@@ -128,7 +136,6 @@ public class Consultas {
 				+ "idServ int(11) NOT NULL AUTO_INCREMENT,"
 				+ " nombre varchar(45) NOT NULL,"
 				+ " PRIMARY KEY (idServ,nombre))";}
-
 
 
 }
