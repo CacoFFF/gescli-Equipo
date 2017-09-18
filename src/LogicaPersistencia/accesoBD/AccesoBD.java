@@ -14,7 +14,52 @@ public class AccesoBD
 	private final Consultas consultas = new Consultas();
 	
 	public AccesoBD(){}
+	//Creacion y mod BD
+	public void CrearBDatos(Connection conn, String sNombreBDatos) {
+		String 	sqlDB=consultas.CrearBDatos(sNombreBDatos),
+				sqlUsarDB=consultas.UsarBDatos(sNombreBDatos),
+				sqlTablaCliente=consultas.CrearTablaCliente(),
+				sqlTablaDepartamento=consultas.CrearTablaDepartamentos(),
+				sqlTablaFuncionarios=consultas.CrearTablaFuncionarios(),
+				sqlTablaHorasFun=consultas.CrearTablaHorasFunc(),
+				sqltablaServicios=consultas.CrearTablaServicios();
+		try
+		{
+			Statement stmt=conn.createStatement();
+			try
+			{
+				stmt.executeUpdate(sqlDB);
+				stmt.executeUpdate(sqlUsarDB);
+				stmt.executeUpdate(sqlTablaCliente);
+				stmt.executeUpdate(sqlTablaDepartamento);				
+				stmt.executeUpdate(sqlTablaFuncionarios);
+				stmt.executeUpdate(sqltablaServicios);
+				stmt.executeUpdate(sqlTablaHorasFun);
+				stmt.close();
+			
+			}catch (SQLException e){stmt.close(); e.getStackTrace();}
+		}catch (SQLException e){	e.getStackTrace();}
+		AgregarDepartamentos(conn);
 
+	}//crearBD
+	public void AgregarDepartamentos(Connection conn){
+		String[] asDeptos={"Artigas", "Canelones", "Cerro Largo", "Colonia", "Durazno", "Flores", "Florida", 
+				"Lavalleja", "Maldonado", "Montevideo", "Paysandu", "Rio Negro", "Rivera", "Rocha", "Salto", 
+				"San Jose" ,"Soriano" ,"Tacuarembo" ,"Treinta y Tres"};
+		String sqlAgregarDepto=consultas.AgregarDepartamentos();
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(sqlAgregarDepto);
+			for(String sDepto:asDeptos){
+				pstmt.setString(1, sDepto);
+				pstmt.setString(2, sDepto);
+				pstmt.executeUpdate();
+			}
+			pstmt.close();
+			
+		} catch (SQLException e) { System.out.println(e.getMessage()); }
+	}
+
+	//Parte Funcionario
 	//cambiar Agregar y Verificar segun Consultas
 	public boolean AgregarFuncionario(Connection conn, VOEmpleado oVO)
 	{
@@ -36,7 +81,6 @@ public class AccesoBD
 //			System.out.println(e.getErrorCode());
 			return false;}//tryCatch
 	}//agregar
-	
 	public boolean ActualizarFuncionario(Connection conn, VOEmpleado oVO)
 	{
 		String sqlActualizar=consultas.ActualizarEmpleado();
@@ -57,7 +101,6 @@ public class AccesoBD
 			oVO.setError("SQL Error: "+e.getMessage());
 			return false;}//tryCatch
 	}//agregar
-	
 	public boolean VerificarFuncionario(Connection conn, String sCI){
 		//true si CI existe, false si CI no existe
 		String sqlBuscar=consultas.BuscarEmpleadoPorCI();
@@ -103,7 +146,6 @@ public class AccesoBD
 			return false;
 		}//tryCatch
 	}
-
 	public boolean BajaFuncionario(Connection conn, VOEmpleado VO){
 		String sqlBajaFuncionario=consultas.BajaEmpleadoCI();
 		try {
@@ -119,7 +161,6 @@ public class AccesoBD
 			return false;
 		}
 	}
-	
 	public ArrayList<String> ListarFuncionario(Connection conn){
 		ArrayList<String> alListaFun = new ArrayList<String>();;
 		String sqlListarFun=consultas.ListarFuncionarios();
@@ -140,57 +181,7 @@ public class AccesoBD
 		
 	}
 
-	public void CrearBDatos(Connection conn, String sNombreBDatos) {
-		String 	sqlDB=consultas.CrearBDatos(sNombreBDatos),
-				sqlUsarDB=consultas.UsarBDatos(sNombreBDatos),
-				sqlTablaCliente=consultas.CrearTablaCliente(),
-				sqlTablaDepartamento=consultas.CrearTablaDepartamentos(),
-				sqlTablaFuncionarios=consultas.CrearTablaFuncionarios(),
-				sqlTablaHorasFun=consultas.CrearTablaHorasFunc(),
-				sqltablaServicios=consultas.CrearTablaServicios();
-		try
-		{
-			Statement stmt=conn.createStatement();
-			try
-			{
-				stmt.executeUpdate(sqlDB);
-				stmt.executeUpdate(sqlUsarDB);
-				stmt.executeUpdate(sqlTablaCliente);
-				stmt.executeUpdate(sqlTablaDepartamento);				
-				stmt.executeUpdate(sqlTablaFuncionarios);
-				stmt.executeUpdate(sqltablaServicios);
-				stmt.executeUpdate(sqlTablaHorasFun);
-				stmt.close();
-			
-			}catch (SQLException e){stmt.close(); e.getStackTrace();}
-		}catch (SQLException e){	e.getStackTrace();}
-		AgregarDepartamentos(conn);
-		
-		
-	
-	}//crearBD
-	
-	public void AgregarDepartamentos(Connection conn){
-		String[] asDeptos={"Artigas", "Canelones", "Cerro Largo", "Colonia", "Durazno", "Flores", "Florida", 
-				"Lavalleja", "Maldonado", "Montevideo", "Paysandu", "Rio Negro", "Rivera", "Rocha", "Salto", 
-				"San Jose" ,"Soriano" ,"Tacuarembo" ,"Treinta y Tres"};
-		String sqlAgregarDepto=consultas.AgregarDepartamentos();
-		try {
-			PreparedStatement pstmt=conn.prepareStatement(sqlAgregarDepto);
-			for(String sDepto:asDeptos){
-				pstmt.setString(1, sDepto);
-				pstmt.setString(2, sDepto);
-				pstmt.executeUpdate();
-			}
-			pstmt.close();
-			
-		} catch (SQLException e) {
-			System.out.println(e.getMessage());
-		}
-	
-	}
-
-	//Parte de Clientes
+	//Parte de Departamento
 	public ArrayList<String> ListarDepartamentos(Connection conn){
 		String sqlListDeptos=consultas.ListarDepartamentos();
 		ArrayList<String> arDeptos=new ArrayList<String>();
@@ -203,8 +194,7 @@ public class AccesoBD
 			rs.close();	stmt.close();
 			return arDeptos;
 		} catch (Exception e) {System.out.println("Err.ListaDeptsAccesoBD"+e.getStackTrace()); return null;}
-	}//ListarDepartamentos()
-	
+	}//ListarDepartamentos()	
 	public void getIdDepartamento(Connection conn, VOCliente voCli){
 		String sqlIdDepto=consultas.BuscarIDDepartamento();
 		try {
@@ -219,17 +209,20 @@ public class AccesoBD
 			voCli.setError("Error al conseguir ID de departamento");
 		}
 	}	
+	
+	//Parte Cliente
 	public ArrayList<String> ListarClientes(Connection conn){
+		//INFO consulta: ID@[NumeroCliente] - Nombre
+		
 		ArrayList<String> alListaCli = new ArrayList<String>();;
 		String sqlListarCli=consultas.ListarClientes();
 		String stmp="";
 		try {
 			Statement stmt=conn.createStatement();
 			ResultSet rs=stmt.executeQuery(sqlListarCli);
-			while(rs.next()){
-				stmp="["+rs.getString("nroCli")+"] - "+rs.getString("nomCli");
-				alListaCli.add(stmp);
-			}
+			while(rs.next())
+				alListaCli.add(rs.getInt("idCli")+"@["+rs.getString("nroCli")+"] - "+rs.getString("nomCli"));
+			
 			rs.close();
 			return alListaCli;
 		} catch (SQLException e) {
@@ -248,14 +241,14 @@ public class AccesoBD
 			pstmt.setInt(3, voCli.getiHonorarios());
 			pstmt.setInt(4, voCli.getiMoneda());
 			pstmt.setString(5, voCli.getsRut());
-			pstmt.setString(6, voCli.getsNroCli());
+			pstmt.setString(6, voCli.getsNroCliNuevo());
 			pstmt.setString(7, voCli.getsTel());
 			pstmt.setString(8, voCli.getsDireccion());
 			pstmt.setString(9, voCli.getsNomCli());
 			pstmt.executeUpdate();
 			pstmt.close();
 			
-			voCli.setResultado("Guardado:\n["+voCli.getsNroCli()+"] "+voCli.getsNomCli());
+			voCli.setResultado("Guardado:\n["+voCli.getsNroCliNuevo()+"] "+voCli.getsNomCli());
 			return true;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -271,6 +264,7 @@ public class AccesoBD
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(sqlBuscarCli);
 			pstmt.setString(1, voCli.getsNroCli());
+			pstmt.setInt(2, voCli.getiIdCli());
 			ResultSet rs=pstmt.executeQuery();
 			
 			if(rs.next()){
@@ -292,7 +286,57 @@ public class AccesoBD
 			System.out.println(e.getMessage());
 		}
 	}
-
+	public boolean ModificarCliente(Connection conn, VOCliente voCli){
+		/*	rut ,nroCli, tel, direccion, idDepto, nomCli, hsCargables, honorarios, moneda
+			WHERE  idCli = ?  AND nroCli = ? */
+		String consulta=consultas.ModificarCliente();
+		
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(consulta);
+			pstmt.setString(1, voCli.getsRut());
+			pstmt.setString(2, voCli.getsNroCliNuevo());
+			pstmt.setString(3, voCli.getsTel());
+			pstmt.setString(4, voCli.getsDireccion());
+			pstmt.setInt(6, voCli.getiIdDepto());
+			pstmt.setString(7, voCli.getsNomCli());
+			pstmt.setInt(8, voCli.getiHrCargables());
+			pstmt.setInt(9, voCli.getiHonorarios());
+			pstmt.setInt(10, voCli.getiMoneda());
+			pstmt.setInt(11, voCli.getiIdCli());
+			pstmt.setString(12, voCli.getsNroCli());
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+			voCli.setResultado("Cliente actualizado!");
+			return true;
+			
+		} catch (SQLException e) {
+			voCli.setError("Error al actualizar cliente\nError code: "+e.getErrorCode());
+			return false;
+			
+		}
+		
+		
+	}
+	public boolean EliminarCliente(Connection conn, VOCliente voCli){
+		//idCli, nroCli
+		String consulta=consultas.BajaCliente();
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(consulta);
+			pstmt.setInt(1, voCli.getiIdCli());
+			pstmt.setString(2, voCli.getsNroCli());
+			pstmt.executeUpdate();
+			pstmt.close();
+			voCli.setResultado("Cliente eliminado! X_X");
+			return true;
+			
+		} catch (SQLException e) {
+			String sResult="Error al eliminar cliente";
+			if(e.getErrorCode()==1451) sResult+="\n Cliente tener horario agendado";
+			voCli.setError(sResult);
+			return false;
+		}
+	}
 
 	//Parte Servicios
 	public ArrayList<String> ListarNServicios(Connection conn)

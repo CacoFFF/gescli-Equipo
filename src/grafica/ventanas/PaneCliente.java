@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -13,7 +16,11 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 
 import grafica.controladores.c_Cliente;
+import grafica.controladores.c_Cliente.OpcVerificarCliente;
 import grafica.controladores.c_Maestro;
+import javax.swing.ImageIcon;
+import java.awt.Component;
+import java.awt.Color;
 
 public class PaneCliente extends JComponent {
 	private c_Cliente ctrl;
@@ -21,14 +28,14 @@ public class PaneCliente extends JComponent {
 
 	private JPanel pLista, pCampos;
 	private JComboBox<String> cbLista, cbDepartamentos, cbMoneda/*, cbTipoPersona*/;
-	private JButton btnVer, btnVaciar, btnBorrar, btnGuardar;
+	private JButton btnVer, btnVaciar, btnBorrar, btnGuardar, btnBuscarnumcli;
 	private JLabel /*txtContacto,*/ txtRut, txtNumCli, txtTelefono, txtDireccion, txtDepartamento, txtNomCli, txtHoras,
 			txtHonorarios/*, txtTipoPersona*/;
 	private JTextField /*tfContacto,*/ tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios;
 	
 	private String sDepto;
 	private int iMoneda;
-	private boolean bDepto, bMoneda;
+	private boolean bDepto, bMoneda, bCliExistente=false;
 
 	PaneCliente() {
 		ctrl = new c_Cliente();
@@ -57,9 +64,9 @@ public class PaneCliente extends JComponent {
 		btnVer.setEnabled(false);
 		btnVer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				c_Maestro ctrlMaestro=new c_Maestro();
-				String sNumCli=ctrlMaestro.Substring(cbLista.getSelectedItem().toString(), "[", "]");
-				ctrl.BuscarCliente(tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios, cbDepartamentos, cbMoneda, sNumCli);
+				String sNumCli=c_Maestro.Substring(cbLista.getSelectedItem().toString(), "[", "]");
+				ctrl.BuscarCliente(tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios, cbDepartamentos, cbMoneda, sNumCli, bCliExistente);
+				bCliExistente=true;
 				btnBorrar.setEnabled(true);
 			}
 		});
@@ -72,13 +79,31 @@ public class PaneCliente extends JComponent {
 		add(pCampos);
 		
 		
-//luego cambiar toodo esto por un array de JLabels y JTextFields
+		//Intentar agregar autocompletar en tfNum y tfNom
 		txtNumCli = new JLabel("Nro. Cliente:");
 		txtNumCli.setBounds(10, 5, 100, 20);
 		pCampos.add(txtNumCli);
 
 		tfNumCli = new JTextField();
 		tfNumCli.setBounds(150, 5, 200, 20);
+		tfNumCli.addKeyListener(new KeyAdapter() {
+			public void keyReleased(KeyEvent ke){
+				//fijar tamaño del NumCli a +4?
+				//revisar esto plis!!!!!!!!
+				//probar un num, agregarle otro y luego borrar uno (mensaje repiendose)
+				String sBuscarNomCli=ctrl.VerificarCliente(tfNumCli.getText(), OpcVerificarCliente.NomCliente);
+				
+				if(!sBuscarNomCli.equals("")) {
+					if(ctrl.BuscarCliente(tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios, cbDepartamentos, cbMoneda, tfNumCli.getText().trim(), bCliExistente))
+					{ 
+						bCliExistente=true;
+						btnBorrar.setEnabled(true);}
+					}
+				else {
+					bCliExistente=false;
+					btnBorrar.setEnabled(false);}
+				}});
+		
 		pCampos.add(tfNumCli);
 
 		txtNomCli = new JLabel("Nombre: ");
@@ -87,7 +112,22 @@ public class PaneCliente extends JComponent {
 		
 		tfNomCli = new JTextField();
 		tfNomCli.setBounds(150, 30, 200, 20);
+		tfNomCli.addKeyListener(new KeyAdapter(){
+			public void keyReleased(KeyEvent ke){
+				String sBuscarNumCli=ctrl.VerificarCliente(tfNomCli.getText(), OpcVerificarCliente.NumCliente);
+				
+				if(!sBuscarNumCli.equals("")) {
+					if(ctrl.BuscarCliente (tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios, cbDepartamentos, cbMoneda, tfNomCli.getText().trim(), bCliExistente))
+						{
+						bCliExistente=true;
+						btnBorrar.setEnabled(true);
+						}
+					}
+				else bCliExistente=false;
+				}});
 		pCampos.add(tfNomCli);
+		
+
 		
 		txtRut=new JLabel("Rut:");
 		txtRut.setBounds(10,55,100,20);
@@ -167,8 +207,8 @@ public class PaneCliente extends JComponent {
 				ctrl.Guardar(tfRut.getText().trim(), tfNumCli.getText().trim(), 
 						tfTelefono.getText().trim(), tfDireccion.getText().trim(), 
 						tfNomCli.getText().trim(), tfHoras.getText().trim(), 
-						tfHonorarios.getText().trim(), sDepto, iMoneda);
-				ctrl.VaciarCampos(cbDepartamentos, cbMoneda,tfRut,tfNumCli,tfTelefono,tfDireccion,tfNomCli,tfHoras,tfHonorarios);
+						tfHonorarios.getText().trim(), sDepto, iMoneda, bCliExistente);
+				//ctrl.VaciarCampos(cbDepartamentos, cbMoneda,tfRut,tfNumCli,tfTelefono,tfDireccion,tfNomCli,tfHoras,tfHonorarios);
 				ctrl.ListaClientes(cbLista);
 			}
 		});
@@ -177,6 +217,13 @@ public class PaneCliente extends JComponent {
 		btnBorrar = new JButton("Borrar");
 		btnBorrar.setBounds(200, 265, 90, 25);
 		btnBorrar.setEnabled(false);
+		btnBorrar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent w) {
+				ctrl.EliminarCliente(tfNumCli.getText().trim());
+				ctrl.VaciarCampos(cbDepartamentos, cbMoneda,tfRut,tfNumCli,tfTelefono,tfDireccion,tfNomCli,tfHoras,tfHonorarios);
+				btnBorrar.setEnabled(false);
+				}
+		});
 		pCampos.add(btnBorrar);
 		
 		btnVaciar = new JButton("Vaciar");
@@ -184,11 +231,11 @@ public class PaneCliente extends JComponent {
 		btnVaciar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				ctrl.VaciarCampos(cbDepartamentos, cbMoneda,tfRut,tfNumCli,tfTelefono,tfDireccion,tfNomCli,tfHoras,tfHonorarios);
-				
-				
 			}
 		});
 		pCampos.add(btnVaciar);
+		
+	
 
 	}// contructor
 }// class

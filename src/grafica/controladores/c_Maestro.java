@@ -40,7 +40,7 @@ public class c_Maestro {
 		return sResultado;
 		
 	}
-	
+
 	// Tabla de dias por meses (entrada cero no corresponde a un mes)
 	public static int dmeses[] = { 0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 };
 
@@ -116,7 +116,8 @@ public class c_Maestro {
 	
 	//Ventanitas <3
 	protected void MensajeWin(String txt) {JOptionPane.showMessageDialog(null, txt);}
-	protected boolean ConfirmWin(String txt) {if (JOptionPane.showConfirmDialog(null, txt) == 0)return true;return false;}
+	protected boolean ConfirmWin(String txt) {if (
+			JOptionPane.showConfirmDialog(null, txt, "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0)return true;return false;}
 	protected String InputWin(String txt){
 		JTextField tfCI = new JTextField();
 		JComponent[] inputs = new JComponent[] {

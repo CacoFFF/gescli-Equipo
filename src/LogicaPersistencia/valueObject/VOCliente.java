@@ -3,10 +3,11 @@ package LogicaPersistencia.valueObject;
 public class VOCliente extends VOGenerico{
 
 	private int iIdCli, iIdDepto, iHrCargables, iHonorarios, iMoneda, iTipoPersona;
-	private String sContacto, sRut, sNroCli, sTel, sDireccion, sNomCli;
+	private String sContacto, sRut, sNroCli, sTel, sDireccion, sNomCli, sNroCliNuevo;
 	
 	private String sNomDepto;
 	/*sNomDepto es el Nombre que se muestra en el ComboBox, iIdDepto es el identificador para agregar cliente*/
+	/*sNroCliNuevo es usado para la modificacion del cliente*/
 	
 	public int getiIdCli() {return iIdCli;}
 	public int getiIdDepto() {return iIdDepto;}
@@ -20,6 +21,7 @@ public class VOCliente extends VOGenerico{
 	public String getsTel() {return sTel;}
 	public String getsDireccion() {return sDireccion;}
 	public String getsNomCli() {return sNomCli;}
+	public String getsNroCliNuevo() {return sNroCliNuevo;}
 	
 	public void setiIdCli(int iIdCli) {this.iIdCli = iIdCli;}
 	public void setiIdDepto(int iIdDepto) {this.iIdDepto = iIdDepto;}
@@ -33,26 +35,52 @@ public class VOCliente extends VOGenerico{
 	public void setsTel(String sTel) {this.sTel = sTel;}
 	public void setsDireccion(String sDireccion) {this.sDireccion = sDireccion;}
 	public void setsNomCli(String sNomCli) {this.sNomCli = sNomCli;}
+	public void setsNroCliNuevo(String sNroCliNuevo) {this.sNroCliNuevo = sNroCliNuevo;}
 	
 	public String getsNomDepto() {return sNomDepto;}
 	public void setsNomDepto(String sNomDepto) {this.sNomDepto = sNomDepto;}
 
+	//Agregar
 	public VOCliente(int iIdDepto, int iHrCargables, int iHonorarios, int iMoneda,
-			String sRut, String sNroCli, String sTel, String sDireccion, String sNomCli) {
+			String sRut, String sNroCliNuevo, String sTel, String sDireccion, String sNomCli) {
+		super();
 		this.iIdDepto = iIdDepto;
 		this.iHrCargables = iHrCargables;
 		this.iHonorarios = iHonorarios;
 		this.iMoneda = iMoneda;
 		this.sRut = sRut;
-		this.sNroCli = sNroCli;
+		this.sNroCliNuevo = sNroCliNuevo;
 		this.sTel = sTel;
 		this.sDireccion = sDireccion;
 		this.sNomCli = sNomCli;
 	}
 	//Obtener ID Departamento
-	public VOCliente(String sNomDepto, boolean bNULL){this.sNomDepto=sNomDepto;}
+	public VOCliente(String sNomDepto){ super(); this.sNomDepto=sNomDepto;}
 	
-	public VOCliente(String sNumCli){this.sNroCli=sNumCli;}
+	//Buscar y borrar
+	public VOCliente(String sNumCli, int iIDCli){ super(); this.sNroCli=sNumCli; this.iIdCli=iIDCli;}
+	
+	//Modificar
+	public VOCliente(int iIdDepto, int iHrCargables, int iHonorarios, int iMoneda,
+			String sRut, String sNroCliNuevo, String sTel, String sDireccion, String sNomCli, int iIDCli, String sNumCli){
+		super(); 
+		this.iIdDepto = iIdDepto;
+		this.iHrCargables = iHrCargables;
+		this.iHonorarios = iHonorarios;
+		this.iMoneda = iMoneda;
+		this.sRut = sRut;
+		this.sNroCliNuevo = sNroCliNuevo;
+		this.sTel = sTel;
+		this.sDireccion = sDireccion;
+		this.sNomCli = sNomCli;
+		
+		this.iIdCli = iIDCli;
+		this.sNroCli = sNumCli;
+		
+		
+	}
+
+
 	
 	
 	

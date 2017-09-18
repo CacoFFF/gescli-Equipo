@@ -51,16 +51,33 @@ public class Consultas {
 
 	//Consultas de Clientes
 	public String ListarClientes(){
-		return "select nroCli, nomCli from clientes";
+		return "select idCli, nroCli, nomCli from clientes";
 	}
 	public String AgregarCliente(){
 		return "insert into clientes "
 				+ "(idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli) "
 				+ "values(?,?,?,?,?,?,?,?,?)";}
 	public String BuscarCliente(){
-		return "select idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli from clientes where nroCli = ? ";
+		return "select idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli from clientes where nroCli = ? and idCli = ?";
 	}
-
+	public String BajaCliente(){
+		return "DELETE FROM clientes WHERE  idCli= ? AND nroCli= ?";
+	}
+	public String ModificarCliente(){
+		return "UPDATE clientes SET "
+				+ "rut = ? , "
+				+ "nroCli = ? , "
+				+ "tel = ? , "
+				+ "direccion = ? , "
+				+ "idDepto = ? , "
+				+ "nomCli = ? , "
+				+ "hsCargables = ? , "
+				+ "honorarios = ? , "
+				+ "moneda = ? "
+				+ "WHERE  idCli = ?  AND nroCli = ? ;";
+	}
+	
+	
 	//Consulta Servicios
 	public String AgregarNServicio(){
 		return "insert into servicios (nombre) value(?)";

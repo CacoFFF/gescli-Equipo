@@ -124,19 +124,25 @@ public class Fachada
 		return alCli;
 	}
 	public void getIDDepartamento(VOCliente ovCli){
-		AccesoBD.getIdDepartamento(con, ovCli);			
-		
+		AccesoBD.getIdDepartamento(con, ovCli);
 	}
 	public String AgregarCliente(VOCliente voCli){
 		if(AccesoBD.AgregarCliente(con, voCli)) return voCli.getResultado();
 		return voCli.getError();
 	}
-	public VOCliente ObtenerCliente(String sNumCli){
-		VOCliente voCli=new VOCliente(sNumCli);
+	public VOCliente ObtenerCliente(String sNumCli, int iIdCli){
+		VOCliente voCli=new VOCliente(sNumCli,iIdCli);
 		AccesoBD.ObtenerCliente(con, voCli);
 		return voCli;
 	}
-	
+	public String ModificarCliente(VOCliente voCli){
+		if(AccesoBD.ModificarCliente(con, voCli)) return voCli.getResultado();
+		else return voCli.getError();
+	}
+	public boolean EliminarCliente(VOCliente voCli){
+		if(AccesoBD.EliminarCliente(con, voCli)) return true;
+		return false;
+	}
 	
 	
 	/*Parte de Servicios (nombres)*/

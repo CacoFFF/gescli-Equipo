@@ -40,9 +40,6 @@ public class PaneHS extends JPanel {
 	
 	private c_Maestro ctrlMaestro;
 	
-//	private boolean bServicios, bFuncionario=false, bCliente=false; //ver cuando habilitador de btn funcione
-	
-	
 
 	/**
 	 * Create the panel.
@@ -64,19 +61,12 @@ public class PaneHS extends JPanel {
 		cbServicio.addPropertyChangeListener(new PropertyChangeListener() {
 			public void propertyChange(PropertyChangeEvent evt) {
 				c_PanelHS.ActivarBoton( btnAgregarHS, combos, cmpFecha, tfHoras);
-				if(cbServicio.isFocusOwner()) System.out.println(cbServicio.getSelectedItem());
-
-
 			}
 		});
 		cbServicio.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if ( cbServicio.getSelectedIndex() > 0 && cbServicio.getSelectedItem() != null ){
 					txtNombreDeServicio.setText( (String)cbServicio.getSelectedItem());
-					
-//					bServicios=cbServicio.getSelectedItem().toString().startsWith("--") ? false : true;	
-//					btnAgregarHS.setEnabled(bServicios && bFuncionario && bCliente);
-
 				}
 				
 				
