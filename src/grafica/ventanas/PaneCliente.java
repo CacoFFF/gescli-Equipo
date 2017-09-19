@@ -14,9 +14,10 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 
+import LogicaPersistencia.valueObject.VOCliente;
 import grafica.controladores.c_Cliente;
-import grafica.controladores.c_Cliente.OpcVerificarCliente;
 import grafica.controladores.c_Maestro;
+
 
 public class PaneCliente extends JComponent {
 	private c_Cliente ctrl;
@@ -33,6 +34,19 @@ public class PaneCliente extends JComponent {
 	private int iMoneda;
 	private boolean bDepto, bMoneda, bCliExistente=false;
 
+	public void MostrarCliente( VOCliente oCL)
+	{
+		tfNumCli.setText( oCL.getsNroCli());
+		tfTelefono.setText( oCL.getsTel());
+		tfRut.setText( oCL.getsRut());
+		tfDireccion.setText( oCL.getsDireccion());
+		tfNomCli.setText( oCL.getsNomCli());
+		tfHoras.setText( Integer.toString(oCL.getiHrCargables()));
+		tfHonorarios.setText( Integer.toString(oCL.getiHonorarios()));
+		cbDepartamentos.setSelectedIndex( oCL.getiIdDepto());
+		cbMoneda.setSelectedIndex( oCL.getiMoneda());
+	}
+	
 	PaneCliente() {
 		ctrl = new c_Cliente();
 
@@ -60,10 +74,14 @@ public class PaneCliente extends JComponent {
 		btnVer.setEnabled(false);
 		btnVer.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				String sNumCli=c_Maestro.Substring(cbLista.getSelectedItem().toString(), "[", "]");
-				ctrl.BuscarCliente(tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios, cbDepartamentos, cbMoneda, sNumCli, bCliExistente);
-				bCliExistente=true;
-				btnBorrar.setEnabled(true);
+				VOCliente oCL = null;
+				if ( cbLista.getSelectedIndex() > 0 )
+				{
+					oCL = ctrl.get( cbLista.getSelectedIndex() );
+					MostrarCliente( oCL);
+				}
+				bCliExistente = oCL != null;
+				btnBorrar.setEnabled(bCliExistente);
 			}
 		});
 		pLista.add(btnVer);
@@ -84,20 +102,9 @@ public class PaneCliente extends JComponent {
 		tfNumCli.setBounds(150, 5, 200, 20);
 		tfNumCli.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent ke){
-				//fijar tamaño del NumCli a +4?
-				//revisar esto plis!!!!!!!!
-				//probar un num, agregarle otro y luego borrar uno (mensaje repiendose)
-				String sBuscarNomCli=ctrl.VerificarCliente(tfNumCli.getText(), OpcVerificarCliente.NomCliente);
-				
-				if(!sBuscarNomCli.equals("")) {
-					if(ctrl.BuscarCliente(tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios, cbDepartamentos, cbMoneda, tfNumCli.getText().trim(), bCliExistente))
-					{ 
-						bCliExistente=true;
-						btnBorrar.setEnabled(true);}
-					}
-				else {
-					bCliExistente=false;
-					btnBorrar.setEnabled(false);}
+				//No necesitamos importar el value object, solo necesitamos ver si esta ahi
+				bCliExistente = ctrl.BuscarCache_Num(tfNumCli.getText() ) != null;
+				btnBorrar.setEnabled( bCliExistente);
 				}});
 		
 		pCampos.add(tfNumCli);
@@ -110,16 +117,8 @@ public class PaneCliente extends JComponent {
 		tfNomCli.setBounds(150, 30, 200, 20);
 		tfNomCli.addKeyListener(new KeyAdapter(){
 			public void keyReleased(KeyEvent ke){
-				String sBuscarNumCli=ctrl.VerificarCliente(tfNomCli.getText(), OpcVerificarCliente.NumCliente);
-				
-				if(!sBuscarNumCli.equals("")) {
-					if(ctrl.BuscarCliente (tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios, cbDepartamentos, cbMoneda, tfNomCli.getText().trim(), bCliExistente))
-						{
-						bCliExistente=true;
-						btnBorrar.setEnabled(true);
-						}
-					}
-				else bCliExistente=false;
+				bCliExistente = ctrl.BuscarCache_Nombre(tfNomCli.getText() ) != null;
+				btnBorrar.setEnabled( bCliExistente);
 				}});
 		pCampos.add(tfNomCli);
 		

@@ -51,7 +51,7 @@ public class Consultas {
 
 	//Consultas de Clientes
 	public String ListarClientes(){
-		return "select idCli, nroCli, nomCli from clientes";
+		return "select * from clientes";
 	}
 	public String AgregarCliente(){
 		return "insert into clientes "

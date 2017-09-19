@@ -211,20 +211,33 @@ public class AccesoBD
 	}	
 	
 	//Parte Cliente
-	public ArrayList<String> ListarClientes(Connection conn){
+	public ArrayList<VOCliente> ListarClientes(Connection conn){
 		//INFO consulta: ID@[NumeroCliente] - Nombre
 		
-		ArrayList<String> alListaCli = new ArrayList<String>();;
+		ArrayList<VOCliente> alListaCli = new ArrayList<VOCliente>();;
 		String sqlListarCli=consultas.ListarClientes();
-		String stmp="";
-		try {
+		try
+		{
 			Statement stmt=conn.createStatement();
 			ResultSet rs=stmt.executeQuery(sqlListarCli);
-			while(rs.next())
-				alListaCli.add(rs.getInt("idCli")+"@["+rs.getString("nroCli")+"] - "+rs.getString("nomCli"));
-			
+			while ( rs.next() )
+			{
+				VOCliente nuevoCLI = new VOCliente(
+						rs.getInt("idDepto"),
+						rs.getInt("hsCargables"),
+						rs.getInt("honorarios"),
+						rs.getInt("moneda"),
+						rs.getString("rut"),
+						"BORRAR ESTO",
+						rs.getString("tel"),
+						rs.getString("direccion"),
+						rs.getString("nomCli"),
+						rs.getInt("idCli"),
+						rs.getString("nroCli")
+						);
+				alListaCli.add( nuevoCLI);
+			}
 			rs.close();
-			return alListaCli;
 		} catch (SQLException e) {
 			System.out.println("error listacli"+e.getMessage());
 		}

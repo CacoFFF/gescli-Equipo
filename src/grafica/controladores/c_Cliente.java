@@ -6,54 +6,49 @@ import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
 import LogicaPersistencia.valueObject.VOCliente;
-import grafica.controladores.c_Cliente.OpcVerificarCliente;
-
 
 public class c_Cliente extends c_Maestro{
 	//cache?
-	private int[] cacheId;
-	private String[] cacheRut;
-	private String[] cacheNroCli;
-	private String[] cacheTel;
-	private String[] cacheDireccion;
-	private int[] cacheDeptoIdDepto; 
-	private String[] cacheNomCli;
-	private int[] cacheHsCargables;
-	private int[] cacheHonorarios;
+	private VOCliente cache[];
+	
+	public VOCliente get( int i)
+	{
+		if ( (cache != null) && (i < cache.length) )
+			return cache[i];
+		return null;
+	}
+	
+	public void ListaClientes(JComboBox<String> cb)	{
 
-	public enum OpcVerificarCliente{ NumCliente, NomCliente, IDCliente; }
-	public static OpcVerificarCliente opc;
-		
-	public void ListaClientes(JComboBox<String> cb){
 		int iViejo = cb.getSelectedIndex();
+		int iIDViejo = -1;
+		if ( cache != null && cache.length > iViejo )
+			iIDViejo = cache[iViejo].getiIdCli();
 		
 		cb.removeAllItems();
 		cb.addItem("--Cliente--");
-		ArrayList<String> alCli=new ArrayList<String>();
-		alCli=gFachada.ListaCli();
-		
-		if(alCli.isEmpty()) return;
-		
-		//Agrega al cachwe
-		cacheId=new int[alCli.size()];
-		cacheNroCli=new String[alCli.size()];
-		cacheNomCli=new String[alCli.size()];
-		
-		for (int i=0; i<alCli.size(); i++){
-			cacheId[i]=IntConvertidor(alCli.get(i).substring(0, (alCli.get(i).toString().indexOf("@"))));
-			cacheNroCli[i]=Substring(alCli.get(i), "[", "]");
-			cacheNomCli[i]=alCli.get(i).substring(alCli.get(i).toString().indexOf("-")+1).trim();
-		}
+		cache = gFachada.ListaCli();
 
-		//Agrega a JComboBox
-		for(String sCli : alCli)
-			cb.addItem(sCli.substring(sCli.indexOf("@")+1)); //quita el IDCliente de la lista
+		for ( int i=0 ; i<cache.length ; i++ )
+			cb.addItem( cache[i].getsNomCli() );
 		
-		//Mantiene seleccionado?
-		if ( cb.getItemCount() > iViejo )
-			cb.setSelectedIndex( iViejo);
-		
+		//Re-seleccionar el elemento previamente seleccionado
+		if ( cache.length > iViejo && iIDViejo >= 0 )
+		{
+			if ( cache[iViejo].getiIdCli() == iIDViejo )
+				cb.setSelectedIndex( iViejo);
+			else
+			{
+				for ( int i=0 ; i<cache.length ; i++ )
+					if ( cache[i].getiIdCli() == iIDViejo )
+					{
+						cb.setSelectedIndex(i);
+						break;
+					}
+			}
+		}
 	}
+	
 	public void ListaDepto(JComboBox<String> cb){
 		ArrayList<String> llDeptos=new ArrayList<String>();
 		cb.addItem(""); //deshabilita btnGuardar, evita algun error
@@ -69,6 +64,24 @@ public class c_Cliente extends c_Maestro{
 		for(String str : asMonedas) cb.addItem(str);
 	}
 	
+	public VOCliente BuscarCache_Num( String numCli)
+	{
+		if ( cache != null && IsNumeric(numCli) )
+			for ( int i=0 ; i<cache.length ; i++ )
+				if ( cache[i].getsNroCli().equals(numCli) )
+					return cache[i];
+		return null;
+	}
+	
+	public VOCliente BuscarCache_Nombre( String nomCli)
+	{
+		if ( cache != null )
+			for ( int i=0 ; i<cache.length ; i++ )
+				if ( cache[i].getsNomCli().equals(nomCli) )
+					return cache[i];
+		return null;
+	}
+	
 	public boolean BuscarCliente(JTextField tfRut, JTextField tfNumCli, JTextField tfTelefono,
 			JTextField tfDireccion, JTextField tfNomCli, JTextField tfHoras, JTextField tfHonorarios,
 			JComboBox<String> cbDepartamentos, JComboBox<String> cbMoneda, String sBuscador, boolean bConfirmarRellenado){
@@ -76,48 +89,35 @@ public class c_Cliente extends c_Maestro{
 		* ( -__-) es molesto escribir y que se te rellene solo todo */
 		
 		//Buscardor puede ser NomCli o NumCli
+		if( !StringValido(sBuscador) )
+			return false;
+		VOCliente voCli = null;
+
+		if ( voCli == null )	voCli = BuscarCache_Num( sBuscador);
+		if ( voCli == null )	voCli = BuscarCache_Nombre( sBuscador);
 		
-		boolean bIngreso=false; 
-		int id=0; 
-		String sNumCli="", sNomCli="";
+		if ( voCli == null )
+			return false;
 		
-		bIngreso = StringValido(sBuscador) ? true : false; //Verifica ingreso
-		if(!bIngreso) return false;
-				
-		//Busca el ID en cachwe
-		//busca por numCli(siendo NumCli solo numeros)
-		if(IsNumeric(sBuscador)){ sNumCli=sBuscador;
-		for(int i=0; i<this.cacheNroCli.length; i++){
-			if(sNumCli.equals(this.cacheNroCli[i])){
-				id=cacheId[i];
-				continue;}}}
-		
-		//busca por NomCli(siendo NomCli String no solo numerico... algo asi)
-		if(!IsNumeric(sBuscador)){ sNomCli=sBuscador;
-		for(int q=0; q<this.cacheNroCli.length; q++){
-			if(sNomCli.equals(this.cacheNomCli[q])){
-				id=cacheId[q];
-				sNumCli=this.cacheNroCli[q];
-				continue;}}}
-		
-		if(id==0) return false;
-		
-		voCli=gFachada.ObtenerCliente(sNumCli, id);
-		
-		if ( voCli != null ){
-			if ( voCli.getError().length() != 0 ) MensajeWin("Rellenar Cliente ERROR:\n"+voCli.getError());
-			else{
-				if(bConfirmarRellenado){
-					if(ConfirmWin("Cliente existente! \nRellenar campos?")){
-						LlenarCampos(voCli, tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios,
-								 cbDepartamentos, cbMoneda); 
-					}else{return false;}
-					
-				}
-				LlenarCampos(voCli, tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios,
-						 cbDepartamentos, cbMoneda); 
-			}}
-		return true;}
+		if ( voCli.getError().length() != 0 ) //Los valores cacheados nunca tienen error... pero por las dudas
+			MensajeWin("Rellenar Cliente ERROR:\n"+voCli.getError());
+		else
+		{
+			if( bConfirmarRellenado && !ConfirmWin("Cliente existente! \nRellenar campos?") )
+				return false;
+			LlenarCampos(voCli,
+						tfRut,
+						tfNumCli,
+						tfTelefono,
+						tfDireccion,
+						tfNomCli,
+						tfHoras,
+						tfHonorarios,
+						cbDepartamentos,
+						cbMoneda); 
+		}
+		return true;
+	}
 			
 	public void LlenarCampos(VOCliente voCli, JTextField tfRut, JTextField tfNumCli, JTextField tfTelefono,
 			JTextField tfDireccion, JTextField tfNomCli, JTextField tfHoras, JTextField tfHonorarios,
@@ -148,50 +148,16 @@ public class c_Cliente extends c_Maestro{
 		gFachada.getIDDepartamento(voCli);
 		return voCli.getiIdDepto();
 	}
-	
-	public String VerificarCliente(String sBuscar, OpcVerificarCliente opc){
-		String sResultado="";
-		
-		switch (opc){
-		case NomCliente: 
-			for (int i=0; i<cacheNomCli.length; i++){
-				if(sBuscar.equals(cacheNroCli[i])){
-					sResultado=cacheNomCli[i];
-					return sResultado;
-				}
-			}
-			break;
-		case NumCliente: 
-			for (int i = 0; i < cacheNroCli.length; i++) {
-				if(sBuscar.equals(cacheNomCli[i])){
-					sResultado=cacheNroCli[i];
-					return sResultado;
-				}
-			}
-			break;
-		
-		case IDCliente: 
-			for (int i=0; i<cacheNroCli.length; i++){
-				if(sBuscar.equals(cacheNroCli[i])){
-					sResultado=""+cacheId[i];
-					return sResultado;
-				}
-			}
-			break;
-		}//switch
-		return sResultado;
-	}
-	
+
 	public void EliminarCliente(String sNumCli){
-		//elimina cliente
-		//buscar ID cliente
-		int iID=IntConvertidor(VerificarCliente(sNumCli, opc.IDCliente));
-		
-		//crea VO
-		voCli=new VOCliente(sNumCli, iID);
-		
-		MensajeWin(gFachada.EliminarCliente(voCli) ? voCli.getResultado() : voCli.getError() );
-		
+		VOCliente voCli = BuscarCache_Num( sNumCli);
+		if ( voCli == null ) //Esto ocurre?
+		{
+			//No esta cacheado
+			//Buscar en base de datos y procesar a lo antiguo
+//			voCli = new VOCliente( )
+		}
+		MensajeWin( gFachada.EliminarCliente(voCli) ? voCli.getResultado() : voCli.getError() );
 	}
 	
 	private boolean VerificarDatos(String sRut, String sNumCli, String sTelefono, String sDireccion, String sNomCli, String sHoras, String sHonorarios){

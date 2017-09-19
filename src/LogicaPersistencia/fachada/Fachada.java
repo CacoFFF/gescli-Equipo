@@ -119,9 +119,11 @@ public class Fachada
 	public ArrayList<String> ListaDeptos(){
 		ArrayList<String> alDep = AccesoBD.ListarDepartamentos(con);
 		return alDep;}
-	public ArrayList<String> ListaCli(){
-		ArrayList<String> alCli = AccesoBD.ListarClientes(con);
-		return alCli;
+	public VOCliente[] ListaCli(){
+		ArrayList<VOCliente> alCli = AccesoBD.ListarClientes(con);
+		VOCliente res[] = new VOCliente[alCli.size()];
+		alCli.toArray(res);
+		return res;
 	}
 	public void getIDDepartamento(VOCliente ovCli){
 		AccesoBD.getIdDepartamento(con, ovCli);
