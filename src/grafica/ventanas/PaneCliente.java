@@ -6,7 +6,6 @@ import java.awt.event.ItemEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.awt.event.KeyListener;
 
 import javax.swing.JButton;
 import javax.swing.JComboBox;
@@ -18,9 +17,6 @@ import javax.swing.JTextField;
 import grafica.controladores.c_Cliente;
 import grafica.controladores.c_Cliente.OpcVerificarCliente;
 import grafica.controladores.c_Maestro;
-import javax.swing.ImageIcon;
-import java.awt.Component;
-import java.awt.Color;
 
 public class PaneCliente extends JComponent {
 	private c_Cliente ctrl;
@@ -166,9 +162,8 @@ public class PaneCliente extends JComponent {
 					sDepto=e.getItem().toString();
 					bDepto=!sDepto.isEmpty() ? true : false;
 					btnGuardar.setEnabled(bMoneda && bDepto);
-					
 				}}});
-		pCampos.add(cbDepartamentos);
+			pCampos.add(cbDepartamentos);
 		
 		txtHoras=new JLabel("Horas cargables:");
 		txtHoras.setBounds(10,155,100,20);
@@ -204,6 +199,7 @@ public class PaneCliente extends JComponent {
 		btnGuardar.setEnabled(false);
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
+				//si bCliExistente modificar en lugar de agregar
 				ctrl.Guardar(tfRut.getText().trim(), tfNumCli.getText().trim(), 
 						tfTelefono.getText().trim(), tfDireccion.getText().trim(), 
 						tfNomCli.getText().trim(), tfHoras.getText().trim(), 
@@ -221,6 +217,7 @@ public class PaneCliente extends JComponent {
 			public void actionPerformed(ActionEvent w) {
 				ctrl.EliminarCliente(tfNumCli.getText().trim());
 				ctrl.VaciarCampos(cbDepartamentos, cbMoneda,tfRut,tfNumCli,tfTelefono,tfDireccion,tfNomCli,tfHoras,tfHonorarios);
+				ctrl.ListaClientes(cbLista);
 				btnBorrar.setEnabled(false);
 				}
 		});

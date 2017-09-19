@@ -10,11 +10,17 @@ import grafica.controladores.c_Cliente.OpcVerificarCliente;
 
 
 public class c_Cliente extends c_Maestro{
-	
-	
-	//cachwe?
-	private int[] iIdCli;
-	private String[] sNumCli, sNomCli;
+	//cache?
+	private int[] cacheId;
+	private String[] cacheRut;
+	private String[] cacheNroCli;
+	private String[] cacheTel;
+	private String[] cacheDireccion;
+	private int[] cacheDeptoIdDepto; 
+	private String[] cacheNomCli;
+	private int[] cacheHsCargables;
+	private int[] cacheHonorarios;
+
 	public enum OpcVerificarCliente{ NumCliente, NomCliente, IDCliente; }
 	public static OpcVerificarCliente opc;
 		
@@ -29,14 +35,14 @@ public class c_Cliente extends c_Maestro{
 		if(alCli.isEmpty()) return;
 		
 		//Agrega al cachwe
-		iIdCli=new int[alCli.size()];
-		sNumCli=new String[alCli.size()];
-		sNomCli=new String[alCli.size()];
+		cacheId=new int[alCli.size()];
+		cacheNroCli=new String[alCli.size()];
+		cacheNomCli=new String[alCli.size()];
 		
 		for (int i=0; i<alCli.size(); i++){
-			iIdCli[i]=IntConvertidor(alCli.get(i).substring(0, (alCli.get(i).toString().indexOf("@"))));
-			sNumCli[i]=Substring(alCli.get(i), "[", "]");
-			sNomCli[i]=alCli.get(i).substring(alCli.get(i).toString().indexOf("-")+1).trim();
+			cacheId[i]=IntConvertidor(alCli.get(i).substring(0, (alCli.get(i).toString().indexOf("@"))));
+			cacheNroCli[i]=Substring(alCli.get(i), "[", "]");
+			cacheNomCli[i]=alCli.get(i).substring(alCli.get(i).toString().indexOf("-")+1).trim();
 		}
 
 		//Agrega a JComboBox
@@ -81,17 +87,17 @@ public class c_Cliente extends c_Maestro{
 		//Busca el ID en cachwe
 		//busca por numCli(siendo NumCli solo numeros)
 		if(IsNumeric(sBuscador)){ sNumCli=sBuscador;
-		for(int i=0; i<this.sNumCli.length; i++){
-			if(sNumCli.equals(this.sNumCli[i])){
-				id=iIdCli[i];
+		for(int i=0; i<this.cacheNroCli.length; i++){
+			if(sNumCli.equals(this.cacheNroCli[i])){
+				id=cacheId[i];
 				continue;}}}
 		
 		//busca por NomCli(siendo NomCli String no solo numerico... algo asi)
 		if(!IsNumeric(sBuscador)){ sNomCli=sBuscador;
-		for(int q=0; q<this.sNumCli.length; q++){
-			if(sNomCli.equals(this.sNomCli[q])){
-				id=iIdCli[q];
-				sNumCli=this.sNumCli[q];
+		for(int q=0; q<this.cacheNroCli.length; q++){
+			if(sNomCli.equals(this.cacheNomCli[q])){
+				id=cacheId[q];
+				sNumCli=this.cacheNroCli[q];
 				continue;}}}
 		
 		if(id==0) return false;
@@ -148,26 +154,26 @@ public class c_Cliente extends c_Maestro{
 		
 		switch (opc){
 		case NomCliente: 
-			for (int i=0; i<sNomCli.length; i++){
-				if(sBuscar.equals(sNumCli[i])){
-					sResultado=sNomCli[i];
+			for (int i=0; i<cacheNomCli.length; i++){
+				if(sBuscar.equals(cacheNroCli[i])){
+					sResultado=cacheNomCli[i];
 					return sResultado;
 				}
 			}
 			break;
 		case NumCliente: 
-			for (int i = 0; i < sNumCli.length; i++) {
-				if(sBuscar.equals(sNomCli[i])){
-					sResultado=sNumCli[i];
+			for (int i = 0; i < cacheNroCli.length; i++) {
+				if(sBuscar.equals(cacheNomCli[i])){
+					sResultado=cacheNroCli[i];
 					return sResultado;
 				}
 			}
 			break;
 		
 		case IDCliente: 
-			for (int i=0; i<sNumCli.length; i++){
-				if(sBuscar.equals(sNumCli[i])){
-					sResultado=""+iIdCli[i];
+			for (int i=0; i<cacheNroCli.length; i++){
+				if(sBuscar.equals(cacheNroCli[i])){
+					sResultado=""+cacheId[i];
 					return sResultado;
 				}
 			}
