@@ -72,7 +72,7 @@ public class AccesoBD
 			pstmt.setString(4, oVO.getFechaNac() );
 			pstmt.setString(5, oVO.getCel() );
 			pstmt.setBoolean(6, oVO.getBaja() );
-			pstmt.setString(7, oVO.getHorasDia() );
+			pstmt.setInt(7, oVO.getHorasDia() );
 			pstmt.executeUpdate();
 			pstmt.close();
 			oVO.setResultado("[Agregado]\n"+oVO.getCi()+": "+oVO.getNombre()+" "+oVO.getApellido());
@@ -91,7 +91,7 @@ public class AccesoBD
 			pstmt.setString(3, oVO.getFechaNac() );
 			pstmt.setString(4, oVO.getCel() );
 			pstmt.setBoolean(5, oVO.getBaja() );
-			pstmt.setString(6, oVO.getHorasDia() );
+			pstmt.setInt(6, oVO.getHorasDia() );
 			pstmt.setString(7, oVO.getCi() );
 			pstmt.executeUpdate();
 			pstmt.close();
@@ -134,7 +134,7 @@ public class AccesoBD
 				VO.setApellido( rs.getString(2));
 				VO.setFechaNac( rs.getString(3));
 				VO.setCel( rs.getString(4));
-				VO.setHorasDia( rs.getString(5));
+				VO.setHorasDia( rs.getInt(5));
 				VO.setBaja(rs.getBoolean(6));
 			}
 			else
@@ -161,24 +161,32 @@ public class AccesoBD
 			return false;
 		}
 	}
-	public ArrayList<String> ListarFuncionario(Connection conn){
-		ArrayList<String> alListaFun = new ArrayList<String>();;
+	public ArrayList<VOEmpleado> ListarFuncionarios(Connection conn)
+	{
+		ArrayList<VOEmpleado> alListaFun = new ArrayList<VOEmpleado>();;
 		String sqlListarFun=consultas.ListarFuncionarios();
-		String stmp="";
-		try {
+		try
+		{
 			Statement stmt=conn.createStatement();
 			ResultSet rs=stmt.executeQuery(sqlListarFun);
-			while(rs.next()){
-				stmp="["+rs.getString("ciFun")+"] - "+rs.getString("nombre");
-				alListaFun.add(stmp);
+			while(rs.next())
+			{
+				VOEmpleado nuevoFun = new VOEmpleado(
+						rs.getInt("idFun"),
+						rs.getString("nomFun"),
+						rs.getString("apeFun"),
+						rs.getString("ciFun"),
+						rs.getString("fechNacFun"),
+						rs.getString("celFun"),
+						rs.getInt("horasDia"),
+						rs.getBoolean("baja"));
+				alListaFun.add(nuevoFun);
 			}
 			rs.close();
-			return alListaFun;
-		} catch (SQLException e) {
-			System.out.println(e.getErrorCode());
 		}
+		catch (SQLException e)
+		{	System.out.println(e.getErrorCode()+" "+e.getMessage());	}
 		return alListaFun;
-		
 	}
 
 	//Parte de Departamento
@@ -212,8 +220,7 @@ public class AccesoBD
 	
 	//Parte Cliente
 	public ArrayList<VOCliente> ListarClientes(Connection conn){
-		//INFO consulta: ID@[NumeroCliente] - Nombre
-		
+	
 		ArrayList<VOCliente> alListaCli = new ArrayList<VOCliente>();;
 		String sqlListarCli=consultas.ListarClientes();
 		try

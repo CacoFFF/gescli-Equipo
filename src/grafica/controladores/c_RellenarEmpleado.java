@@ -18,7 +18,7 @@ public class c_RellenarEmpleado extends c_Maestro {
 		if ( !CIValida(sCI) )
 		{
 
-			MensajeWin( "Formato de CI erróneo" + "\r\n" + "Usar: x.xxx.xxx-x");
+			MensajeWin( "Formato de CI errï¿½neo" + "\r\n" + "Usar: x.xxx.xxx-x");
 			return; //Mostrar mensaje de error?
 		}
 		
@@ -33,7 +33,7 @@ public class c_RellenarEmpleado extends c_Maestro {
 				oApellido.setText( VO.getApellido() );
 				oFechaNac.setText( VO.getFechaNac() );
 				oCel.setText     ( VO.getCel() );
-				oHorasDia.setText( VO.getHorasDia() );
+				oHorasDia.setText( ""+VO.getHorasDia() );
 				oBaja.setSelected( VO.getBaja() );
 				if ( VO.getResultado().length() != 0 )
 					MensajeWin(VO.getResultado());

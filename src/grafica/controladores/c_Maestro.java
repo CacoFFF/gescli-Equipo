@@ -13,7 +13,6 @@ import LogicaPersistencia.valueObject.VOEmpleado;
 
 public class c_Maestro
 {
-	public VOEmpleado oVOF;
 	public Fachada gFachada=new Fachada();
 	
 	protected static boolean IsNumeric(String str) {return str.matches("\\d+");}

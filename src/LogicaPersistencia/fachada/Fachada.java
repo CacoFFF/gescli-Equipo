@@ -110,9 +110,11 @@ public class Fachada
 		AccesoBD.ObtenerEmpleadoCI( con, VO);
 		return VO;
 	}
-	public ArrayList<String> ListaFun(){
-		ArrayList<String> alFun = AccesoBD.ListarFuncionario(con);
-		return alFun;
+	public VOEmpleado[] ListaFun(){
+		ArrayList<VOEmpleado> alFun = AccesoBD.ListarFuncionarios(con);
+		VOEmpleado res[] = new VOEmpleado[alFun.size()];
+		alFun.toArray(res);
+		return res;
 	}
 	
 	/*Parte del Cliente*/

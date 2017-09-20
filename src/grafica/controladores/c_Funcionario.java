@@ -7,21 +7,45 @@ import javax.swing.JCheckBox;
 import javax.swing.JComboBox;
 import javax.swing.JTextField;
 
+import LogicaPersistencia.valueObject.VOCliente;
 import LogicaPersistencia.valueObject.VOEmpleado;
 import grafica.ventanas.PaneFuncionario;
 
 
-public class c_Funcionario extends c_Maestro {
+public class c_Funcionario extends c_Maestro
+{
+	private VOEmpleado cache[];
+
+	public VOEmpleado get( int i)
+	{
+		if ( (cache != null) && (i >= 0) && (i < cache.length) )
+			return cache[i];
+		return null;
+	}
 	
 	public void ListaFun(JComboBox<String> cb) {
+		int iViejo = cb.getSelectedIndex();
+		VOEmpleado oViejo = get( iViejo-1);
 		
 		cb.removeAllItems();
 		cb.addItem("--Funcionarios--");
-		ArrayList<String> alFun=new ArrayList<String>();
-		alFun=gFachada.ListaFun();//ver este graan pase de arraylist desde accesoBD
-		if(alFun.isEmpty()) return;
+		cache = gFachada.ListaFun();
+	
+		for ( int i=0 ; i<cache.length ; i++ )
+			cb.addItem( "[" + cache[i].getCi() + "] " + cache[i].getNombre() + " " + cache[i].getApellido() );
 
-		for(String sFun : alFun) cb.addItem(sFun);
+		VOEmpleado oNuevo = get( iViejo-1);
+		if ( (oNuevo != null) && (oViejo != null) && (oNuevo.getId() == oViejo.getId()) )
+			cb.setSelectedIndex( iViejo);
+		else if ( oViejo != null )
+		{
+			for ( int i=0 ; i<cache.length ; i++ )
+				if ( cache[i].getId() == oViejo.getId()  )
+				{
+					cb.setSelectedIndex(i+1);
+					break;
+				}
+		}
 	}
 		
 	public void BuscarCI(JButton btnBaja, JTextField tfNomFun, JTextField tfApefun, JTextField tfCI,
@@ -37,11 +61,11 @@ public class c_Funcionario extends c_Maestro {
 		if ( !CIValida(sCI))
 		{
 			if (sCI.isEmpty()) return; //Ingreso cancelado
-			MensajeWin( "Formato de CI erróneo" + "\r\n" + "Usar: x.xxx.xxx-x");
+			MensajeWin( "Formato de CI errï¿½neo" + "\r\n" + "Usar: x.xxx.xxx-x");
 			return; 
 		}
 		
-		oVOF = gFachada.ObtenerEmpleado(sCI);
+		VOEmpleado oVOF = gFachada.ObtenerEmpleado(sCI);
 		
 		if ( oVOF != null )
 		{
@@ -60,20 +84,20 @@ public class c_Funcionario extends c_Maestro {
 			JTextField tfFecNac1, JTextField tfFecNac2, JTextField tfFecNac3, JTextField tfCel, JTextField tfHoras, 
 			JCheckBox bEstado) {
 		
-		tfNomFun.setText  ( oVOF.getNombre() );
-		tfApefun.setText( oVOF.getApellido() );
-		tfCI.setText(oVOF.getCi());
-		String[] aFecha=oVOF.getFechaNac().split(PaneFuncionario.sSeparadorFecha); //0=año 1=mes 2=dia
+		tfNomFun.setText  ( vOFun.getNombre() );
+		tfApefun.setText( vOFun.getApellido() );
+		tfCI.setText(vOFun.getCi());
+		String[] aFecha=vOFun.getFechaNac().split(PaneFuncionario.sSeparadorFecha); //0=aï¿½o 1=mes 2=dia
 //		for (String sfecha : aFecha) {System.out.println(sfecha);} //prueba: ver division de fecha
 		tfFecNac1.setText(aFecha[2]);
 		tfFecNac2.setText(aFecha[1]);
 		tfFecNac3.setText(aFecha[0]);
-		tfCel.setText ( oVOF.getCel());
-		tfHoras.setText( oVOF.getHorasDia() );
-		bEstado.setSelected( oVOF.getBaja() );
-		if ( oVOF.getResultado().length() != 0 ) MensajeWin(oVOF.getResultado());
+		tfCel.setText ( vOFun.getCel());
+		tfHoras.setText( ""+vOFun.getHorasDia() );
+		bEstado.setSelected( vOFun.getBaja() );
+		if ( vOFun.getResultado().length() != 0 ) MensajeWin(vOFun.getResultado());
 		
-		CtrlBtnBaja(btnBaja, oVOF.getBaja());
+		CtrlBtnBaja(btnBaja, vOFun.getBaja());
 		
 	}
 	
@@ -117,7 +141,7 @@ public class c_Funcionario extends c_Maestro {
 		
 		//Verifica los datos de la ventana
 		if(Verificar(sNomFun, sApefun, sCI, sFecha, sCel, sHoras)){
-			 oVOF=new VOEmpleado(sNomFun, sApefun, sCI, sFecha, sCel, sHoras, bActivo);
+			 VOEmpleado oVOF = new VOEmpleado(sNomFun, sApefun, sCI, sFecha, sCel, Integer.parseInt(sHoras), bActivo);
 			 //Verifica CI en base de datos
 			 //Si no encuentra CI, agrega el funcionario
 			 if(!gFachada.VerificarFuncionario(sCI)){

@@ -1,15 +1,18 @@
 package LogicaPersistencia.valueObject;
 
 public class VOEmpleado extends VOGenerico {
-	private String nombre, apellido, ci, fechaNac, cel, horasDia;
+	private int id; //No setter
+	private String nombre, apellido, ci, fechaNac, cel;
+	private int horasDia;
 	private boolean baja;
 	
+	public int getId() { return id;}
 	public String getNombre() {return nombre;}
 	public String getApellido() {return apellido;}
 	public String getCi() {return ci;}
 	public String getFechaNac() {return fechaNac;}
 	public String getCel() {return cel;}
-	public String getHorasDia() {return horasDia;}
+	public int getHorasDia() {return horasDia;}
 	public boolean getBaja() {return baja;}
 
 	public void setNombre(String nombre) {this.nombre = nombre;}
@@ -17,7 +20,7 @@ public class VOEmpleado extends VOGenerico {
 	public void setCi(String ci) {this.ci = ci;}
 	public void setFechaNac(String fechaNac) {this.fechaNac = fechaNac;}
 	public void setCel(String cel) {this.cel = cel;}
-	public void setHorasDia(String horasDia) {this.horasDia = horasDia;}
+	public void setHorasDia(int horasDia) {this.horasDia = horasDia;}
 	public void setBaja( boolean baja) {this.baja = baja;}
 	
 	
@@ -33,8 +36,21 @@ public class VOEmpleado extends VOGenerico {
 		ci=sCI;
 		baja=bBaja;}
 	
+	//Este constructor es utilizado cuando queremos listar entradas
+	public VOEmpleado( int id, String nombre, String apellido, String ci, String fechaNac, String cel, int horasDia, boolean baja) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.apellido = apellido;
+		this.ci = ci;
+		this.fechaNac = fechaNac;
+		this.cel = cel;
+		this.horasDia = horasDia;
+		this.baja = baja;
+	}
+	
 	//Este constructor es utilizado cuando queremos agregar una entrada
-	public VOEmpleado(String nombre, String apellido, String ci, String fechaNac, String cel, String horasDia, boolean baja) {
+	public VOEmpleado(String nombre, String apellido, String ci, String fechaNac, String cel, int horasDia, boolean baja) {
 		super();
 		this.nombre = nombre;
 		this.apellido = apellido;

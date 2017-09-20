@@ -33,7 +33,7 @@ public class Consultas {
 				
 	}
 	public String ListarFuncionarios(){
-		return "select ciFun, CONCAT(nomFun,' ' ,apeFun) as nombre from funcionarios";
+		return "select * from funcionarios";
 	}
 
 	//Consulta Departamentos
