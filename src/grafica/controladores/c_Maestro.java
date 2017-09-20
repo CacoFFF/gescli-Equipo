@@ -1,5 +1,11 @@
 package grafica.controladores;
 
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.util.StringTokenizer;
 
 import javax.swing.JComponent;
@@ -10,6 +16,7 @@ import javax.swing.JTextField;
 import LogicaPersistencia.fachada.Fachada;
 import LogicaPersistencia.valueObject.VOCliente;
 import LogicaPersistencia.valueObject.VOEmpleado;
+import Main.Main;
 
 public class c_Maestro
 {
@@ -117,18 +124,30 @@ public class c_Maestro
 	protected void MensajeWin(String txt) {JOptionPane.showMessageDialog(null, txt);}
 	protected boolean ConfirmWin(String txt) {if (
 			JOptionPane.showConfirmDialog(null, txt, "Confirmar", JOptionPane.YES_NO_OPTION, JOptionPane.QUESTION_MESSAGE) == 0)return true;return false;}
-	protected String InputWin(String txt){
+	protected String InputWinCI(String txt)
+	{
 		JTextField tfCI = new JTextField();
-		JComponent[] inputs = new JComponent[] {
-		        new JLabel(txt), tfCI};
+		tfCI.addKeyListener(new KeyAdapter()
+		{	public void keyReleased(KeyEvent e)
+			{	Main.gCon_CampoCI.ModificarCampo(tfCI);	}});
+		tfCI.addPropertyChangeListener(new PropertyChangeListener()
+		{	public void propertyChange(PropertyChangeEvent arg0)
+			{	Main.gCon_CampoCI.ModificarCampo(tfCI);	}});
+		tfCI.addFocusListener(new FocusAdapter()
+		{	public void focusGained(FocusEvent arg0)
+			{	Main.gCon_CampoCI.ModificarCampo(tfCI);	}
+			public void focusLost(FocusEvent e)
+			{	Main.gCon_CampoCI.ModificarCampo(tfCI);	}});
+		
+		JComponent[] inputs = new JComponent[]
+				{
+						new JLabel(txt),
+						tfCI
+		        };
 		
 		int result = JOptionPane.showConfirmDialog(null, inputs, txt, JOptionPane.PLAIN_MESSAGE);
-		if (result == JOptionPane.OK_OPTION) {
-		           return tfCI.getText().trim();
-		} else {
- 		    return "";
-		}
-	    
-
+		if (result == JOptionPane.OK_OPTION)
+			return tfCI.getText().trim();
+	    return "";
 	}
 }

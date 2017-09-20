@@ -59,7 +59,7 @@ public class c_Funcionario extends c_Maestro
 		
 	public VOEmpleado BuscarCI( JComboBox<String> cb )
 	{
-		String sCI = InputWin("Ingrese CI a buscar:");
+		String sCI = InputWinCI("Ingrese CI a buscar:");
 		if ( !CIValida(sCI))
 		{
 			if ( !sCI.isEmpty() )
@@ -78,7 +78,7 @@ public class c_Funcionario extends c_Maestro
 				MensajeWin("Rellenar Funcionario ERROR:\n"+oVOF.getError());
 				oVOF = null;
 			}
-			else
+			else if ( cache != null )
 			{
 				for ( int i=0 ; i<cache.length ; i++ )
 					if ( cache[i].getCi().equals(sCI) )
