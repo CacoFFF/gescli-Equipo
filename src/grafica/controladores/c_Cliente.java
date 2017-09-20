@@ -13,7 +13,7 @@ public class c_Cliente extends c_Maestro{
 	
 	public VOCliente get( int i)
 	{
-		if ( (cache != null) && (i < cache.length) )
+		if ( (cache != null) && (i >= 0) && (i < cache.length) )
 			return cache[i];
 		return null;
 	}
@@ -21,9 +21,7 @@ public class c_Cliente extends c_Maestro{
 	public void ListaClientes(JComboBox<String> cb)	{
 
 		int iViejo = cb.getSelectedIndex();
-		int iIDViejo = -1;
-		if ( cache != null && cache.length > iViejo )
-			iIDViejo = cache[iViejo].getiIdCli();
+		VOCliente oViejo = get( iViejo-1);
 		
 		cb.removeAllItems();
 		cb.addItem("--Cliente--");
@@ -33,19 +31,17 @@ public class c_Cliente extends c_Maestro{
 			cb.addItem( "[" + cache[i].getsNroCli() + "] " + cache[i].getsNomCli() );
 		
 		//Re-seleccionar el elemento previamente seleccionado
-		if ( cache.length > iViejo && iIDViejo >= 0 )
+		VOCliente oNuevo = get( iViejo-1);
+		if ( (oNuevo != null) && (oViejo != null) && (oNuevo.getiIdCli() == oViejo.getiIdCli()) )
+			cb.setSelectedIndex( iViejo);
+		else if ( oViejo != null )
 		{
-			if ( cache[iViejo].getiIdCli() == iIDViejo )
-				cb.setSelectedIndex( iViejo);
-			else
-			{
-				for ( int i=0 ; i<cache.length ; i++ )
-					if ( cache[i].getiIdCli() == iIDViejo )
-					{
-						cb.setSelectedIndex(i);
-						break;
-					}
-			}
+			for ( int i=0 ; i<cache.length ; i++ )
+				if ( cache[i].getiIdCli() == oViejo.getiIdCli()  )
+				{
+					cb.setSelectedIndex(i+1);
+					break;
+				}
 		}
 	}
 	
@@ -59,7 +55,7 @@ public class c_Cliente extends c_Maestro{
 	}
 	public void ListaMonedas(JComboBox<String> cb){
 		//agregar tipos de moneda? o JTextField?
-		String[] asMonedas={"Pesos uy", "dolares", "otros"};
+		String[] asMonedas={"Pesos uy", "Dolares", "Otros"};
 		cb.addItem("");
 		for(String str : asMonedas) cb.addItem(str);
 	}
@@ -198,7 +194,7 @@ public class c_Cliente extends c_Maestro{
 			
 			//Opcion de agregar nuevo cliente
 			else{
-				voCli=new VOCliente(iDepto, IntConvertidor(sHoras), IntConvertidor(sHonorarios), iMoneda, sRut, sNumCli, sTelefono, sDireccion, sNomCli);
+				VOCliente voCli = new VOCliente(iDepto, IntConvertidor(sHoras), IntConvertidor(sHonorarios), iMoneda, sRut, sNumCli, sTelefono, sDireccion, sNomCli);
 				MensajeWin(gFachada.AgregarCliente(voCli));
 			}
 			

@@ -11,9 +11,9 @@ import LogicaPersistencia.fachada.Fachada;
 import LogicaPersistencia.valueObject.VOCliente;
 import LogicaPersistencia.valueObject.VOEmpleado;
 
-public class c_Maestro {
+public class c_Maestro
+{
 	public VOEmpleado oVOF;
-	public VOCliente voCli;
 	public Fachada gFachada=new Fachada();
 	
 	protected static boolean IsNumeric(String str) {return str.matches("\\d+");}

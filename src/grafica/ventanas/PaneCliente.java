@@ -17,6 +17,8 @@ import javax.swing.JTextField;
 import LogicaPersistencia.valueObject.VOCliente;
 import grafica.controladores.c_Cliente;
 import grafica.controladores.c_Maestro;
+import javax.swing.event.PopupMenuListener;
+import javax.swing.event.PopupMenuEvent;
 
 
 public class PaneCliente extends JComponent {
@@ -25,26 +27,46 @@ public class PaneCliente extends JComponent {
 
 	private JPanel pLista, pCampos;
 	private JComboBox<String> cbLista, cbDepartamentos, cbMoneda/*, cbTipoPersona*/;
-	private JButton btnVer, btnVaciar, btnBorrar, btnGuardar, btnBuscarnumcli;
+	private JButton btnVaciar, btnBorrar, btnGuardar;
 	private JLabel /*txtContacto,*/ txtRut, txtNumCli, txtTelefono, txtDireccion, txtDepartamento, txtNomCli, txtHoras,
 			txtHonorarios/*, txtTipoPersona*/;
 	private JTextField /*tfContacto,*/ tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios;
 	
 	private String sDepto;
 	private int iMoneda;
-	private boolean bDepto, bMoneda, bCliExistente=false;
+	private boolean bCliExistente=false;
+	private boolean bNoActualizarCampos;
 
 	public void MostrarCliente( VOCliente oCL)
 	{
-		tfNumCli.setText( oCL.getsNroCli());
-		tfTelefono.setText( oCL.getsTel());
-		tfRut.setText( oCL.getsRut());
-		tfDireccion.setText( oCL.getsDireccion());
-		tfNomCli.setText( oCL.getsNomCli());
-		tfHoras.setText( Integer.toString(oCL.getiHrCargables()));
-		tfHonorarios.setText( Integer.toString(oCL.getiHonorarios()));
-		cbDepartamentos.setSelectedIndex( oCL.getiIdDepto());
-		cbMoneda.setSelectedIndex( oCL.getiMoneda());
+		if ( bNoActualizarCampos )
+			return;
+		bCliExistente = (oCL != null);
+		btnBorrar.setEnabled( bCliExistente);
+		if ( !bCliExistente )
+		{
+			tfNumCli.setText( "");
+			tfTelefono.setText( "");
+			tfRut.setText( "");
+			tfDireccion.setText( "");
+			tfNomCli.setText( "");
+			tfHoras.setText( "");
+			tfHonorarios.setText( "");
+			cbDepartamentos.setSelectedIndex( 0);
+			cbMoneda.setSelectedIndex( 0);
+		}
+		else
+		{
+			tfNumCli.setText( oCL.getsNroCli());
+			tfTelefono.setText( oCL.getsTel());
+			tfRut.setText( oCL.getsRut());
+			tfDireccion.setText( oCL.getsDireccion());
+			tfNomCli.setText( oCL.getsNomCli());
+			tfHoras.setText( Integer.toString(oCL.getiHrCargables()));
+			tfHonorarios.setText( Integer.toString(oCL.getiHonorarios()));
+			cbDepartamentos.setSelectedIndex( oCL.getiIdDepto());
+			cbMoneda.setSelectedIndex( oCL.getiMoneda());
+		}
 	}
 	
 	PaneCliente() {
@@ -56,38 +78,26 @@ public class PaneCliente extends JComponent {
 		add(pLista);
 		
 		cbLista = new JComboBox<String>();
-		cbLista.setBounds(10, 10,260, 25);
-		ctrl.ListaClientes(cbLista);
-		cbLista.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-						if (e.getStateChange() == ItemEvent.SELECTED) {
-							String sSeleccion = e.getItem().toString();
-							btnVer.setEnabled(sSeleccion.startsWith("--") ? false : true);
-						}
-		
-					}
-				});
-		pLista.add(cbLista);
-		
-		btnVer = new JButton("Ver");
-		btnVer.setBounds(280,10,100,25);
-		btnVer.setEnabled(false);
-		btnVer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				VOCliente oCL = null;
-				if ( cbLista.getSelectedIndex() > 0 )
-				{
-//					String tmpBuscar=Main.Main.Substring(cbLista.getSelectedItem().toString(), "[" , "]");
-					/*seleccionar lo seleccionado desde el combobox, sacar el nombre delcliente y buscarlo en el controlador
-					 * y luego buscar clientes, jiji posible opcion?*/
-					oCL = ctrl.get( cbLista.getSelectedIndex() ); //arreglar esto
-					MostrarCliente( oCL);
-				}
-				bCliExistente = oCL != null;
-				btnBorrar.setEnabled(bCliExistente);
+		cbLista.addPopupMenuListener(new PopupMenuListener() {
+			public void popupMenuCanceled(PopupMenuEvent arg0) {}
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) {}
+			public void popupMenuWillBecomeVisible(PopupMenuEvent arg0)
+			{
+				bNoActualizarCampos = true;
+				ctrl.ListaClientes(cbLista);
+				bNoActualizarCampos = false;
 			}
 		});
-		pLista.add(btnVer);
+		cbLista.setBounds(10, 10,260, 25);
+		cbLista.addItem("--Cliente--");
+		cbLista.addItemListener(new ItemListener()
+		{
+			public void itemStateChanged(ItemEvent e)
+			{
+				MostrarCliente( ctrl.get( cbLista.getSelectedIndex()-1 ));
+			}
+		});
+		pLista.add(cbLista);
 		//--------------------------
 	
 		pCampos=new JPanel();
@@ -103,15 +113,6 @@ public class PaneCliente extends JComponent {
 
 		tfNumCli = new JTextField();
 		tfNumCli.setBounds(150, 5, 200, 20);
-		tfNumCli.addKeyListener(new KeyAdapter() {
-			public void keyReleased(KeyEvent ke){
-				VOCliente oCL=null;
-				oCL=ctrl.BuscarCache_Num(tfNumCli.getText().trim());
-				bCliExistente= oCL != null ? true : false;
-				if(oCL != null) MostrarCliente(oCL);
-				btnBorrar.setEnabled( bCliExistente);
-				}});
-		
 		pCampos.add(tfNumCli);
 
 		txtNomCli = new JLabel("Nombre: ");
@@ -120,17 +121,7 @@ public class PaneCliente extends JComponent {
 		
 		tfNomCli = new JTextField();
 		tfNomCli.setBounds(150, 30, 200, 20);
-		tfNomCli.addKeyListener(new KeyAdapter(){
-			public void keyReleased(KeyEvent ke){
-				VOCliente oCL=null;
-				oCL=ctrl.BuscarCache_Nombre(tfNomCli.getText().trim());
-				bCliExistente= oCL != null ? true : false;
-				if(oCL != null) MostrarCliente(oCL);
-				btnBorrar.setEnabled( bCliExistente);
-				}});
 		pCampos.add(tfNomCli);
-		
-
 		
 		txtRut=new JLabel("Rut:");
 		txtRut.setBounds(10,55,100,20);
@@ -166,9 +157,7 @@ public class PaneCliente extends JComponent {
 		cbDepartamentos.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange()==ItemEvent.SELECTED){
-					sDepto=e.getItem().toString();
-					bDepto=!sDepto.isEmpty() ? true : false;
-					btnGuardar.setEnabled(bMoneda && bDepto);
+					btnGuardar.setEnabled( (cbMoneda.getSelectedIndex() > 0) && (cbDepartamentos.getSelectedIndex() > 0) );
 				}}});
 			pCampos.add(cbDepartamentos);
 		
@@ -194,9 +183,7 @@ public class PaneCliente extends JComponent {
 		cbMoneda.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent e) {
 				if(e.getStateChange()==ItemEvent.SELECTED){
-					iMoneda=cbMoneda.getSelectedIndex();
-					bMoneda= iMoneda!=0 ? true : false;
-					btnGuardar.setEnabled(bMoneda && bDepto);
+					btnGuardar.setEnabled( (cbMoneda.getSelectedIndex() > 0) && (cbDepartamentos.getSelectedIndex() > 0) );
 				}}});
 		
 		pCampos.add(cbMoneda);

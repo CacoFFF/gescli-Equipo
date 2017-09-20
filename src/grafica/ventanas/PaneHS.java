@@ -149,18 +149,15 @@ public class PaneHS extends JPanel {
 		btnAgregarHS.setBounds(10, 180, 80, 23);
 		btnAgregarHS.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				ctrlMaestro=new c_Maestro();
-				
 				String sServicio=cbServicio.getSelectedItem().toString();
-				
 				
 				String sNumCliente;
 				sNumCliente=cbCliente.getSelectedIndex() >- 1 ? (String) cbCliente.getSelectedItem() : "--";
-				if(!sNumCliente.startsWith("--")) sNumCliente=ctrlMaestro.Substring(sNumCliente, "[", "]");
+				if(!sNumCliente.startsWith("--")) sNumCliente=c_Maestro.Substring(sNumCliente, "[", "]");
 				
 				String sCIFuncionario;
 				sCIFuncionario=cbFuncionario.getSelectedIndex() >- 1 ? (String) cbFuncionario.getSelectedItem() : "--";
-				if(!sCIFuncionario.startsWith("--")) sCIFuncionario=ctrlMaestro.Substring(sCIFuncionario, "[", "]");
+				if(!sCIFuncionario.startsWith("--")) sCIFuncionario=c_Maestro.Substring(sCIFuncionario, "[", "]");
 
 				Main.gCon_Horarios.Agregar(
 						sServicio, 
