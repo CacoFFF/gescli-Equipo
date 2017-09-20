@@ -25,9 +25,31 @@ public class cmpFecha extends JPanel
 		return ddmmaa;
 	}
 	
+	public void resetValues()
+	{
+		ddmmaa[0].setText("");
+		ddmmaa[1].setText("");
+		ddmmaa[2].setText("");
+	}
+
 	public String getText()
 	{
 		return ddmmaa[2].getText().trim()+"-"+ddmmaa[1].getText().trim()+"-"+ddmmaa[0].getText().trim();
+	}
+	
+	public void setText( String fecha)
+	{
+		try
+		{
+			int pos = fecha.indexOf("-");
+			ddmmaa[2].setText(fecha.substring(0, pos));
+			fecha = fecha.substring( pos+1);
+			pos = fecha.indexOf("-");
+			ddmmaa[1].setText(fecha.substring(0, pos));
+			fecha = fecha.substring( pos+1);
+			ddmmaa[0].setText(fecha);
+		}
+		catch (Exception e)	{}
 	}
 	
 	public boolean fechaValida()

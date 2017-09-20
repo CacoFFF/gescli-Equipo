@@ -18,7 +18,11 @@ import javax.swing.JComponent;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
+import javax.swing.event.PopupMenuEvent;
+import javax.swing.event.PopupMenuListener;
 
+import LogicaPersistencia.valueObject.VOCliente;
+import LogicaPersistencia.valueObject.VOEmpleado;
 import Main.Main;
 import grafica.controladores.c_Funcionario;
 
@@ -27,13 +31,45 @@ public class PaneFuncionario extends JComponent {
 
 	private JPanel pLista, pCampos;
 	private JComboBox<String> cbLista;
-	private JButton btnVer, btnVaciar, btnGuardar, btnBaja,btnBuscar;
+	private JButton btnVaciar, btnGuardar, btnBaja,btnBuscar;
 	private JLabel lblNomFun, lblCI, lblFecNac, lblCel, lblHorasDia;
-	private JTextField tfNomFun, tfApefun, tfCI, tfCel, tfHoras;
+	private JTextField tfNomFun, tfApeFun, tfCI, tfCel, tfHoras;
 	private JCheckBox chckActivo;
 	private cmpFecha cmpFecha;
 	public static String sSeparadorFecha="-";
+	
+	private boolean bNoActualizarCampos;
 
+	public void MostrarFuncionario( VOEmpleado oF)
+	{
+		if ( bNoActualizarCampos )
+			return;
+//		bCliExistente = (oCL != null);
+		btnBaja.setEnabled( oF != null );
+		if ( oF == null )
+		{
+			tfNomFun.setText("");
+			tfApeFun.setText("");
+			tfCI.setText("");
+			tfCel.setText("");
+			tfHoras.setText("");
+			cmpFecha.resetValues();
+			chckActivo.setSelected(false);
+			btnBaja.setText("Baja");
+		}
+		else
+		{
+			tfNomFun.setText(oF.getNombre());
+			tfApeFun.setText(oF.getApellido());
+			tfCI.setText(oF.getCi());
+			tfCel.setText(oF.getCel());
+			tfHoras.setText( ""+oF.getHorasDia());
+			cmpFecha.setText(oF.getFechaNac());
+			chckActivo.setSelected(oF.getBaja());
+			btnBaja.setText( oF.getBaja() ? "Dar Baja" : "Dar Alta");
+		}
+	}
+	
 	PaneFuncionario() {
 		ctrl = new c_Funcionario();
 
@@ -43,46 +79,36 @@ public class PaneFuncionario extends JComponent {
 		add(pLista);
 
 		cbLista = new JComboBox<String>();
-		cbLista.setBounds(10, 10, 215, 25);
-		ctrl.ListaFun(cbLista); // Agrega elementos a la lista
-		cbLista.addItemListener(new ItemListener() {
-			public void itemStateChanged(ItemEvent e) {
-				if (e.getStateChange() == ItemEvent.SELECTED) {
-					String sSeleccion = e.getItem().toString();
-					if(sSeleccion.startsWith("--")) btnBaja.setEnabled(false);
-					btnVer.setEnabled(sSeleccion.startsWith("--") ? false : true);
-					
-				}
-
+		cbLista.setBounds(10, 10, 276, 25);
+		cbLista.addItem("--Funcionarios--");
+		cbLista.addPopupMenuListener(new PopupMenuListener() {
+			public void popupMenuCanceled(PopupMenuEvent arg0) {}
+			public void popupMenuWillBecomeInvisible(PopupMenuEvent arg0) {}
+			public void popupMenuWillBecomeVisible(PopupMenuEvent arg0)
+			{
+				bNoActualizarCampos = true;
+				ctrl.ListaFun(cbLista);
+				bNoActualizarCampos = false;
+			}
+		});
+		cbLista.addItemListener(new ItemListener()
+		{
+			public void itemStateChanged(ItemEvent e)
+			{
+				MostrarFuncionario( ctrl.get( cbLista.getSelectedIndex()-1 ));
 			}
 		});
 		pLista.add(cbLista);
-
-		btnVer = new JButton("Ver");
-		btnVer.setBounds(235, 10, 70, 25);
-		btnVer.setEnabled(false);
-		btnVer.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				//seguir aca
-				String tmp=cbLista.getSelectedItem().toString();
-				int iInicio=tmp.indexOf("["), iFin=tmp.indexOf("]");
-				String sCI=tmp.substring(iInicio+1,iFin);
-				JTextField FN[] = cmpFecha.getDDMMAA(); 
-				ctrl.BuscarCI(btnBaja, tfNomFun, tfApefun, tfCI, FN[0], FN[1], FN[2], tfCel, tfHoras, chckActivo, sCI);
-				ctrl.CtrlBtnBaja(btnBaja, chckActivo.isSelected());
-			}
-		});
-		pLista.add(btnVer);
 		
 		btnBuscar = new JButton("Buscar CI");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				JTextField FN[] = cmpFecha.getDDMMAA(); 
-				ctrl.BuscarCI(btnBaja, tfNomFun, tfApefun, tfCI, FN[0], FN[1], FN[2], tfCel, tfHoras, chckActivo);
+				ctrl.BuscarCI(btnBaja, tfNomFun, tfApeFun, tfCI, FN[0], FN[1], FN[2], tfCel, tfHoras, chckActivo);
 				ctrl.CtrlBtnBaja(btnBaja, chckActivo.isSelected());
 			}
 		});
-		btnBuscar.setBounds(310, 10, 80, 25);
+		btnBuscar.setBounds(296, 10, 94, 25);
 		pLista.add(btnBuscar);
 		// ----------------------------------------------
 		pCampos = new JPanel();
@@ -99,10 +125,10 @@ public class PaneFuncionario extends JComponent {
 		tfNomFun.setBounds(120, 5, 100, 20);
 		pCampos.add(tfNomFun);
 
-		tfApefun = new JTextField();
-		tfApefun.setToolTipText("Apellido");
-		tfApefun.setBounds(225, 5, 155, 20);
-		pCampos.add(tfApefun);
+		tfApeFun = new JTextField();
+		tfApeFun.setToolTipText("Apellido");
+		tfApeFun.setBounds(225, 5, 155, 20);
+		pCampos.add(tfApeFun);
 		
 		lblCI = new JLabel("Cedula:");
 		lblCI.setBounds(10, 30, 100, 20);
@@ -178,7 +204,7 @@ public class PaneFuncionario extends JComponent {
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 				String	sNomFun=tfNomFun.getText().trim(),
-						sApefun=tfApefun.getText().trim(),
+						sApefun=tfApeFun.getText().trim(),
 						sCI=tfCI.getText().trim(),
 						sFecha=cmpFecha.getText().trim(),
 						sCel=tfCel.getText().trim(),
@@ -196,14 +222,14 @@ public class PaneFuncionario extends JComponent {
 		pCampos.add(btnGuardar);
 
 		/*mejorar esto (btnBaja toma el estado del chckActivo, y este es modificable desde la ventana(mal))*/
-		btnBaja = new JButton("");
+		btnBaja = new JButton("Baja");
 		btnBaja.setBounds(200, 265, 90, 25);
 		btnBaja.setEnabled(false);
 		btnBaja.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(!ctrl.Baja(tfCI.getText().trim(), chckActivo)){
 					JTextField FN[] = cmpFecha.getDDMMAA();
-					ctrl.VaciarCampos(cbLista, chckActivo, tfNomFun, tfApefun, tfCI, tfCel,FN[0],FN[1],FN[2],tfHoras);
+					ctrl.VaciarCampos(cbLista, chckActivo, tfNomFun, tfApeFun, tfCI, tfCel,FN[0],FN[1],FN[2],tfHoras);
 					btnBaja.setEnabled(false);				
 				}else{
 				ctrl.ListaFun(cbLista);
@@ -219,7 +245,7 @@ public class PaneFuncionario extends JComponent {
 		btnVaciar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JTextField FN[] = cmpFecha.getDDMMAA();
-				ctrl.VaciarCampos(cbLista, chckActivo, tfNomFun, tfApefun, tfCI, tfCel,FN[0],FN[1],FN[2],tfHoras);
+				ctrl.VaciarCampos(cbLista, chckActivo, tfNomFun, tfApeFun, tfCI, tfCel,FN[0],FN[1],FN[2],tfHoras);
 			}});
 		pCampos.add(btnVaciar);
 		

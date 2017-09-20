@@ -23,6 +23,15 @@ public class c_Funcionario extends c_Maestro
 		return null;
 	}
 	
+	public VOEmpleado BuscarCache_CI( String CI)
+	{
+		if ( cache != null )
+			for ( int i=0 ; i<cache.length ; i++ )
+				if ( cache[i].getCi().equals(CI) )
+					return cache[i];
+		return null;
+	}
+	
 	public void ListaFun(JComboBox<String> cb) {
 		int iViejo = cb.getSelectedIndex();
 		VOEmpleado oViejo = get( iViejo-1);
