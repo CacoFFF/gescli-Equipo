@@ -57,35 +57,38 @@ public class c_Funcionario extends c_Maestro
 		}
 	}
 		
-	public void BuscarCI(JButton btnBaja, JTextField tfNomFun, JTextField tfApefun, JTextField tfCI,
-			JTextField tfFecNac1, JTextField tfFecNac2, JTextField tfFecNac3, JTextField tfCel, JTextField tfHoras, 
-			JCheckBox bEstado, String... sBuscarLista){
-		String sCI=null;
-		
-		sCI = sBuscarLista.length > 0 ? sBuscarLista[0] : null;
-		
-		if(sCI==null){ sCI=InputWin("Ingrese CI a buscar:"); }
-			
-		
+	public VOEmpleado BuscarCI( JComboBox<String> cb )
+	{
+		String sCI = InputWin("Ingrese CI a buscar:");
 		if ( !CIValida(sCI))
 		{
-			if (sCI.isEmpty()) return; //Ingreso cancelado
-			MensajeWin( "Formato de CI err�neo" + "\r\n" + "Usar: x.xxx.xxx-x");
-			return; 
+			if ( !sCI.isEmpty() )
+				MensajeWin( "Formato de CI erróneo" + "\r\n" + "Usar: x.xxx.xxx-x");
+			return null; 
 		}
 		
+		//No usar cache, buscarlo en base de datos
+		//Util si hay otro programa modificando la base y necesitamos datos actualizados
 		VOEmpleado oVOF = gFachada.ObtenerEmpleado(sCI);
 		
 		if ( oVOF != null )
 		{
 			if ( oVOF.getError().length() != 0 )
+			{
 				MensajeWin("Rellenar Funcionario ERROR:\n"+oVOF.getError());
+				oVOF = null;
+			}
 			else
 			{
-				LlenarCampos(oVOF, btnBaja, tfNomFun, tfApefun, tfCI, tfFecNac1, tfFecNac2, tfFecNac3, tfCel, tfHoras, bEstado);
-				
+				for ( int i=0 ; i<cache.length ; i++ )
+					if ( cache[i].getCi().equals(sCI) )
+					{
+						cb.setSelectedIndex( i+1);
+						break;
+					}
 			}
 		}
+		return oVOF;
 		
 	}
 	//solo rellena

@@ -103,9 +103,10 @@ public class PaneFuncionario extends JComponent {
 		btnBuscar = new JButton("Buscar CI");
 		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JTextField FN[] = cmpFecha.getDDMMAA(); 
-				ctrl.BuscarCI(btnBaja, tfNomFun, tfApeFun, tfCI, FN[0], FN[1], FN[2], tfCel, tfHoras, chckActivo);
-				ctrl.CtrlBtnBaja(btnBaja, chckActivo.isSelected());
+				bNoActualizarCampos = true;
+				VOEmpleado oVFO = ctrl.BuscarCI(cbLista);
+				bNoActualizarCampos = false;
+				MostrarFuncionario( oVFO);
 			}
 		});
 		btnBuscar.setBounds(296, 10, 94, 25);
