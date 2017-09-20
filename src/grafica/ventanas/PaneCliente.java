@@ -77,7 +77,10 @@ public class PaneCliente extends JComponent {
 				VOCliente oCL = null;
 				if ( cbLista.getSelectedIndex() > 0 )
 				{
-					oCL = ctrl.get( cbLista.getSelectedIndex() );
+//					String tmpBuscar=Main.Main.Substring(cbLista.getSelectedItem().toString(), "[" , "]");
+					/*seleccionar lo seleccionado desde el combobox, sacar el nombre delcliente y buscarlo en el controlador
+					 * y luego buscar clientes, jiji posible opcion?*/
+					oCL = ctrl.get( cbLista.getSelectedIndex() ); //arreglar esto
 					MostrarCliente( oCL);
 				}
 				bCliExistente = oCL != null;
@@ -102,8 +105,10 @@ public class PaneCliente extends JComponent {
 		tfNumCli.setBounds(150, 5, 200, 20);
 		tfNumCli.addKeyListener(new KeyAdapter() {
 			public void keyReleased(KeyEvent ke){
-				//No necesitamos importar el value object, solo necesitamos ver si esta ahi
-				bCliExistente = ctrl.BuscarCache_Num(tfNumCli.getText() ) != null;
+				VOCliente oCL=null;
+				oCL=ctrl.BuscarCache_Num(tfNumCli.getText().trim());
+				bCliExistente= oCL != null ? true : false;
+				if(oCL != null) MostrarCliente(oCL);
 				btnBorrar.setEnabled( bCliExistente);
 				}});
 		
@@ -117,7 +122,10 @@ public class PaneCliente extends JComponent {
 		tfNomCli.setBounds(150, 30, 200, 20);
 		tfNomCli.addKeyListener(new KeyAdapter(){
 			public void keyReleased(KeyEvent ke){
-				bCliExistente = ctrl.BuscarCache_Nombre(tfNomCli.getText() ) != null;
+				VOCliente oCL=null;
+				oCL=ctrl.BuscarCache_Nombre(tfNomCli.getText().trim());
+				bCliExistente= oCL != null ? true : false;
+				if(oCL != null) MostrarCliente(oCL);
 				btnBorrar.setEnabled( bCliExistente);
 				}});
 		pCampos.add(tfNomCli);

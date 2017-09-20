@@ -30,7 +30,7 @@ public class c_Cliente extends c_Maestro{
 		cache = gFachada.ListaCli();
 
 		for ( int i=0 ; i<cache.length ; i++ )
-			cb.addItem( cache[i].getsNomCli() );
+			cb.addItem( "[" + cache[i].getsNroCli() + "] " + cache[i].getsNomCli() );
 		
 		//Re-seleccionar el elemento previamente seleccionado
 		if ( cache.length > iViejo && iIDViejo >= 0 )
@@ -98,7 +98,7 @@ public class c_Cliente extends c_Maestro{
 		
 		if ( voCli == null )
 			return false;
-		
+
 		if ( voCli.getError().length() != 0 ) //Los valores cacheados nunca tienen error... pero por las dudas
 			MensajeWin("Rellenar Cliente ERROR:\n"+voCli.getError());
 		else
@@ -115,6 +115,7 @@ public class c_Cliente extends c_Maestro{
 						tfHonorarios,
 						cbDepartamentos,
 						cbMoneda); 
+			System.out.println(voCli.getsNroCli()+" - "+voCli.getsNomCli());
 		}
 		return true;
 	}
@@ -183,6 +184,8 @@ public class c_Cliente extends c_Maestro{
 		return false;
 	}
 	public void Guardar(String sRut, String sNumCli, String sTelefono, String sDireccion, String sNomCli, String sHoras, String sHonorarios, String sDepto, int iMoneda, boolean bCliExistente){
+		
+		System.out.println(bCliExistente);
 		
 		if(VerificarDatos(sRut, sNumCli, sTelefono, sDireccion, sNomCli, sHoras, sHonorarios)){
 			int iDepto=IDDepartamento(sDepto);
