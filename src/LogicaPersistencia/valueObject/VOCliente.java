@@ -3,7 +3,7 @@ package LogicaPersistencia.valueObject;
 public class VOCliente extends VOGenerico{
 
 	private int iIdCli, iIdDepto, iHrCargables, iHonorarios, iMoneda, iTipoPersona;
-	private String sContacto, sRut, sNroCli, sTel, sDireccion, sNomCli, sNroCliNuevo;
+	private String sContacto, sRut, sNroCli, sTel, sDireccion, sNomCli;
 	
 	private String sNomDepto;
 	/*sNomDepto es el Nombre que se muestra en el ComboBox, iIdDepto es el identificador para agregar cliente*/
@@ -21,7 +21,6 @@ public class VOCliente extends VOGenerico{
 	public String getsTel() {return sTel;}
 	public String getsDireccion() {return sDireccion;}
 	public String getsNomCli() {return sNomCli;}
-	public String getsNroCliNuevo() {return sNroCliNuevo;}
 	
 	public void setiIdCli(int iIdCli) {this.iIdCli = iIdCli;}
 	public void setiIdDepto(int iIdDepto) {this.iIdDepto = iIdDepto;}
@@ -35,21 +34,20 @@ public class VOCliente extends VOGenerico{
 	public void setsTel(String sTel) {this.sTel = sTel;}
 	public void setsDireccion(String sDireccion) {this.sDireccion = sDireccion;}
 	public void setsNomCli(String sNomCli) {this.sNomCli = sNomCli;}
-	public void setsNroCliNuevo(String sNroCliNuevo) {this.sNroCliNuevo = sNroCliNuevo;}
 	
 	public String getsNomDepto() {return sNomDepto;}
 	public void setsNomDepto(String sNomDepto) {this.sNomDepto = sNomDepto;}
 
 	//Agregar
 	public VOCliente(int iIdDepto, int iHrCargables, int iHonorarios, int iMoneda,
-			String sRut, String sNroCliNuevo, String sTel, String sDireccion, String sNomCli) {
+			String sRut, String sNroCli, String sTel, String sDireccion, String sNomCli) {
 		super();
 		this.iIdDepto = iIdDepto;
 		this.iHrCargables = iHrCargables;
 		this.iHonorarios = iHonorarios;
 		this.iMoneda = iMoneda;
 		this.sRut = sRut;
-		this.sNroCliNuevo = sNroCliNuevo;
+		this.sNroCli = sNroCli;
 		this.sTel = sTel;
 		this.sDireccion = sDireccion;
 		this.sNomCli = sNomCli;
@@ -69,7 +67,7 @@ public class VOCliente extends VOGenerico{
 		this.iHonorarios = iHonorarios;
 		this.iMoneda = iMoneda;
 		this.sRut = sRut;
-		this.sNroCliNuevo = sNroCliNuevo;
+		this.sNroCli = sNroCliNuevo;
 		this.sTel = sTel;
 		this.sDireccion = sDireccion;
 		this.sNomCli = sNomCli;

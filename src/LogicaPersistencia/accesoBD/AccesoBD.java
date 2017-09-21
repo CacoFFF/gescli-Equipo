@@ -261,14 +261,14 @@ public class AccesoBD
 			pstmt.setInt(3, voCli.getiHonorarios());
 			pstmt.setInt(4, voCli.getiMoneda());
 			pstmt.setString(5, voCli.getsRut());
-			pstmt.setString(6, voCli.getsNroCliNuevo());
+			pstmt.setString(6, voCli.getsNroCli());
 			pstmt.setString(7, voCli.getsTel());
 			pstmt.setString(8, voCli.getsDireccion());
 			pstmt.setString(9, voCli.getsNomCli());
 			pstmt.executeUpdate();
 			pstmt.close();
 			
-			voCli.setResultado("Guardado:\n["+voCli.getsNroCliNuevo()+"] "+voCli.getsNomCli());
+			voCli.setResultado("Guardado:\n["+voCli.getsNroCli()+"] "+voCli.getsNomCli());
 			return true;
 		} catch (SQLException e) {
 			System.out.println(e.getMessage());
@@ -314,16 +314,16 @@ public class AccesoBD
 		try {
 			PreparedStatement pstmt=conn.prepareStatement(consulta);
 			pstmt.setString(1, voCli.getsRut());
-			pstmt.setString(2, voCli.getsNroCliNuevo());
+			pstmt.setString(2, voCli.getsNroCli());
 			pstmt.setString(3, voCli.getsTel());
 			pstmt.setString(4, voCli.getsDireccion());
-			pstmt.setInt(6, voCli.getiIdDepto());
-			pstmt.setString(7, voCli.getsNomCli());
-			pstmt.setInt(8, voCli.getiHrCargables());
-			pstmt.setInt(9, voCli.getiHonorarios());
-			pstmt.setInt(10, voCli.getiMoneda());
-			pstmt.setInt(11, voCli.getiIdCli());
-			pstmt.setString(12, voCli.getsNroCli());
+			pstmt.setInt(5, voCli.getiIdDepto());
+			pstmt.setString(6, voCli.getsNomCli());
+			pstmt.setInt(7, voCli.getiHrCargables());
+			pstmt.setInt(8, voCli.getiHonorarios());
+			pstmt.setInt(9, voCli.getiMoneda());
+			pstmt.setInt(10, voCli.getiIdCli());
+			pstmt.setString(11, voCli.getsNroCli());
 			pstmt.executeUpdate();
 			pstmt.close();
 			
@@ -331,7 +331,7 @@ public class AccesoBD
 			return true;
 			
 		} catch (SQLException e) {
-			voCli.setError("Error al actualizar cliente\nError code: "+e.getErrorCode());
+			voCli.setError("Error al actualizar cliente\nError code: "+e.getErrorCode()+"\nError: "+e.getMessage());
 			return false;
 			
 		}

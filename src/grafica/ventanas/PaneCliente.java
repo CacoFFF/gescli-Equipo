@@ -32,18 +32,14 @@ public class PaneCliente extends JComponent {
 			txtHonorarios/*, txtTipoPersona*/;
 	private JTextField /*tfContacto,*/ tfRut, tfNumCli, tfTelefono, tfDireccion, tfNomCli, tfHoras, tfHonorarios;
 	
-	private String sDepto;
-	private int iMoneda;
-	private boolean bCliExistente=false;
 	private boolean bNoActualizarCampos;
 
 	public void MostrarCliente( VOCliente oCL)
 	{
 		if ( bNoActualizarCampos )
 			return;
-		bCliExistente = (oCL != null);
-		btnBorrar.setEnabled( bCliExistente);
-		if ( !bCliExistente )
+		btnBorrar.setEnabled( oCL != null);
+		if ( oCL == null )
 		{
 			tfNumCli.setText( "");
 			tfTelefono.setText( "");
@@ -193,11 +189,11 @@ public class PaneCliente extends JComponent {
 		btnGuardar.setEnabled(false);
 		btnGuardar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				//si bCliExistente modificar en lugar de agregar
+				//si cliente ya existe modificar en lugar de agregar
 				ctrl.Guardar(tfRut.getText().trim(), tfNumCli.getText().trim(), 
 						tfTelefono.getText().trim(), tfDireccion.getText().trim(), 
 						tfNomCli.getText().trim(), tfHoras.getText().trim(), 
-						tfHonorarios.getText().trim(), sDepto, iMoneda, bCliExistente);
+						tfHonorarios.getText().trim(), (String)cbDepartamentos.getSelectedItem(), cbMoneda.getSelectedIndex());
 				//ctrl.VaciarCampos(cbDepartamentos, cbMoneda,tfRut,tfNumCli,tfTelefono,tfDireccion,tfNomCli,tfHoras,tfHonorarios);
 				ctrl.ListaClientes(cbLista);
 			}

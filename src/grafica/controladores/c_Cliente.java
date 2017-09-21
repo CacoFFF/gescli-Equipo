@@ -179,21 +179,33 @@ public class c_Cliente extends c_Maestro{
 		
 		return false;
 	}
-	public void Guardar(String sRut, String sNumCli, String sTelefono, String sDireccion, String sNomCli, String sHoras, String sHonorarios, String sDepto, int iMoneda, boolean bCliExistente){
-		
-		System.out.println(bCliExistente);
+	public void Guardar(String sRut, String sNumCli, String sTelefono, String sDireccion, String sNomCli, String sHoras, String sHonorarios, String sDepto, int iMoneda){
+
 		
 		if(VerificarDatos(sRut, sNumCli, sTelefono, sDireccion, sNomCli, sHoras, sHonorarios)){
 			int iDepto=IDDepartamento(sDepto);
 			
 			//Opcion de modificacion
-			if(bCliExistente){
-				//seguir esto (como mantener el numCli viejo para modificar? T_T)
-				//voCli=new VOCliente(iDepto, IntConvertidor(sHoras), IntConvertidor(sHonorarios), iMoneda, sRut, sNumCli, sTelefono, sDireccion, sNomCli, IntConvertidor(VerificarCliente(sNumCli, 3)), sNumCli);
+			VOCliente CliExistente = BuscarCache_Num( sNumCli);
+			if( CliExistente != null )
+			{
+				CliExistente.setsRut( sRut);
+				CliExistente.setsTel( sTelefono);
+				CliExistente.setsDireccion( sDireccion);
+				CliExistente.setsNomCli( sNomCli);
+				try
+				{	CliExistente.setiHrCargables( Integer.parseInt(sHoras)); }
+				catch (Exception e)	{}
+				try
+				{	CliExistente.setiHonorarios( Integer.parseInt(sHonorarios)); }
+				catch (Exception e)	{}
+				CliExistente.setiIdDepto(iDepto);
+				CliExistente.setiMoneda( iMoneda);
+				MensajeWin(gFachada.ModificarCliente(CliExistente));
 			}
-			
 			//Opcion de agregar nuevo cliente
-			else{
+			else
+			{
 				VOCliente voCli = new VOCliente(iDepto, IntConvertidor(sHoras), IntConvertidor(sHonorarios), iMoneda, sRut, sNumCli, sTelefono, sDireccion, sNomCli);
 				MensajeWin(gFachada.AgregarCliente(voCli));
 			}
