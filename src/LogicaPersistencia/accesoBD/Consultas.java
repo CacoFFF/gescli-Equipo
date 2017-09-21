@@ -89,28 +89,41 @@ public class Consultas {
 	//Consulta Horarios
 	public String AgregarHorario(){
 		return "insert into horasfunc (idFun, idCli, idServ, horas, fecha) value("
-				+ "(select fun.idFun from funcionarios fun where fun.ciFun = ?),"
-				+ "(select cli.idCli from clientes cli where cli.nroCli = ?)," /*ver como obtener la ID de un cliente, el nroCli no deberia ser unico?*/
-				+ "(select serv.idServ from servicios serv where serv.nombre = ?),"
+				+ "(select fun.idFun from funcionarios fun where fun.ciFun = ? limit 1),"
+				+ "(select cli.idCli from clientes cli where cli.nroCli = ? limit 1)," /*ver como obtener la ID de un cliente, el nroCli no deberia ser unico?*/
+				+ "(select serv.idServ from servicios serv where serv.nombre = ? limit 1),"
 				+ "?,?);";
 	}
 	
 	//Contar Horarios
+	//Bits:
+	// 1 - pedir por f.idFun
+	// 2 - pedir por c.idCli
+	// 4 - pedir por s.nombre
+	// 8 - pedir por fecha
 	public String ContarHorarios( int sqlMode)
 	{
-		switch (sqlMode)
-		{
-		case 0: //Todos
-			return "select count(*) as cantidad from horasfunc";
-		case 1: //Filtrar por claves externas
-			return "select count(*) as cantidad from horasfunc"
-					+ " where idFun=? and idCli=? and idServ=?";
-		case 2:
-			return "IMPLEMENTAR POR FECHA";
-		case 3:
-			return "IMPLEMENTAR POR RANGO DE FECHAS";
-		}
-		return "LOL ERROR";
+		String res = "select count(*) as cantidad from horasfunc hs";
+		String where[] = {"","","",""};
+		if ( (sqlMode & 1) != 0 )			where[0] = "hs.idFun = ?";
+		if ( (sqlMode & 2) != 0 )			where[1] = "hs.idCli = ?";
+		if ( (sqlMode & 4) != 0 )			where[2] = "s.nombre = ?";
+		if ( (sqlMode & 8) != 0 )			where[3] = "hs.fecha = ?";
+		
+		//Caso especial, unir con tabla se servicios
+		if ( where[2].length() > 0 )
+			res = res + " inner join servicios s on hs.idServ = s.idServ";
+		
+		int k = 0;
+		for ( int i=0 ; i<4 ; i++ )
+			if ( where[i].length() > 0 )
+			{
+				if ( k++ == 0 )	res = res + " where ";
+				else			res = res + " and ";
+				res = res + where[i];
+			}
+		System.out.println(res);
+		return res;
 	}
 	
 	//Listar Horarios
@@ -125,25 +138,23 @@ public class Consultas {
 						+ " inner join servicios as s on s.idServ = hs.idServ"
 						+ " inner join clientes as c on c.idCli = hs.idCli"
 						+ " inner join funcionarios as f on f.idFun = hs.idFun ";
-		switch (sqlMode)
-		{
-		case 0: //Todos
-			return res
-					+ " limit ?, ?";
-		case 1: //Filtrar por claves externas
-			return res
-					+ " where idFun=? and idCli=? and idServ=?"
-					+ " limit ?, ?";
-		case 2:
-			return res
-					+ "IMPLEMENTAR POR FECHA"
-					+ " limit ?, ?";
-		case 3:
-			return res
-					+ "IMPLEMENTAR POR RANGO DE FECHAS"
-					+ " limit ?, ?";
-		}
-		return "LOL ERROR";
+
+		String where[] = {"","","",""};
+		if ( (sqlMode & 1) != 0 )			where[0] = "hs.idFun = ?";
+		if ( (sqlMode & 2) != 0 )			where[1] = "hs.idCli = ?";
+		if ( (sqlMode & 4) != 0 )			where[2] = "s.nombre = ?";
+		if ( (sqlMode & 8) != 0 )			where[3] = "hs.fecha = ?";
+
+		int k = 0;
+		for ( int i=0 ; i<4 ; i++ )
+			if ( where[i].length() > 0 )
+			{
+				if ( k++ == 0 )	res = res + " where ";
+				else			res = res + " and ";
+				res = res + where[i];
+			}
+		res = res + " limit ?, ?";
+		return res;
 	}
 	
 	

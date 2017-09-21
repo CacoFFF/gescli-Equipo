@@ -19,10 +19,11 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import Main.Main;
-import grafica.controladores.c_Maestro;
-import grafica.controladores.c_PanelHS;
+import grafica.controladores.*;
+import LogicaPersistencia.valueObject.*;
 
 import java.beans.PropertyChangeListener;
+import java.util.ArrayList;
 import java.beans.PropertyChangeEvent;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -72,7 +73,7 @@ public class PaneHS extends JPanel {
 				
 			}
 		});
-		cbServicio.setBounds(10, 10, 170, 20);
+		cbServicio.setBounds(10, 10, 200, 20);
 		
 		if ( Main.gCon_NServicio != null ) //Windowbuilder mode
 			Main.gCon_NServicio.Listar(cbServicio);
@@ -85,7 +86,7 @@ public class PaneHS extends JPanel {
 				c_PanelHS.ActivarBoton( btnAgregarHS, combos, cmpFecha, tfHoras);
 			}
 		});
-		cbCliente.setBounds(10, 40, 170, 20);
+		cbCliente.setBounds(10, 40, 200, 20);
 //		if (Main.gCon_Cliente != null)
 //			Main.gCon_Cliente.ListaClientes(cbCliente);
 		add(cbCliente);
@@ -97,7 +98,7 @@ public class PaneHS extends JPanel {
 
 			}
 		});
-		cbFuncionario.setBounds(10, 70, 170, 20);
+		cbFuncionario.setBounds(10, 70, 200, 20);
 //		if (Main.gCon_Funcionario != null)
 //		Main.gCon_Funcionario.ListaFun(cbFuncionario);
 		add(cbFuncionario);
@@ -119,12 +120,12 @@ public class PaneHS extends JPanel {
 				c_PanelHS.ActivarBoton( btnAgregarHS, combos, cmpFecha, tfHoras);
 			}
 		});
-		tfHoras.setBounds(95, 105, 85, 20);
+		tfHoras.setBounds(305, 11, 85, 20);
 		add(tfHoras);
 		tfHoras.setColumns(10);
 		
 		JLabel lblHoras = new JLabel("Horas:");
-		lblHoras.setBounds(10, 105, 85, 20);
+		lblHoras.setBounds(220, 11, 85, 20);
 		add(lblHoras);
 		
 		cmpFecha = new cmpFecha();
@@ -142,11 +143,11 @@ public class PaneHS extends JPanel {
 				}
 			});
 		}
-		cmpFecha.setBounds(10, 135, 170, 20);
+		cmpFecha.setBounds(220, 41, 170, 20);
 		add(cmpFecha);
 		
 		btnAgregarHS = new JButton("Agregar");
-		btnAgregarHS.setBounds(10, 180, 80, 23);
+		btnAgregarHS.setBounds(220, 70, 80, 25);
 		btnAgregarHS.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String sServicio=cbServicio.getSelectedItem().toString();
@@ -170,12 +171,12 @@ public class PaneHS extends JPanel {
 		add(btnAgregarHS);
 		
 		JButton btnQuitarHS = new JButton("Quitar");
-		btnQuitarHS.setBounds(95, 180, 85, 23);
+		btnQuitarHS.setBounds(305, 70, 85, 25);
 		add(btnQuitarHS);
 		
 		
 		JSeparator separator = new JSeparator();
-		separator.setBounds(10, 215, 170, 2);
+		separator.setBounds(10, 215, 380, 2);
 		add(separator);
 		
 		//Agregar Servicios				
@@ -204,19 +205,55 @@ public class PaneHS extends JPanel {
 				}
 				
 			}});
-		btnAgregarS.setBounds(10, 270, 80, 25);
+		btnAgregarS.setBounds(220, 225, 80, 25);
 		add(btnAgregarS);
 		
 		JButton btnQuitarS = new JButton("Quitar");
-		btnQuitarS.setBounds(95, 271, 85, 25);
+		btnQuitarS.setBounds(305, 225, 85, 25);
 		add(btnQuitarS);
 		
-		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setBounds(190, 10, 200, 285);
-		add(scrollPane);
+		JButton btnBTodos = new JButton("Buscar Todos");
+		btnBTodos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				new fHS( 0, null).setVisible( true);
+			}
+		});
+		btnBTodos.setBounds(10, 100, 180, 25);
+		add(btnBTodos);
 		
-		JLabel lblListaDeHs = new JLabel("Lista de H/S aca");
-		scrollPane.setViewportView(lblListaDeHs);
+		JButton btnBElementos = new JButton("Buscar por Elementos");
+		btnBElementos.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				ArrayList<String> sqlParams = new ArrayList<String>();
+				int mode = 0;
+				VOEmpleado vF = Main.gCon_Funcionario.get(cbFuncionario.getSelectedIndex()-1);
+				VOCliente vC = Main.gCon_Cliente.get(cbCliente.getSelectedIndex()-1);
+				if ( vF != null )
+				{
+					mode |= 1;
+					sqlParams.add( ""+vF.getId() );
+				}
+				if ( vC != null )
+				{
+					mode |= 2;
+					sqlParams.add( ""+vC.getiIdCli() );
+				}
+				if ( cbServicio.getSelectedIndex() != 0 )
+				{
+					mode |= 4;
+					sqlParams.add( (String)cbServicio.getSelectedItem() );
+				}
+				String params[] = new String[sqlParams.size()];
+				sqlParams.toArray( params);
+				new fHS( mode, params).setVisible( true);
+			}
+		});
+		btnBElementos.setBounds(10, 135, 180, 25);
+		add(btnBElementos);
+		
+		JButton btnBFecha = new JButton("Buscar por Fecha");
+		btnBFecha.setBounds(10, 170, 180, 25);
+		add(btnBFecha);
 
 	}
 }

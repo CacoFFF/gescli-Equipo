@@ -416,6 +416,7 @@ public class AccesoBD
 			
 			} catch (Exception e) {
 				System.out.println(e.getMessage());
+				e.printStackTrace();
 				voHora.setError("Error al intentar guardar horario");
 				return false;
 			}
