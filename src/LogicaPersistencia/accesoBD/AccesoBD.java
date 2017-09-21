@@ -420,7 +420,7 @@ public class AccesoBD
 				voHora.setError("Error al intentar guardar horario");
 				return false;
 			}
-		return false;
+		return true;
 	}
 	
 	public int ContarHorarios( Connection conn, int sqlMode, String sqlParams[])
@@ -430,8 +430,11 @@ public class AccesoBD
 		try 
 		{
 			PreparedStatement pstmt=conn.prepareStatement(consulta);
-			if ( sqlParams != null ) for ( int i=0 ; i<sqlParams.length ; i++ )
-				pstmt.setString( i+1, sqlParams[i]);
+			//i = posicion de [?]
+			//j = posicion de sqlParams[]
+			int i = 1; 
+			if ( sqlParams != null ) for ( int j=0 ; j<sqlParams.length ; j++ )
+				pstmt.setString( i++, sqlParams[j]);
 			ResultSet rs = pstmt.executeQuery();
 			if ( rs.next() )
 				total = rs.getInt("cantidad");
@@ -453,11 +456,13 @@ public class AccesoBD
 		try 
 		{
 			PreparedStatement pstmt = conn.prepareStatement(consulta);
-			int i = 0;
-			if ( sqlParams != null ) for ( i=0 ; i<sqlParams.length ; i++ )
-				pstmt.setString( i+1, sqlParams[i]);
-			pstmt.setInt( ++i, cantidadPorPag*(pag-1) ); //Offset
-			pstmt.setInt( ++i, cantidadPorPag);
+			//i = posicion de [?]
+			//j = posicion de sqlParams[]
+			int i = 1; 
+			if ( sqlParams != null ) for ( int j=0 ; j<sqlParams.length ; j++ )
+				pstmt.setString( i++, sqlParams[j]);
+			pstmt.setInt( i++, cantidadPorPag*(pag-1) ); //Offset
+			pstmt.setInt( i++, cantidadPorPag);
 			ResultSet rs = pstmt.executeQuery();
 			while ( rs.next() )
 			{
@@ -467,6 +472,9 @@ public class AccesoBD
 						rs.getString("Cliente"),
 						rs.getString("Funcionario"),
 						rs.getString("Fecha"));
+				nuevoHS.setIdCli (rs.getInt("idCli" ));
+				nuevoHS.setIdFun (rs.getInt("idFun" ));
+				nuevoHS.setIdServ(rs.getInt("idServ"));
 				lista.add( nuevoHS);
 			}
 			rs.close();
@@ -480,4 +488,26 @@ public class AccesoBD
 		return lista;
 	}
 
+	
+	public boolean BorrarHorario( Connection conn, VOHorario vH)
+	{
+		String consulta = consultas.BorrarHorario();
+		try {
+			PreparedStatement pstmt=conn.prepareStatement(consulta);
+			pstmt.setInt(1, vH.getIdCli());
+			pstmt.setInt(2, vH.getIdFun());
+			pstmt.setInt(3, vH.getIdServ());
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+			vH.setResultado("Horario borrado");
+			
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+				e.printStackTrace();
+				vH.setError("Error al intentar borrar horario");
+				return false;
+			}
+		return true;
+	}
 }

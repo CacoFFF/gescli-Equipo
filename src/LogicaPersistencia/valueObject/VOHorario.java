@@ -2,6 +2,7 @@ package LogicaPersistencia.valueObject;
 
 public class VOHorario extends VOGenerico{
 	int iHoras;
+	int idCli, idFun, idServ; //Solo usados en el cache
 	String sNomServicio, sNumCliente, sCIFuncionario, sFecha;
 	
 	public int getiHoras() {return iHoras;}
@@ -23,6 +24,13 @@ public class VOHorario extends VOGenerico{
 		this.sCIFuncionario = sCIFuncionario;
 		this.sFecha = sFecha;
 	}
+
+	public int getIdCli() {	return idCli;	}
+	public int getIdFun() {	return idFun;	}
+	public int getIdServ() {return idServ;	}
+	public void setIdCli(int idCli) {	this.idCli = idCli;	}
+	public void setIdFun(int idFun) {	this.idFun = idFun;	}
+	public void setIdServ(int idServ) {	this.idServ = idServ;	}
 	
 	
 

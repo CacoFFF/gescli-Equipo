@@ -19,6 +19,7 @@ import javax.swing.JButton;
 import javax.swing.SwingConstants;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
+import javax.swing.ListSelectionModel;
 
 public class fHS extends JFrame
 {
@@ -81,6 +82,7 @@ public class fHS extends JFrame
 		contentPane.add(scrollPane_1);
 		
 		table = new JTable();
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		scrollPane_1.setViewportView(table);
 		table.setModel(new DefaultTableModel(
 			new Object[][] {
@@ -187,6 +189,16 @@ public class fHS extends JFrame
 		});
 		button.setBounds(225, 10, 50, 20);
 		contentPane.add(button);
+		
+		JButton btnEliminar = new JButton("Eliminar seleccionado");
+		btnEliminar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				c_TablaHS.BorrarElemento( table.getSelectedRow());
+				MostrarPagina( sqlPage);
+			}
+		});
+		btnEliminar.setBounds(300, 10, 150, 20);
+		contentPane.add(btnEliminar);
 	}
 
 	public JTable getTable()

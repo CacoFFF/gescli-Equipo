@@ -181,7 +181,10 @@ public class Fachada
 		return res;
 	}
 	
-	
+	public void BorrarHorario( VOHorario vH)
+	{
+		AccesoBD.BorrarHorario( con, vH);
+	}
 	
 	
 	

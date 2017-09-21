@@ -159,7 +159,7 @@ public class PaneHS extends JPanel {
 				String sCIFuncionario;
 				sCIFuncionario=cbFuncionario.getSelectedIndex() >- 1 ? (String) cbFuncionario.getSelectedItem() : "--";
 				if(!sCIFuncionario.startsWith("--")) sCIFuncionario=c_Maestro.Substring(sCIFuncionario, "[", "]");
-
+				
 				Main.gCon_Horarios.Agregar(
 						sServicio, 
 						sNumCliente, 
@@ -201,7 +201,7 @@ public class PaneHS extends JPanel {
 					if(Main.gCon_NServicio.Agregar( txtNombreDeServicio.getText() )){
 						Main.gCon_NServicio.Listar(cbServicio);
 						cbServicio.setSelectedIndex(cbServicio.getItemCount()-1);
-					}					
+					}		
 				}
 				
 			}});
@@ -230,17 +230,17 @@ public class PaneHS extends JPanel {
 				VOCliente vC = Main.gCon_Cliente.get(cbCliente.getSelectedIndex()-1);
 				if ( vF != null )
 				{
-					mode |= 1;
-					sqlParams.add( ""+vF.getId() );
+					mode |= 0b0001;
+					sqlParams.add( Integer.toString( vF.getId()) );
 				}
 				if ( vC != null )
 				{
-					mode |= 2;
-					sqlParams.add( ""+vC.getiIdCli() );
+					mode |= 0b0010;
+					sqlParams.add( Integer.toString( vC.getiIdCli()) );
 				}
 				if ( cbServicio.getSelectedIndex() != 0 )
 				{
-					mode |= 4;
+					mode |= 0b0100;
 					sqlParams.add( (String)cbServicio.getSelectedItem() );
 				}
 				String params[] = new String[sqlParams.size()];

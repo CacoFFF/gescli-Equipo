@@ -95,6 +95,10 @@ public class Consultas {
 				+ "?,?);";
 	}
 	
+	public String BorrarHorario(){ //Aca ya tenemos los ID!!!
+		return "delete from horasfunc where idCli=? and idFun=? and idServ=?";
+	}
+	
 	//Contar Horarios
 	//Bits:
 	// 1 - pedir por f.idFun
@@ -105,10 +109,10 @@ public class Consultas {
 	{
 		String res = "select count(*) as cantidad from horasfunc hs";
 		String where[] = {"","","",""};
-		if ( (sqlMode & 1) != 0 )			where[0] = "hs.idFun = ?";
-		if ( (sqlMode & 2) != 0 )			where[1] = "hs.idCli = ?";
-		if ( (sqlMode & 4) != 0 )			where[2] = "s.nombre = ?";
-		if ( (sqlMode & 8) != 0 )			where[3] = "hs.fecha = ?";
+		if ( (sqlMode & 0b0001) != 0 )			where[0] = "hs.idFun = ?";
+		if ( (sqlMode & 0b0010) != 0 )			where[1] = "hs.idCli = ?";
+		if ( (sqlMode & 0b0100) != 0 )			where[2] = "s.nombre = ?";
+		if ( (sqlMode & 0b1000) != 0 )			where[3] = "hs.fecha = ?";
 		
 		//Caso especial, unir con tabla se servicios
 		if ( where[2].length() > 0 )
@@ -122,7 +126,6 @@ public class Consultas {
 				else			res = res + " and ";
 				res = res + where[i];
 			}
-		System.out.println(res);
 		return res;
 	}
 	
@@ -133,17 +136,20 @@ public class Consultas {
 						+ " concat(f.nomFun,' ',f.apeFun) as Funcionario,"
 						+ " concat('[',c.nroCli,'] ',c.nomCli) as Cliente,"
 						+ " hs.fecha as Fecha,"
-						+ " hs.horas as Horas "
+						+ " hs.horas as Horas, "
+						+ " hs.idServ as idServ, "
+						+ " hs.idCli as idCli, "
+						+ " hs.idFun as idFun "
 					+ " from horasfunc hs"
 						+ " inner join servicios as s on s.idServ = hs.idServ"
 						+ " inner join clientes as c on c.idCli = hs.idCli"
 						+ " inner join funcionarios as f on f.idFun = hs.idFun ";
 
 		String where[] = {"","","",""};
-		if ( (sqlMode & 1) != 0 )			where[0] = "hs.idFun = ?";
-		if ( (sqlMode & 2) != 0 )			where[1] = "hs.idCli = ?";
-		if ( (sqlMode & 4) != 0 )			where[2] = "s.nombre = ?";
-		if ( (sqlMode & 8) != 0 )			where[3] = "hs.fecha = ?";
+		if ( (sqlMode & 0b0001) != 0 )			where[0] = "hs.idFun = ?";
+		if ( (sqlMode & 0b0010) != 0 )			where[1] = "hs.idCli = ?";
+		if ( (sqlMode & 0b0100) != 0 )			where[2] = "s.nombre = ?";
+		if ( (sqlMode & 0b1000) != 0 )			where[3] = "hs.fecha = ?";
 
 		int k = 0;
 		for ( int i=0 ; i<4 ; i++ )
