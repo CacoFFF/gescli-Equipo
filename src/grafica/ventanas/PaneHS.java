@@ -40,6 +40,7 @@ public class PaneHS extends JPanel {
 	private JComboBox<String> combos[];
 	
 	private c_Maestro ctrlMaestro;
+	private boolean bCampoServicioClick;
 	
 
 	/**
@@ -183,8 +184,9 @@ public class PaneHS extends JPanel {
 		txtNombreDeServicio.setBounds(10, 225, 170, 20);
 		txtNombreDeServicio.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent arg0) {
-				if(txtNombreDeServicio.getText().equals("Nombre de servicio"))
-				txtNombreDeServicio.setText("");
+				if(txtNombreDeServicio.getText().equals("Nombre de servicio") && !bCampoServicioClick )
+					txtNombreDeServicio.setText("");
+				bCampoServicioClick = true;
 				}});		
 		add(txtNombreDeServicio);
 		txtNombreDeServicio.setColumns(10);
@@ -205,6 +207,17 @@ public class PaneHS extends JPanel {
 		add(btnAgregarS);
 		
 		JButton btnQuitarS = new JButton("Quitar");
+		btnQuitarS.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if ( Main.gCon_NServicio != null )
+				{
+					if( Main.gCon_NServicio.Borrar( txtNombreDeServicio.getText() )){
+						Main.gCon_NServicio.Listar(cbServicio);
+						cbServicio.setSelectedIndex(0);
+					}		
+				}
+			}
+		});
 		btnQuitarS.setBounds(305, 225, 85, 25);
 		add(btnQuitarS);
 		
@@ -248,6 +261,15 @@ public class PaneHS extends JPanel {
 		add(btnBElementos);
 		
 		JButton btnBFecha = new JButton("Buscar por Fecha");
+		btnBFecha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				if ( cmpFecha.fechaValida() )
+				{
+					String params[] = { cmpFecha.getText() };
+					new fHS( 0b1000, params).setVisible( true);
+				}
+			}
+		});
 		btnBFecha.setBounds(10, 170, 180, 25);
 		add(btnBFecha);
 

@@ -30,6 +30,18 @@ public class c_NServicio extends c_Maestro
 			
 	}
 	
+	public boolean Borrar( String sNombre)
+	{
+		VONServicio voNS = gFachada.BorrarNServicio( sNombre);
+		if ( voNS.getError().length() > 0 )
+		{
+			MensajeWin(voNS.getError() );
+			return false;
+		}
+		MensajeWin(voNS.getResultado());
+		return true;
+	}
+	
 	public void Listar(JComboBox<String> cb)
 	{
 		cb.removeAllItems();

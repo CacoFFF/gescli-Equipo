@@ -397,6 +397,27 @@ public class AccesoBD
 			return false;
 		}
 	}
+	public boolean BorrarNServicio(Connection conn, VONServicio voNS)
+	{
+		//(idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli) "
+		String consulta=consultas.BorrarNServicio();
+		try
+		{
+			PreparedStatement pstmt=conn.prepareStatement(consulta);
+			pstmt.setString(1, voNS.getsNombre() );
+			pstmt.executeUpdate();
+			pstmt.close();
+			
+			voNS.setResultado("Borrado:\n"+voNS.getsNombre());
+			return true;
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			voNS.setError("Error al intentar borrar servicio");
+			return false;
+		}
+	}
 
 	//Parte Horarios
 	public boolean AgregarHorario(Connection conn, VOHorario voHora){

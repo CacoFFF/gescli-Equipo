@@ -160,6 +160,12 @@ public class Fachada
 	{
 		return AccesoBD.ListarNServicios(con);
 	}
+	public VONServicio BorrarNServicio( String ns)
+	{
+		VONServicio voNS = new VONServicio( ns);
+		AccesoBD.BorrarNServicio( con, voNS);
+		return voNS;
+	}
 	
 	
 	/*Parte Horarios*/

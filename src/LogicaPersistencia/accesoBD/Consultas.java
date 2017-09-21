@@ -85,6 +85,10 @@ public class Consultas {
 	public String ListarNServicio(){
 		return "select idServ, nombre from servicios";
 	}
+	public String BorrarNServicio(){
+		return "delete from servicios where nombre = ?";
+	}
+	
 
 	//Consulta Horarios
 	public String AgregarHorario(){
