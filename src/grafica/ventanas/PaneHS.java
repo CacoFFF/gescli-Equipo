@@ -147,7 +147,7 @@ public class PaneHS extends JPanel {
 		add(cmpFecha);
 		
 		btnAgregarHS = new JButton("Agregar");
-		btnAgregarHS.setBounds(220, 70, 80, 25);
+		btnAgregarHS.setBounds(220, 70, 170, 25);
 		btnAgregarHS.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				String sServicio=cbServicio.getSelectedItem().toString();
@@ -169,10 +169,6 @@ public class PaneHS extends JPanel {
 			}
 		});
 		add(btnAgregarHS);
-		
-		JButton btnQuitarHS = new JButton("Quitar");
-		btnQuitarHS.setBounds(305, 70, 85, 25);
-		add(btnQuitarHS);
 		
 		
 		JSeparator separator = new JSeparator();
