@@ -20,7 +20,7 @@ import Main.Main;
 
 public class c_Maestro
 {
-	public Fachada gFachada=new Fachada();
+	public static Fachada gFachada=new Fachada();
 	
 	protected static boolean IsNumeric(String str) {return str.matches("\\d+");}
 	protected static boolean StringValido(String str) {return str != null || !str.isEmpty();}

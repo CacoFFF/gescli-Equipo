@@ -1,7 +1,7 @@
 package LogicaPersistencia.valueObject;
 
 public class VOHorario extends VOGenerico{
-	int  iHoras;
+	int iHoras;
 	String sNomServicio, sNumCliente, sCIFuncionario, sFecha;
 	
 	public int getiHoras() {return iHoras;}

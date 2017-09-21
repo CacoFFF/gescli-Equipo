@@ -9,17 +9,23 @@ import java.awt.Color;
 import javax.swing.JTable;
 import javax.swing.border.LineBorder;
 import javax.swing.table.DefaultTableModel;
+
+import grafica.controladores.c_TablaHS;
+
 import javax.swing.JScrollPane;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
 import javax.swing.JButton;
 import javax.swing.SwingConstants;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class fHS extends JFrame
 {
 	private JPanel contentPane;
 	private JTable table;
 	private JTextField textField;
+	private JLabel lblMostrandoPagina;
 	
 	private int sqlMode;
 	private String[] sqlParams;
@@ -33,7 +39,7 @@ public class fHS extends JFrame
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					fHS frame = new fHS();
+					fHS frame = new fHS( 0, null);
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -42,12 +48,21 @@ public class fHS extends JFrame
 		});
 	}
 
+	public void MostrarPagina( int n)
+	{
+		sqlPage = n;
+		lblMostrandoPagina.setText("Mostrando pagina "+sqlPage+" de "+sqlPageTotal);
+		textField.setText( ""+sqlPage);
+		c_TablaHS.MostrarPagina( table, sqlPage, sqlMode, sqlParams);
+	}
+	
 	public fHS( int sqlMode, String sqlParams[])
 	{
 		this();
 		this.sqlMode = sqlMode;
 		this.sqlParams = sqlParams;
-		this.sqlPage = 1;
+		this.sqlPageTotal = c_TablaHS.ContarPaginas( table, sqlMode, sqlParams);
+		MostrarPagina( 1);
 	}
 	
 	public fHS()
@@ -131,7 +146,7 @@ public class fHS extends JFrame
 				return columnTypes[columnIndex];
 			}
 			boolean[] columnEditables = new boolean[] {
-				true, true, true, true, false
+				false, false, false, false, false
 			};
 			public boolean isCellEditable(int row, int column) {
 				return columnEditables[column];
@@ -148,7 +163,7 @@ public class fHS extends JFrame
 		table.getColumnModel().getColumn(4).setResizable(false);
 		table.setBorder(new LineBorder(new Color(0, 0, 0)));
 		
-		JLabel lblMostrandoPagina = new JLabel("Mostrando pagina X de XX");
+		lblMostrandoPagina = new JLabel("Mostrando pagina X de XX");
 		lblMostrandoPagina.setBounds(10, 10, 165, 20);
 		contentPane.add(lblMostrandoPagina);
 		
@@ -160,6 +175,16 @@ public class fHS extends JFrame
 		textField.setColumns(6);
 		
 		JButton button = new JButton(">>");
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				int a = 0;
+				try{
+					a = Integer.parseInt(textField.getText());
+				}catch(Exception e) {}
+				if ( (a > 0) && (a <= sqlPageTotal) )
+					MostrarPagina( a);
+			}
+		});
 		button.setBounds(225, 10, 50, 20);
 		contentPane.add(button);
 	}

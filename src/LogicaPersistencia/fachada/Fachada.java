@@ -161,13 +161,25 @@ public class Fachada
 		return AccesoBD.ListarNServicios(con);
 	}
 	
+	
 	/*Parte Horarios*/
 	public String AgregarHorario(VOHorario voHora){
 		if(AccesoBD.AgregarHorario(con, voHora)) {return voHora.getResultado();}
 		return voHora.getError();
 	}
 	
+	public int ContarHorarios( int sqlMode, String sqlParams[])
+	{
+		return AccesoBD.ContarHorarios( con, sqlMode, sqlParams); 
+	}
 	
+	public VOHorario[] ListarHorarios( int sqlMode, String sqlParams[], int pag, int cantidadPorPag)
+	{
+		ArrayList<VOHorario> alHS = AccesoBD.ListarHorarios( con, sqlMode, sqlParams, pag, cantidadPorPag);
+		VOHorario res[] = new VOHorario[alHS.size()];
+		alHS.toArray(res);
+		return res;
+	}
 	
 	
 	

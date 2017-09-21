@@ -421,4 +421,62 @@ public class AccesoBD
 			}
 		return false;
 	}
+	
+	public int ContarHorarios( Connection conn, int sqlMode, String sqlParams[])
+	{
+		String consulta = consultas.ContarHorarios(sqlMode);
+		int total = 0;
+		try 
+		{
+			PreparedStatement pstmt=conn.prepareStatement(consulta);
+			if ( sqlParams != null ) for ( int i=0 ; i<sqlParams.length ; i++ )
+				pstmt.setString( i+1, sqlParams[i]);
+			ResultSet rs = pstmt.executeQuery();
+			if ( rs.next() )
+				total = rs.getInt("cantidad");
+			rs.close();
+			pstmt.close();
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return total;
+	}
+	
+	public ArrayList<VOHorario> ListarHorarios( Connection conn, int sqlMode, String sqlParams[], int pag, int cantidadPorPag)
+	{
+		String consulta = consultas.ListarHorarios(sqlMode);
+		ArrayList<VOHorario> lista = new ArrayList<VOHorario>();
+		try 
+		{
+			PreparedStatement pstmt = conn.prepareStatement(consulta);
+			int i = 0;
+			if ( sqlParams != null ) for ( i=0 ; i<sqlParams.length ; i++ )
+				pstmt.setString( i+1, sqlParams[i]);
+			pstmt.setInt( ++i, cantidadPorPag*(pag-1) ); //Offset
+			pstmt.setInt( ++i, cantidadPorPag);
+			ResultSet rs = pstmt.executeQuery();
+			while ( rs.next() )
+			{
+				VOHorario nuevoHS = new VOHorario(
+						rs.getInt("Horas"),
+						rs.getString("Servicio"),
+						rs.getString("Cliente"),
+						rs.getString("Funcionario"),
+						rs.getString("Fecha"));
+				lista.add( nuevoHS);
+			}
+			rs.close();
+			pstmt.close();
+		}
+		catch (SQLException e)
+		{
+			System.out.println(e.getMessage());
+			e.printStackTrace();
+		}
+		return lista;
+	}
+
 }

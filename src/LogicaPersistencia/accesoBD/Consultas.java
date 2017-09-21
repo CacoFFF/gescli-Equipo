@@ -95,6 +95,59 @@ public class Consultas {
 				+ "?,?);";
 	}
 	
+	//Contar Horarios
+	public String ContarHorarios( int sqlMode)
+	{
+		switch (sqlMode)
+		{
+		case 0: //Todos
+			return "select count(*) as cantidad from horasfunc";
+		case 1: //Filtrar por claves externas
+			return "select count(*) as cantidad from horasfunc"
+					+ " where idFun=? and idCli=? and idServ=?";
+		case 2:
+			return "IMPLEMENTAR POR FECHA";
+		case 3:
+			return "IMPLEMENTAR POR RANGO DE FECHAS";
+		}
+		return "LOL ERROR";
+	}
+	
+	//Listar Horarios
+	public String ListarHorarios( int sqlMode)
+	{
+		String res = "select s.nombre as Servicio,"
+						+ " concat(f.nomFun,' ',f.apeFun) as Funcionario,"
+						+ " concat('[',c.nroCli,'] ',c.nomCli) as Cliente,"
+						+ " hs.fecha as Fecha,"
+						+ " hs.horas as Horas "
+					+ " from horasfunc hs"
+						+ " inner join servicios as s on s.idServ = hs.idServ"
+						+ " inner join clientes as c on c.idCli = hs.idCli"
+						+ " inner join funcionarios as f on f.idFun = hs.idFun ";
+		switch (sqlMode)
+		{
+		case 0: //Todos
+			return res
+					+ " limit ?, ?";
+		case 1: //Filtrar por claves externas
+			return res
+					+ " where idFun=? and idCli=? and idServ=?"
+					+ " limit ?, ?";
+		case 2:
+			return res
+					+ "IMPLEMENTAR POR FECHA"
+					+ " limit ?, ?";
+		case 3:
+			return res
+					+ "IMPLEMENTAR POR RANGO DE FECHAS"
+					+ " limit ?, ?";
+		}
+		return "LOL ERROR";
+	}
+	
+	
+	
 	//Creacion de BD
 	//Tarea: cargar todo desde las especificaciones
 	public String CrearBDatos(String sNombreBDatos){
