@@ -179,4 +179,6 @@ public class c_Funcionario extends c_Maestro
 		chckActivo.setSelected(false);
 	}
 	
+
+	
 }//class

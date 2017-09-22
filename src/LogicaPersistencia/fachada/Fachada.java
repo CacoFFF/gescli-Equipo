@@ -193,8 +193,10 @@ public class Fachada
 	}
 	
 	
-	
-	
+	public void boom()
+	{
+		AccesoBD.boom( con);
+	}
 	
 	
 

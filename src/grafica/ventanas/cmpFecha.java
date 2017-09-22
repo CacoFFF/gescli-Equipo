@@ -19,6 +19,7 @@ public class cmpFecha extends JPanel
 {
 	private JTextField ddmmaa[];
 	private c_Fecha ctrl;
+	private static int len[] = { 2, 2, 4};
 	
 	public JTextField[] getDDMMAA()
 	{
@@ -32,8 +33,23 @@ public class cmpFecha extends JPanel
 		ddmmaa[2].setText("");
 	}
 
+	private void fixText()
+	{
+		try
+		{
+			for ( int i=0 ; i<3 ; i++ )
+			{
+				ddmmaa[i].setText( ""+Integer.parseInt(ddmmaa[i].getText()));
+				while ( (ddmmaa[i].getText().length() > 0) && (ddmmaa[i].getText().length() < len[i]) )
+					ddmmaa[i].setText( "0"+ddmmaa[i].getText() );
+			}
+		}
+		catch ( Exception e ) {}
+	}
+	
 	public String getText()
 	{
+		fixText();
 		return ddmmaa[2].getText().trim()+"-"+ddmmaa[1].getText().trim()+"-"+ddmmaa[0].getText().trim();
 	}
 	
@@ -48,6 +64,7 @@ public class cmpFecha extends JPanel
 			ddmmaa[1].setText(fecha.substring(0, pos));
 			fecha = fecha.substring( pos+1);
 			ddmmaa[0].setText(fecha);
+			fixText();
 		}
 		catch (Exception e)	{}
 	}

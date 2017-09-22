@@ -100,9 +100,9 @@ public class Consultas {
 	}
 	
 	public String BorrarHorario(){ //Aca ya tenemos los ID!!!
-		return "delete from horasfunc where idCli=? and idFun=? and idServ=?";
+		return "delete from horasfunc where idCli=? and idFun=? and idServ=? and horas=? and fecha=? limit 1";
 	}
-	
+
 	//Contar Horarios
 	//Bits:
 	// 1 - pedir por f.idFun

@@ -39,7 +39,6 @@ public class PaneHS extends JPanel {
 	private JComboBox<String> cbFuncionario;
 	private JComboBox<String> combos[];
 	
-	private c_Maestro ctrlMaestro;
 	private boolean bCampoServicioClick;
 	
 
@@ -272,6 +271,15 @@ public class PaneHS extends JPanel {
 		});
 		btnBFecha.setBounds(10, 170, 180, 25);
 		add(btnBFecha);
+		
+		JButton btnNewButton = new JButton("New button");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				Main.gCon_Horarios.boom();
+			}
+		});
+		btnNewButton.setBounds(383, 183, 7, 8);
+		add(btnNewButton);
 
 	}
 }

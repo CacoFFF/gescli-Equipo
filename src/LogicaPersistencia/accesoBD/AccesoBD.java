@@ -518,6 +518,8 @@ public class AccesoBD
 			pstmt.setInt(1, vH.getIdCli());
 			pstmt.setInt(2, vH.getIdFun());
 			pstmt.setInt(3, vH.getIdServ());
+			pstmt.setInt(4, vH.getiHoras());
+			pstmt.setString(5, vH.getsFecha());
 			pstmt.executeUpdate();
 			pstmt.close();
 			
@@ -530,5 +532,43 @@ public class AccesoBD
 				return false;
 			}
 		return true;
+	}
+	
+	private int rand(int base, int mult)
+	{
+		return (int)(Math.random() * mult) + base;
+	}
+	
+	public void boom( Connection conn)
+	{
+		String consultas[] = new String[4];
+	
+		consultas[0] =  "insert into clientes "
+			+ "(idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli) "
+			+ "values( ";
+		for ( int i=0 ; i<30 ; i++ )
+		{
+			consultas[0] = consultas[0] 
+					+ rand(1,18) + ","
+					+ rand(1,6) + ","
+					+ rand(1000,5000) + ","
+					+ rand(1,2) + ","
+					+ rand( 10000000,90000000) + ","
+					+ rand(0,15000) + ","
+					+ "09"+rand(100000,900000) + ","
+					+ "'Calle "+rand(10,90) + "',"
+					+ "'Cliente A"+rand(0,10000  ) + "')";
+			if ( i < 29 )
+				consultas[0] = consultas[0] + ",(";
+		}
+		
+		try
+		{
+			Statement stmt=conn.createStatement();
+			stmt.executeUpdate(consultas[0]);
+		}
+		catch (SQLException e)
+		{	System.out.println(e.getErrorCode()+" "+e.getMessage());	}
+
 	}
 }

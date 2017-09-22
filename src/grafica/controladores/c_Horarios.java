@@ -39,4 +39,9 @@ public class c_Horarios extends c_Maestro{
 		
 		
 	}
+	
+	public void boom()
+	{
+		gFachada.boom();
+	}
 }
