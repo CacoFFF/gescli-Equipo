@@ -534,21 +534,39 @@ public class AccesoBD
 		return true;
 	}
 	
+	
 	private int rand(int base, int mult)
 	{
 		return (int)(Math.random() * mult) + base;
 	}
+	private String digits( int num, int dig)
+	{
+		String res = ""+num;
+		while ( res.length() < dig )
+			res = "0"+res;
+		return res;
+	}
 	
 	public void boom( Connection conn)
 	{
-		String consultas[] = new String[4];
+		String consultas[] = new String[11];
+		int j = 0;
+		
+		consultas[j++] = "delete from horasfunc";
+		consultas[j++] = "delete from servicios";
+		consultas[j++] = "delete from clientes";
+		consultas[j++] = "delete from funcionarios";
+		consultas[j++] = "alter table servicios AUTO_INCREMENT = 1";
+		consultas[j++] = "alter table clientes AUTO_INCREMENT = 1";
+		consultas[j++] = "alter table funcionarios AUTO_INCREMENT = 1";
+		consultas[j++] = "insert into servicios (nombre) values('Venta'),('Reparacion'),('Asesoria'),('Reclamos')";
 	
-		consultas[0] =  "insert into clientes "
+		consultas[j] =  "insert into clientes "
 			+ "(idDepto, hsCargables, honorarios, moneda, rut, nroCli, tel, direccion, nomCli) "
 			+ "values( ";
 		for ( int i=0 ; i<30 ; i++ )
 		{
-			consultas[0] = consultas[0] 
+			consultas[j] = consultas[j] 
 					+ rand(1,18) + ","
 					+ rand(1,6) + ","
 					+ rand(1000,5000) + ","
@@ -559,13 +577,48 @@ public class AccesoBD
 					+ "'Calle "+rand(10,90) + "',"
 					+ "'Cliente A"+rand(0,10000  ) + "')";
 			if ( i < 29 )
-				consultas[0] = consultas[0] + ",(";
+				consultas[j] = consultas[j] + ",(";
 		}
+		j++;
+		
+		consultas[j] = "insert into funcionarios(nomFun,apeFun,ciFun,fechNacFun,celFun,baja,horasDia) values (";
+		String nombres[] = { "Pelado", "Terminator", "Chan", "Wang", "Ronald", "Felix" };
+		String apellidos[] = { "TV", "3", "Kong Sang", "Dong", "McDonald", "El Gato"};
+		for ( int i=0 ; i<6 ; i++ )
+		{
+			consultas[j] = consultas[j]
+					+ "'"+nombres[i] + "',"
+					+ "'"+apellidos[i] + "',"
+					+ "'"+rand(1,3) + "." + rand(100,899) + "." + rand(100,899) + "-" + rand(1,8) + "',"
+					+ "'"+rand(1950,40) + "-" + digits(rand(1,11),2) + "-" + digits(rand(1,28),2) + "',"
+					+ "09"+rand(100000,900000) + ","
+					+ "1,"
+					+ rand(1,6) + ")";
+			if ( i < 5 )
+				consultas[j] = consultas[j] + ",(";
+		}
+		j++;
+		
+		consultas[j] = "insert into horasfunc (idFun, idCli, idServ, horas, fecha) values (";
+		for ( int i=0 ; i<200 ; i++ )
+		{
+			consultas[j] = consultas[j]
+				+ rand(1,6) + ","
+				+ rand(1,30) + ","
+				+ rand(1,4) + ","
+				+ rand(1,3) + ","
+				+ "'"+rand(2015,2) + "-" + digits(rand(1,11),2) + "-" + digits(rand(1,28),2) + "')";
+			if ( i < 199 )
+				consultas[j] = consultas[j] + ",(";
+		}
+		j++;
+		
 		
 		try
 		{
-			Statement stmt=conn.createStatement();
-			stmt.executeUpdate(consultas[0]);
+			Statement stmt = conn.createStatement();
+			for ( int i=0 ; i<j ; i++ )
+				stmt.executeUpdate(consultas[i]);
 		}
 		catch (SQLException e)
 		{	System.out.println(e.getErrorCode()+" "+e.getMessage());	}
