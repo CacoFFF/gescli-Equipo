@@ -148,7 +148,7 @@ public class Consultas {
 						+ " inner join servicios as s on s.idServ = hs.idServ"
 						+ " inner join clientes as c on c.idCli = hs.idCli"
 						+ " inner join funcionarios as f on f.idFun = hs.idFun "
-					+ "order by Fecha ";
+					+ "order by Fecha desc ";
 		
 
 		String where[] = {"","","",""};
